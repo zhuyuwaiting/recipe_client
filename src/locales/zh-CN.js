@@ -18,8 +18,8 @@ export default {
   'layout.user.link.terms': '条款',
   'app.home.introduce': '介绍',
   'app.medicine.chinese.title': '中药管理',
-  'app.forms.basic.description':
-    '表单页用于向用户收集或验证信息，基础表单常见于数据项较少的表单场景。',
+  'app.medicine.chinese.description':
+    '',
   ...analysis,
   ...exception,
   ...form,

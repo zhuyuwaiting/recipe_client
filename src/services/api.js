@@ -131,7 +131,7 @@ export async function getFakeCaptcha(mobile) {
 
 
 export async function queryMedicine(params) {
-  return request(`/api/medicine/query?${stringify(params)}`);
+  return request(`/api/medicine/list?${stringify(params)}`);
 }
 
 export async function removeMedicine(params) {
