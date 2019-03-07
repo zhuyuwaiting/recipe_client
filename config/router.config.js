@@ -45,6 +45,19 @@ export default [
           },
         ],
       },
+
+      {
+        path: '/enumInfo',
+        icon: 'table',
+        name: '枚举管理',
+        routes: [
+          {
+            path: '/enumInfo/manage',
+            name: '枚举管理',
+            component: './recipe/EnumInfo',
+          },
+        ],
+      },
       // forms
       {
         path: '/medicine',
@@ -54,7 +67,7 @@ export default [
           {
             path: '/medicine/chinese',
             name: 'chinese',
-            component: './List/ChineseMedicine',
+            component: './recipe/ChineseMedicine',
           },
           // {
           //   path: '/form/step-form',

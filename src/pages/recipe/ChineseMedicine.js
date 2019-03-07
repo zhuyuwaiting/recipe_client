@@ -25,7 +25,7 @@ import {
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
-import styles from './TableList.less';
+import styles from './ChineseMedicine.less';
 
 const FormItem = Form.Item;
 const { Step } = Steps;

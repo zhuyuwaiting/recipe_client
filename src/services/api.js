@@ -135,7 +135,7 @@ export async function queryMedicine(params) {
 }
 
 export async function removeMedicine(params) {
-  return request('/api/medicine/remove', {
+  return request('/api/medicine/del', {
     method: 'POST',
     body: params,
   });
@@ -154,6 +154,27 @@ export async function updateMedicine(params = {}) {
     body: params,
   });
 }
+
+
+
+export async function queryEnumInfo(params) {
+  return request(`/api/enumInfo/list?${stringify(params)}`);
+}
+
+export async function delEnumInfo(params) {
+  return request('/api/enumInfo/del', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+export async function addEnumInfo(params) {
+  return request('/api/enumInfo/add', {
+    method: 'POST',
+    body:params,
+  });
+}
+
 
 
 // ------------------------medicine---------------------
