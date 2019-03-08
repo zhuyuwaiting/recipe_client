@@ -49,11 +49,11 @@ export default [
       {
         path: '/enumInfo',
         icon: 'table',
-        name: '枚举管理',
+        name: 'enumInfo',
         routes: [
           {
             path: '/enumInfo/manage',
-            name: '枚举管理',
+            name: 'manage',
             component: './recipe/EnumInfo',
           },
         ],

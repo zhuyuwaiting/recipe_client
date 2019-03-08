@@ -38,4 +38,6 @@ export default {
   'menu.account.settings': '个人设置',
   'menu.account.trigger': '触发报错',
   'menu.account.logout': '退出登录',
+  'menu.enumInfo': '枚举管理',
+  'menu.enumInfo.manage': '枚举管理',
 };

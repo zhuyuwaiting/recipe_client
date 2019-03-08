@@ -4,10 +4,9 @@ export default {
   namespace: 'enumInfo',
 
   state: {
-    data: {
       list: [],
       pagination: {},
-    },
+      subList:[],
   },
 
   effects: {
@@ -15,7 +14,10 @@ export default {
       const response = yield call(queryEnumInfo, payload);
       yield put({
         type: 'save',
-        payload: response,
+        payload: {
+          response:response,
+          key:payload.key,
+        },
       });
     },
     *add({ payload, callback }, { call, put }) {
@@ -40,7 +42,8 @@ export default {
     save(state, action) {
       return {
         ...state,
-        data: action.payload,
+        list:action.payload.response.enumInfoList,
+        pagination : action.payload.response.pagination,
       };
     },
   },
