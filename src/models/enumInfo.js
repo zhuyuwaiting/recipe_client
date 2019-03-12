@@ -1,5 +1,5 @@
 import { queryEnumInfo, addEnumInfo, delEnumInfo } from '@/services/api';
-
+import { message } from 'antd';
 export default {
   namespace: 'enumInfo',
 
@@ -7,6 +7,7 @@ export default {
       list: [],
       pagination: {},
       subList:[],
+      success:true,
   },
 
   effects: {
@@ -26,15 +27,21 @@ export default {
         type: 'save',
         payload: response,
       });
-      if (callback) callback();
+      if (callback) callback(response.success);
     },
     *remove({ payload, callback }, { call, put }) {
       const response = yield call(delEnumInfo, payload);
-      yield put({
-        type: 'save',
-        payload: response,
-      });
-      if (callback) callback();
+      if(response.success){
+        yield put({
+          type: 'removeUpdate',
+          payload: {
+            findex:payload.findex,
+            index:payload.index,
+            success:true
+          },
+        });
+      }
+      if (callback) callback(response.success);
     },
   },
 
@@ -44,7 +51,16 @@ export default {
         ...state,
         list:action.payload.response.enumInfoList,
         pagination : action.payload.response.pagination,
+        success:action.payload.response.success,
       };
     },
+
+    removeUpdate(state,action){
+      state.list[action.payload.findex].enumInfoVOList.splice(action.payload.index,1);
+      return {
+        ...state,
+        success:action.payload.success,
+      };
+    }
   },
 };

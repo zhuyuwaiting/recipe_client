@@ -4,10 +4,9 @@ export default {
   namespace: 'medicine',
 
   state: {
-    data: {
       list: [],
       pagination: {},
-    },
+      success:true,
   },
 
   effects: {
@@ -48,7 +47,9 @@ export default {
     save(state, action) {
       return {
         ...state,
-        data: action.payload,
+        list: action.payload.medicineVOS,
+        pagination:action.payload.pagination,
+        success:action.payload.success,
       };
     },
   },
