@@ -23,10 +23,12 @@ export default {
     },
     *add({ payload, callback }, { call, put }) {
       const response = yield call(addEnumInfo, payload);
-      yield put({
-        type: 'save',
-        payload: response,
-      });
+      if(response.success){
+        yield put({
+          type: 'addSuccess',
+          payload: response,
+        });
+      }
       if (callback) callback(response.success);
     },
     *remove({ payload, callback }, { call, put }) {
@@ -61,6 +63,18 @@ export default {
         ...state,
         success:action.payload.success,
       };
-    }
+    },
+
+    addSuccess(state,action){
+      for(var i = 0; i < state.list.length; i++) {
+        if(state.list[i].key == action.payload.enumInfo.key){
+          state.list[i].enumInfoVOList.unshift(action.payload.enumInfo);
+        }
+     };  
+       return {
+        ...state,
+        success:action.payload.success,
+      };
+    },
   },
 };

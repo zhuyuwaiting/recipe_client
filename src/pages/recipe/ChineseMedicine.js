@@ -35,7 +35,7 @@ const { Option } = Select;
 const RadioGroup = Radio.Group;
 
 const CreateForm = Form.create()(props => {
-  const { modalVisible, form, handleAdd, handleModalVisible } = props;
+  const { modalVisible, form, handleAdd, handleModalVisible,enumInfos } = props;
   const okHandle = () => {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
@@ -46,16 +46,49 @@ const CreateForm = Form.create()(props => {
   return (
     <Modal
       destroyOnClose
-      title="新建规则"
+      title="新建药品"
       visible={modalVisible}
       onOk={okHandle}
       onCancel={() => handleModalVisible()}
     >
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="描述">
-        {form.getFieldDecorator('desc', {
-          medicines: [{ required: true, message: '请输入至少五个字符的规则描述！', min: 5 }],
-        })(<Input placeholder="请输入" />)}
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="药品名称">
+        {form.getFieldDecorator('name', {
+          rules: [{ required: true, message: '药品名称不可以为空', }],
+        })(<Input placeholder="请输入药品名称" />)}
       </FormItem>
+
+       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="英文名称">
+        {form.getFieldDecorator('englishName', {
+
+        })(<Input placeholder="请输入英文名称" />)}
+      </FormItem>
+
+    <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="药品单位">
+        {form.getFieldDecorator('unit', {
+          rules: [{ required: true, message: '药品单位不可以为空', }],
+        })(
+          <Select placeholder="请选择" style={{ width: '100%' }}>
+            {(enumInfos&&enumInfos['MEDICINE_UNIT_CN'])?
+            enumInfos['MEDICINE_UNIT_CN'].map(function(k) {
+              return <Option value={k.value}>{k.name}</Option>
+            }):"" }
+          </Select>
+        )}
+      </FormItem>
+
+     <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="服用方式">
+        {form.getFieldDecorator('takingWay', {
+          rules: [{ required: true, message: '服用方式不可以为空', }],
+        })(
+          <Select placeholder="请选择" style={{ width: '100%' }}>
+            {(enumInfos&&enumInfos['MEDICINE_TAKING_WAY_CN'])?
+            enumInfos['MEDICINE_TAKING_WAY_CN'].map(function(k) {
+              return <Option value={k.value}>{k.name}</Option>
+            }):"" }
+          </Select>
+        )}
+      </FormItem>
+
     </Modal>
   );
 });
@@ -143,10 +176,11 @@ class ChineseMedicine extends PureComponent {
     }, {});
 
     const params = {
-      currentPage: pagination.current,
+      current: pagination.current,
       pageSize: pagination.pageSize,
       ...formValues,
       ...filters,
+      type:"CHINESE_MEDICINE",
     };
     if (sorter.field) {
       params.sorter = `${sorter.field}_${sorter.order}`;
@@ -170,7 +204,9 @@ class ChineseMedicine extends PureComponent {
     });
     dispatch({
       type: 'medicine/fetch',
-      payload: {},
+      payload: {
+        type:"CHINESE_MEDICINE",
+      },
     });
   };
 
@@ -222,6 +258,7 @@ class ChineseMedicine extends PureComponent {
       const values = {
         ...fieldsValue,
         updatedAt: fieldsValue.updatedAt && fieldsValue.updatedAt.valueOf(),
+        type:"CHINESE_MEDICINE",
       };
 
       this.setState({
@@ -247,12 +284,16 @@ class ChineseMedicine extends PureComponent {
     dispatch({
       type: 'medicine/add',
       payload: {
-        desc: fields.desc,
+        ...fields,
+        type:'CHINESE_MEDICINE',
       },
+      callback: (success) =>{
+        if(success){
+          message.success('添加成功');
+          this.handleModalVisible();
+        }
+      }
     });
-
-    message.success('添加成功');
-    this.handleModalVisible();
   };
 
   handleUpdate = fields => {
@@ -313,7 +354,7 @@ class ChineseMedicine extends PureComponent {
 
   render() {
     const {
-      medicine: { list,pagination },
+      medicine: { list,pagination,enumInfos },
       loading,
     } = this.props;
     let data = {
@@ -354,7 +395,7 @@ class ChineseMedicine extends PureComponent {
             />
           </div>
         </Card>
-        <CreateForm {...parentMethods} modalVisible={modalVisible} />
+        <CreateForm {...parentMethods} modalVisible={modalVisible} enumInfos={enumInfos} />
       </PageHeaderWrapper>
     );
   }
