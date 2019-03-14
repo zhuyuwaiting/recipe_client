@@ -68,7 +68,11 @@ export default {
     addSuccess(state,action){
       for(var i = 0; i < state.list.length; i++) {
         if(state.list[i].key == action.payload.enumInfo.key){
-          state.list[i].enumInfoVOList.unshift(action.payload.enumInfo);
+          if(!state.list[i].enumInfoVOList){
+            state.list[i].enumInfoVOList[0]=(action.payload.enumInfo);
+          }else{
+            state.list[i].enumInfoVOList.unshift(action.payload.enumInfo);
+          }
         }
      };  
        return {

@@ -69,6 +69,11 @@ export default [
             name: 'chinese',
             component: './recipe/ChineseMedicine',
           },
+          {
+            path: '/medicine/western',
+            name: 'western',
+            component: './recipe/WesternMedicine',
+          },
           // {
           //   path: '/form/step-form',
           //   name: 'stepform',

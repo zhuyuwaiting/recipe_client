@@ -26,7 +26,7 @@ import {
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
-import styles from './ChineseMedicine.less';
+import styles from './WesternMedicine.less';
 
 const FormItem = Form.Item;
 const { Step } = Steps;
@@ -159,12 +159,12 @@ const UpdateForm = Form.create()(props => {
 
 
 /* eslint react/no-multi-comp:0 */
-@connect(({ medicine, loading }) => ({
-  medicine,
-  loading: loading.models.medicine,
+@connect(({ westMedicine, loading }) => ({
+  westMedicine,
+  loading: loading.models.westMedicine,
 }))
 @Form.create()
-class ChineseMedicine extends PureComponent {
+class WesternMedicine extends PureComponent {
   state = {
     modalVisible: false,
     updateModalVisible: false,
@@ -189,10 +189,25 @@ class ChineseMedicine extends PureComponent {
       dataIndex: 'englishName',
     },
     {
-      title: '药品单位',
-      dataIndex: 'unitInfo',
+      title: '单元组成',
+      dataIndex: 'cellWeight',
       render(val,row) {
-        return val?val.name:row.unit;
+        return (row.cellWeight/100).toFixed(2)+''+(row.cellUnitInfo?row.cellUnitInfo.name:'')
+        +'*'+row.cellNum+'/'+row.unitInfo.name;
+      },
+    },
+    {
+      title: '每次剂量',
+      dataIndex: 'eachDose',
+      render(val,row) {
+        return (row.eachDose/100).toFixed(2);
+      },
+    },
+    {
+      title: '每日次数',
+      dataIndex: 'dailyTimes',
+      render(val,row) {
+        return (row.dailyTimes);
       },
     },
     {
@@ -232,9 +247,9 @@ class ChineseMedicine extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'medicine/fetch',
+      type: 'westMedicine/fetch',
       payload:{
-        type:"CHINESE_MEDICINE",
+        type:"WESTERN_MEDICINE",
       }
     });
   }
@@ -254,14 +269,14 @@ class ChineseMedicine extends PureComponent {
       pageSize: pagination.pageSize,
       ...formValues,
       ...filters,
-      type:"CHINESE_MEDICINE",
+      type:"WESTERN_MEDICINE",
     };
     if (sorter.field) {
       params.sorter = `${sorter.field}_${sorter.order}`;
     }
 
     dispatch({
-      type: 'medicine/fetch',
+      type: 'westMedicine/fetch',
       payload: params,
     });
   };
@@ -277,9 +292,9 @@ class ChineseMedicine extends PureComponent {
       formValues: {},
     });
     dispatch({
-      type: 'medicine/fetch',
+      type: 'westMedicine/fetch',
       payload: {
-        type:"CHINESE_MEDICINE",
+        type:"WESTERN_MEDICINE",
       },
     });
   };
@@ -299,7 +314,7 @@ class ChineseMedicine extends PureComponent {
     switch (e.key) {
       case 'remove':
         dispatch({
-          type: 'medicine/remove',
+          type: 'westMedicine/remove',
           payload: {
             key: selectedRows.map(row => row.key),
           },
@@ -332,7 +347,7 @@ class ChineseMedicine extends PureComponent {
       const values = {
         ...fieldsValue,
         updatedAt: fieldsValue.updatedAt && fieldsValue.updatedAt.valueOf(),
-        type:"CHINESE_MEDICINE",
+        type:"WESTERN_MEDICINE",
       };
 
       this.setState({
@@ -340,7 +355,7 @@ class ChineseMedicine extends PureComponent {
       });
 
       dispatch({
-        type: 'medicine/fetch',
+        type: 'westMedicine/fetch',
         payload: values,
       });
     });
@@ -357,10 +372,10 @@ class ChineseMedicine extends PureComponent {
   handleAdd = fields => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'medicine/add',
+      type: 'westMedicine/add',
       payload: {
         ...fields,
-        type:'CHINESE_MEDICINE',
+        type:'WESTERN_MEDICINE',
       },
       callback: (success) =>{
         if(success){
@@ -375,7 +390,7 @@ class ChineseMedicine extends PureComponent {
     const { dispatch } = this.props;
     const { updateRow } = this.state;
     dispatch({
-      type: 'medicine/update',
+      type: 'westMedicine/update',
       payload: {
         ...fields ,
         medicineNo:updateRow.medicineNo
@@ -392,7 +407,7 @@ class ChineseMedicine extends PureComponent {
   handleDelete = (row,index) => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'medicine/remove',
+      type: 'westMedicine/remove',
       payload: {
         medicineNos:[row.medicineNo],
         index:index,
@@ -408,7 +423,7 @@ class ChineseMedicine extends PureComponent {
   handleBatchDelete = (rows,index) => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'medicine/batchRemove',
+      type: 'westMedicine/batchRemove',
       payload: {
         medicineNos:rows.map((row)=>row.medicineNo),
       },
@@ -468,7 +483,7 @@ class ChineseMedicine extends PureComponent {
 
   render() {
     const {
-      medicine: { list,pagination,enumInfos },
+      westMedicine: { list,pagination,enumInfos },
       loading,
     } = this.props;
     let data = {
@@ -525,4 +540,4 @@ class ChineseMedicine extends PureComponent {
   }
 }
 
-export default ChineseMedicine;
+export default WesternMedicine;

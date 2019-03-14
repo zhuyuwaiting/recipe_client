@@ -181,7 +181,16 @@ class EnumInfo extends PureComponent {
           key: 'operation',
           render: (value,row,index) => (
             <span className="table-operation">
-              <a  onClick={() => this.deleteEnumInfo(row,findex,index)}>删除</a>
+              <a  onClick={
+                () =>
+                (Modal.confirm({
+                  title: '删除任务',
+                  content: '确定删除该任务吗？',
+                  okText: '确认',
+                  cancelText: '取消',
+                  onOk:  () => this.deleteEnumInfo(row,findex,index),
+                }))
+               }>删除</a>
             </span>
           ),
         },
@@ -209,7 +218,7 @@ class EnumInfo extends PureComponent {
         key: 'operation',
         render: (value,row) => (
           <span className="table-operation">
-            <a  onClick={() => this.handleModalVisible(true,row)}>新增</a>
+            <a  onClick={  () => this.handleModalVisible(true,row)}>新增</a>
           </span>
         ),
       },

@@ -9,6 +9,7 @@ export default {
   'menu.dashboard.workplace': '工作台',
   'menu.medicine': '药品管理',
   'menu.medicine.chinese': '中药管理',
+  'menu.medicine.western': '西药管理',
   'menu.form.stepform': '分步表单',
   'menu.form.stepform.info': '分步表单（填写转账信息）',
   'menu.form.stepform.confirm': '分步表单（确认转账信息）',
