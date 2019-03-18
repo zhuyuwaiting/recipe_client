@@ -109,6 +109,20 @@ export default [
           // },
         ],
       },
+
+      {
+        path: '/recipe',
+        icon: 'table',
+        name: 'recipe',
+        routes: [
+          {
+            path: '/recipe/template',
+            name: 'template',
+            component: './recipe/Template',
+          },
+        ],
+      },
+
       // list
       {
         path: '/list',

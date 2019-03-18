@@ -27,7 +27,7 @@ import {
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
-import styles from './WesternMedicine.less';
+import styles from './Template.less';
 
 const FormItem = Form.Item;
 const { Step } = Steps;
@@ -243,12 +243,12 @@ const UpdateForm = Form.create()(props => {
 
 
 /* eslint react/no-multi-comp:0 */
-@connect(({ westMedicine, loading }) => ({
-  westMedicine,
-  loading: loading.models.westMedicine,
+@connect(({ recipeTemplate, loading }) => ({
+  recipeTemplate,
+  loading: loading.models.recipeTemplate,
 }))
 @Form.create()
-class WesternMedicine extends PureComponent {
+class Template extends PureComponent {
   state = {
     modalVisible: false,
     updateModalVisible: false,
@@ -336,7 +336,7 @@ class WesternMedicine extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'westMedicine/fetch',
+      type: 'recipeTemplate/fetch',
       payload:{
         type:"WESTERN_MEDICINE",
       }
@@ -365,7 +365,7 @@ class WesternMedicine extends PureComponent {
     }
 
     dispatch({
-      type: 'westMedicine/fetch',
+      type: 'recipeTemplate/fetch',
       payload: params,
     });
   };
@@ -381,7 +381,7 @@ class WesternMedicine extends PureComponent {
       formValues: {},
     });
     dispatch({
-      type: 'westMedicine/fetch',
+      type: 'recipeTemplate/fetch',
       payload: {
         type:"WESTERN_MEDICINE",
       },
@@ -403,7 +403,7 @@ class WesternMedicine extends PureComponent {
     switch (e.key) {
       case 'remove':
         dispatch({
-          type: 'westMedicine/remove',
+          type: 'recipeTemplate/remove',
           payload: {
             key: selectedRows.map(row => row.key),
           },
@@ -444,7 +444,7 @@ class WesternMedicine extends PureComponent {
       });
 
       dispatch({
-        type: 'westMedicine/fetch',
+        type: 'recipeTemplate/fetch',
         payload: values,
       });
     });
@@ -461,7 +461,7 @@ class WesternMedicine extends PureComponent {
   handleAdd = fields => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'westMedicine/add',
+      type: 'recipeTemplate/add',
       payload: {
         ...fields,
         type:'WESTERN_MEDICINE',
@@ -481,7 +481,7 @@ class WesternMedicine extends PureComponent {
     const { dispatch } = this.props;
     const { updateRow } = this.state;
     dispatch({
-      type: 'westMedicine/update',
+      type: 'recipeTemplate/update',
       payload: {
         ...fields ,
         medicineNo:updateRow.medicineNo,
@@ -500,7 +500,7 @@ class WesternMedicine extends PureComponent {
   handleDelete = (row,index) => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'westMedicine/remove',
+      type: 'recipeTemplate/remove',
       payload: {
         medicineNos:[row.medicineNo],
         index:index,
@@ -516,7 +516,7 @@ class WesternMedicine extends PureComponent {
   handleBatchDelete = (rows,index) => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'westMedicine/batchRemove',
+      type: 'recipeTemplate/batchRemove',
       payload: {
         medicineNos:rows.map((row)=>row.medicineNo),
       },
@@ -576,7 +576,7 @@ class WesternMedicine extends PureComponent {
 
   render() {
     const {
-      westMedicine: { list,pagination,enumInfos },
+      recipeTemplate: { list,pagination,enumInfos },
       loading,
     } = this.props;
     let data = {
@@ -633,4 +633,4 @@ class WesternMedicine extends PureComponent {
   }
 }
 
-export default WesternMedicine;
+export default Template;

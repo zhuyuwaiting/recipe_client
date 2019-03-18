@@ -1,7 +1,7 @@
 import { queryMedicine, removeMedicine, addMedicine, updateMedicine } from '@/services/api';
 import { message } from 'antd';
 export default {
-  namespace: 'westMedicine',
+  namespace: 'recipeTemplate',
 
   state: {
       list: [],

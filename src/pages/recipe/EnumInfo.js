@@ -184,8 +184,8 @@ class EnumInfo extends PureComponent {
               <a  onClick={
                 () =>
                 (Modal.confirm({
-                  title: '删除任务',
-                  content: '确定删除该任务吗？',
+                  title: '删除枚举',
+                  content: '确定删除该枚举吗？',
                   okText: '确认',
                   cancelText: '取消',
                   onOk:  () => this.deleteEnumInfo(row,findex,index),

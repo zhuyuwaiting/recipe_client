@@ -10,6 +10,8 @@ export default {
   'menu.medicine': '药品管理',
   'menu.medicine.chinese': '中药管理',
   'menu.medicine.western': '西药管理',
+  'menu.recipe': '处方管理',
+  'menu.recipe.template': '模板管理',
   'menu.form.stepform': '分步表单',
   'menu.form.stepform.info': '分步表单（填写转账信息）',
   'menu.form.stepform.confirm': '分步表单（确认转账信息）',
