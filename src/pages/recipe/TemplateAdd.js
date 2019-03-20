@@ -204,7 +204,7 @@ const UpdateForm = Form.create()(props => {
   loading: loading.models.recipeTemplate,
 }))
 @Form.create()
-class Template extends PureComponent {
+class TemplateAdd extends PureComponent {
   state = {
     modalVisible: false,
     updateModalVisible: false,
@@ -382,8 +382,11 @@ class Template extends PureComponent {
     });
   };
 
-  handleTemplateAdd = () => {
-    router.push("/recipe/template/add")
+  handleModalVisible = flag => {
+    this.setState({
+      modalVisible: !!flag,
+      
+    });
   };
 
 
@@ -538,6 +541,7 @@ class Template extends PureComponent {
     const {
       recipeTemplate: { list,pagination,enumInfos },
       loading,
+      form,
     } = this.props;
     let data = {
       list:list,
@@ -555,42 +559,43 @@ class Template extends PureComponent {
     return (
       <PageHeaderWrapper >
         <Card bordered={false}>
-          <div className={styles.tableList}>
-            <div className={styles.tableListForm}>{this.renderForm()}</div>
-            <div className={styles.tableListOperator}>
-              <Button icon="plus" type="primary" onClick={() => this.handleTemplateAdd()}>
-                新建
-              </Button>
-              {selectedRows.length > 0 && (
-                <span>
-                  <Button onClick={
-                    () =>
-                    (Modal.confirm({
-                      title: '删除药品',
-                      content: '确定删除这些药品吗？',
-                      okText: '确认',
-                      cancelText: '取消',
-                      onOk:  () => this.handleBatchDelete(selectedRows),
-                    }))
-                  }>批量删除</Button>
-                </span>
-              )}
-            </div>
-            <StandardTable
-              selectedRows={selectedRows}
-              loading={loading}
-              data={data}
-              columns={this.columns}
-              onSelectRow={this.handleSelectRows}
-              onChange={this.handleStandardTableChange}
-            />
-          </div>
+        <Form onSubmit={this.handleSearch}>
+            <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="处方类型">
+            {form.getFieldDecorator('recipeType', {
+              rules: [{ required: true, message: '处方类型不可以为空', }],
+            })(
+                    <Select placeholder="请选择" style={{ width: '100%' }}>
+                    {[{
+                      "type":"CHINESE",
+                      "name":"中药处方"
+                    },{
+                      "type":"WESTERN",
+                      "name":"西药处方"
+                    }].map(function(k) {
+                      return <Option value={k.type}>{k.name}</Option>
+                    })}
+                  </Select>
+            )}
+          </FormItem>
+
+          <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="疾病名称">
+            {form.getFieldDecorator('disease', {
+              rules: [{ required: true, message: '疾病名称不可以为空', }],
+            })(<Input placeholder="请输入疾病名称" />)}
+          </FormItem>
+          
+          <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="科别">
+            {form.getFieldDecorator('disease', {
+            })(<Input placeholder="请输入科别" />)}
+          </FormItem>
+
+          <Divider style={{ margin: '40px 0 24px' }} />
+
+          </Form>
         </Card>
-        <CreateForm {...parentMethods} modalVisible={modalVisible} enumInfos={enumInfos} />
-        <UpdateForm {...updateMethods} updateModalVisible={updateModalVisible} updateRow={updateRow} enumInfos={enumInfos} />
       </PageHeaderWrapper>
     );
   }
 }
 
-export default Template;
+export default TemplateAdd;

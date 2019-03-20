@@ -120,6 +120,15 @@ export default [
             name: 'template',
             component: './recipe/Template',
           },
+         
+          {
+            path: '/recipe/template/add',
+            component: './recipe/TemplateAdd',
+          },
+          {
+            path: '/recipe/template/update',
+            component: './recipe/TemplateUpdate',
+          },
         ],
       },
 

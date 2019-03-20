@@ -178,3 +178,29 @@ export async function addEnumInfo(params) {
 
 
 // ------------------------medicine---------------------
+
+
+export async function queryRecipeTemplate(params) {
+  return request(`/api/recipeTemplate/list?${stringify(params)}`);
+}
+
+export async function removeRecipeTemplate(params) {
+  return request('/api/recipeTemplate/del', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+export async function addRecipeTemplate(params) {
+  return request('/api/recipeTemplate/add', {
+    method: 'POST',
+    body:params,
+  });
+}
+
+export async function updateRecipeTemplate(params = {}) {
+  return request(`/api/recipeTemplate/update`, {
+    method: 'POST',
+    body: params,
+  });
+}

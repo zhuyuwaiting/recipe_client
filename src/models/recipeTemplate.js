@@ -1,4 +1,4 @@
-import { queryMedicine, removeMedicine, addMedicine, updateMedicine } from '@/services/api';
+import { queryRecipeTemplate, removeRecipeTemplate, addRecipeTemplate, updateRecipeTemplate } from '@/services/api';
 import { message } from 'antd';
 export default {
   namespace: 'recipeTemplate',
@@ -8,18 +8,20 @@ export default {
       pagination: {},
       success:true,
       enumInfos:{},
+      addObject:{},
+      updateObject:{}
   },
 
   effects: {
     *fetch({ payload }, { call, put }) {
-      const response = yield call(queryMedicine, payload);
+      const response = yield call(queryRecipeTemplate, payload);
       yield put({
         type: 'save',
         payload: response,
       });
     },
     *add({ payload, callback }, { call, put }) {
-      const response = yield call(addMedicine, payload);
+      const response = yield call(addRecipeTemplate, payload);
       if(response.success){
         yield put({
           type: 'addSuccess',
@@ -29,7 +31,7 @@ export default {
       if (callback) callback(response.success);
     },
     *remove({ payload, callback }, { call, put }) {
-      const response = yield call(removeMedicine, payload);
+      const response = yield call(removeRecipeTemplate, payload);
       if(response.success){
         yield put({
           type: 'delSuccess',
@@ -39,7 +41,7 @@ export default {
       if (callback) callback(response.success);
     },
     *batchRemove({ payload, callback }, { call, put }) {
-      const response = yield call(removeMedicine, payload);
+      const response = yield call(removeRecipeTemplate, payload);
       if(response.success){
         message.success('批量删除成功');
         yield put({
@@ -52,7 +54,7 @@ export default {
       if (callback) callback(response.success);
     },
     *update({ payload, callback }, { call, put }) {
-      const response = yield call(updateMedicine, payload);
+      const response = yield call(updateRecipeTemplate, payload);
       if(response.success){
         yield put({
           type: 'updateSuccess',
@@ -67,7 +69,7 @@ export default {
     save(state, action) {
       return {
         ...state,
-        list: action.payload.medicineVOS,
+        list: action.payload.recipeTemplateVOS,
         pagination:action.payload.pagination,
         success:action.payload.success,
         enumInfos:action.payload.enumInfos,

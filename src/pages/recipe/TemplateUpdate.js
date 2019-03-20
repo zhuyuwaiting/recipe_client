@@ -204,7 +204,7 @@ const UpdateForm = Form.create()(props => {
   loading: loading.models.recipeTemplate,
 }))
 @Form.create()
-class Template extends PureComponent {
+class TemplateUpdate extends PureComponent {
   state = {
     modalVisible: false,
     updateModalVisible: false,
@@ -382,8 +382,11 @@ class Template extends PureComponent {
     });
   };
 
-  handleTemplateAdd = () => {
-    router.push("/recipe/template/add")
+  handleModalVisible = flag => {
+    this.setState({
+      modalVisible: !!flag,
+      
+    });
   };
 
 
@@ -558,7 +561,7 @@ class Template extends PureComponent {
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderForm()}</div>
             <div className={styles.tableListOperator}>
-              <Button icon="plus" type="primary" onClick={() => this.handleTemplateAdd()}>
+              <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
                 新建
               </Button>
               {selectedRows.length > 0 && (
@@ -593,4 +596,4 @@ class Template extends PureComponent {
   }
 }
 
-export default Template;
+export default TemplateUpdate;
