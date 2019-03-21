@@ -35,54 +35,162 @@ const { TextArea } = Input;
 const { Option } = Select;
 const RadioGroup = Radio.Group;
 
-const CreateForm = Form.create()(props => {
-  const { modalVisible, form, handleAdd, handleModalVisible,enumInfos } = props;
+const MedicineForm = Form.create()(props => {
+  const { modalVisible, form, handleMedicineAdd, handleModalVisible,selectedRows,handleSelectRows,
+  loading,medicines,handleStandardTableChange,recipeType,handleMedicineSearch,handleMedicineFormReset } = props;
   const okHandle = () => {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
       form.resetFields();
-      handleAdd(fieldsValue);
+      handleMedicineAdd(fieldsValue);
     });
   };
+  console.log(medicines);
+  let columns = [
+    {
+      title: '药品编号',
+      dataIndex: 'medicineNo',
+    },
+    {
+      title: '药品名称',
+      dataIndex: 'name',
+    },
+    {
+      title: '英文名称',
+      dataIndex: 'englishName',
+    },
+    {
+      title: '药品单位',
+      dataIndex: 'unitInfo',
+      render(val,row) {
+        return val?val.name:row.unit;
+      },
+    },
+    {
+      title: '服用方式',
+      dataIndex: 'takingWayInfo',
+      render(val,row) {
+        return val?val.name:row.unit;
+      },
+    },
+    { title: '创建时间', dataIndex: 'createTime', key: 'createTime' ,
+        render:(value,index)=>{
+          var time = moment(new Date(value)).format("YYYY-MM-DD HH:mm:ss"); ;
+          return time;
+        }
+      },
+  ];
+
+  if(recipeType =='WESTERN'){
+    columns = [
+      {
+        title: '药品编号',
+        dataIndex: 'medicineNo',
+        render(val,row){
+          return (<Tooltip placement="rightTop" title={val}>
+          {val.substring(0,5) + '...'}
+        </Tooltip>);
+        }
+      },
+      {
+        title: '药品名称',
+        dataIndex: 'name',
+      },
+      {
+        title: '英文名称',
+        dataIndex: 'englishName',
+      },
+      {
+        title: '单元组成',
+        dataIndex: 'cellWeight',
+        render(val,row) {
+          return (row.cellWeight/100).toFixed(2)+''+(row.cellUnitInfo?row.cellUnitInfo.name:'')
+          +'*'+row.cellNum+'/'+row.unitInfo.name;
+        },
+      },
+      {
+        title: '每次剂量',
+        dataIndex: 'eachDose',
+        render(val,row) {
+          return (row.eachDose/100).toFixed(2) + (row.cellUnitInfo?row.cellUnitInfo.name:'');
+        },
+      },
+      {
+        title: '每日次数',
+        dataIndex: 'dailyTimes',
+        render(val,row) {
+          return (row.dailyTimes) + '次';
+        },
+      },
+      {
+        title: '服用方式',
+        dataIndex: 'takingWayInfo',
+        render(val,row) {
+          return val?val.name:row.unit;
+        },
+      },
+      { title: '创建时间', dataIndex: 'createTime', key: 'createTime' ,
+          render:(value,index)=>{
+            var time = moment(new Date(value)).format("YYYY-MM-DD HH:mm:ss"); ;
+            return time;
+          }
+        },
+    ];
+  }
+
+  let renderSimpleForm = ()=> {
+    const {
+      form: { getFieldDecorator },
+    } = props;
+    
+    return (
+      <Form onSubmit={(e)=>handleMedicineSearch(e,form)} layout="inline">
+        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
+        <Col md={8} sm={24}>
+            <FormItem label="药品编号">
+              {getFieldDecorator('medicineNo')(<Input placeholder="请输入" />)}
+            </FormItem>
+          </Col>
+          <Col md={8} sm={24}>
+            <FormItem label="药品名称">
+              {getFieldDecorator('name')(<Input placeholder="请输入" />)}
+            </FormItem>
+          </Col>
+          <Col md={8} sm={24}>
+            <span className={styles.submitButtons}>
+              <Button type="primary" htmlType="submit">
+                查询
+              </Button>
+              <Button style={{ marginLeft: 8 }} onClick={()=>handleMedicineFormReset(form)}>
+                重置
+              </Button>
+            </span>
+          </Col>
+        </Row>
+      </Form>
+    );
+  }
+
+
   return (
     <Modal
       destroyOnClose
-      title="新建模板"
+      title="药品选择"
       visible={modalVisible}
       style={{ top: 0 }}
       width={1000}
       onOk={okHandle}
-      onCancel={() => handleModalVisible()}
+      onCancel={() => handleModalVisible(false)}
     >
-
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="处方类型">
-        {form.getFieldDecorator('recipeType', {
-          rules: [{ required: true, message: '处方类型不可以为空', }],
-        })(
-                <Select placeholder="请选择" style={{ width: '100%' }}>
-                {[{
-                  "type":"CHINESE",
-                  "name":"中药处方"
-                },{
-                  "type":"WESTERN",
-                  "name":"西药处方"
-                }].map(function(k) {
-                  return <Option value={k.type}>{k.name}</Option>
-                })}
-              </Select>
-        )}
-      </FormItem>
-
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="疾病名称">
-        {form.getFieldDecorator('disease', {
-          rules: [{ required: true, message: '疾病名称不可以为空', }],
-        })(<Input placeholder="请输入疾病名称" />)}
-      </FormItem>
-      
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="科别">
-        {form.getFieldDecorator('disease', {
-        })(<Input placeholder="请输入科别" />)}
-      </FormItem>
+    <div className={styles.tableListForm}>{renderSimpleForm()}</div>
+      <StandardTable
+              selectedRows={selectedRows}
+              loading={loading}
+              data={medicines}
+              columns={columns}
+              onSelectRow={handleSelectRows}
+              onChange={handleStandardTableChange}
+            />
     
     </Modal>
   );
@@ -199,9 +307,11 @@ const UpdateForm = Form.create()(props => {
 
 
 /* eslint react/no-multi-comp:0 */
-@connect(({ recipeTemplate, loading }) => ({
+@connect(({ recipeTemplate, loading,medicine }) => ({
   recipeTemplate,
   loading: loading.models.recipeTemplate,
+  medicine,
+  medicineLoading:loading.models.medicine,
 }))
 @Form.create()
 class TemplateAdd extends PureComponent {
@@ -213,6 +323,7 @@ class TemplateAdd extends PureComponent {
     formValues: {},
     stepFormValues: {},
     updateRow:{},
+    recipeType:undefined,
   };
 
   columns = [
@@ -276,7 +387,7 @@ class TemplateAdd extends PureComponent {
 
   handleStandardTableChange = (pagination, filtersArg, sorter) => {
     const { dispatch } = this.props;
-    const { formValues } = this.state;
+    const { formValues,recipeType } = this.state;
 
     const filters = Object.keys(filtersArg).reduce((obj, key) => {
       const newObj = { ...obj };
@@ -293,11 +404,14 @@ class TemplateAdd extends PureComponent {
     if (sorter.field) {
       params.sorter = `${sorter.field}_${sorter.order}`;
     }
-
     dispatch({
-      type: 'recipeTemplate/fetch',
-      payload: params,
+      type: 'medicine/fetch',
+      payload:{
+        ...params,
+        type:recipeType=='CHINESE'?'CHINESE_MEDICINE':'WESTERN_MEDICINE',
+      },
     });
+  
   };
 
   previewItem = id => {
@@ -313,6 +427,21 @@ class TemplateAdd extends PureComponent {
     dispatch({
       type: 'recipeTemplate/fetch',
       payload: {
+      },
+    });
+  };
+
+  handleMedicineFormReset = (form) => {
+    const { dispatch } = this.props;
+    const recipeType = this.state.recipeType;
+    form.resetFields();
+    this.setState({
+      formValues: {},
+    });
+    dispatch({
+      type: 'medicine/fetch',
+      payload: {
+        type:recipeType=='CHINESE'?'CHINESE_MEDICINE':'WESTERN_MEDICINE',
       },
     });
   };
@@ -383,28 +512,88 @@ class TemplateAdd extends PureComponent {
   };
 
   handleModalVisible = flag => {
+    if(!flag){
+      this.setState({
+        modalVisible: false,
+      });
+      return;
+    }
+    const { dispatch } = this.props;
+    let recipeType = this.state.recipeType;
+    if(!recipeType){
+      message.error("请先选择处方类型");
+      return 
+    }
+    dispatch({
+      type: 'medicine/fetch',
+      payload:{
+        type:recipeType=='CHINESE'?'CHINESE_MEDICINE':'WESTERN_MEDICINE',
+      },
+    });
     this.setState({
       modalVisible: !!flag,
-      
+    });
+    
+  };
+
+  handleRecipeTypeChange = (value)=>{
+    this.setState({
+      recipeType: value,
+    });
+  }
+
+   handleOK = () => {
+    const { dispatch,form } = this.props;
+    form.validateFields((err, fieldsValue) => {
+      if (err) return;
+      form.resetFields();
+      dispatch({
+        type: 'recipeTemplate/add',
+        payload: {
+          ...fieldsValue,
+        },
+        callback: (success) =>{
+          if(success){
+            message.success('添加成功');
+            router.push("/recipe/template");
+          }else{
+            this.setState({
+              selectedRows: [],
+            });
+          }
+        }
+      });
     });
   };
 
 
-  handleAdd = fields => {
+  handleMedicineAdd = files=>{
+    
+    this.handleModalVisible(false);
+  }
+
+
+  handleMedicineSearch = (e,form) => {
+    e.preventDefault();
+
     const { dispatch } = this.props;
-    dispatch({
-      type: 'recipeTemplate/add',
-      payload: {
-        ...fields,
-        cellWeight:fields.cellWeight*100,
-        eachDose:fields.eachDose*100,
-      },
-      callback: (success) =>{
-        if(success){
-          message.success('添加成功');
-          this.handleModalVisible();
-        }
-      }
+    const recipeType = this.state.recipeType;
+    form.validateFields((err, fieldsValue) => {
+      if (err) return;
+
+      const values = {
+        ...fieldsValue,
+        type:recipeType=='CHINESE'?'CHINESE_MEDICINE':'WESTERN_MEDICINE',
+      };
+
+      this.setState({
+        formValues: values,
+      });
+
+      dispatch({
+        type: 'medicine/fetch',
+        payload: values,
+      });
     });
   };
 
@@ -542,15 +731,22 @@ class TemplateAdd extends PureComponent {
       recipeTemplate: { list,pagination,enumInfos },
       loading,
       form,
+      medicineLoading,
+      medicine
     } = this.props;
     let data = {
       list:list,
       pagination:pagination
     }
-    const { selectedRows, modalVisible, updateModalVisible, stepFormValues,updateRow } = this.state;
+    const { selectedRows, modalVisible, updateModalVisible, stepFormValues,updateRow
+    ,recipeType } = this.state;
     const parentMethods = {
-      handleAdd: this.handleAdd,
+      handleMedicineAdd: this.handleMedicineAdd,
       handleModalVisible: this.handleModalVisible,
+      handleSelectRows: this.handleSelectRows,
+      handleStandardTableChange: this.handleStandardTableChange,
+      handleMedicineSearch: this.handleMedicineSearch,
+      handleMedicineFormReset: this.handleMedicineFormReset,
     };
     const updateMethods = {
       handleUpdateModalVisible: this.handleUpdateModalVisible,
@@ -559,12 +755,12 @@ class TemplateAdd extends PureComponent {
     return (
       <PageHeaderWrapper >
         <Card bordered={false}>
-        <Form onSubmit={this.handleSearch}>
+        <Form >
             <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="处方类型">
             {form.getFieldDecorator('recipeType', {
               rules: [{ required: true, message: '处方类型不可以为空', }],
             })(
-                    <Select placeholder="请选择" style={{ width: '100%' }}>
+                    <Select placeholder="请选择" style={{ width: '100%' }} onChange ={(value) => this.handleRecipeTypeChange(value)} >
                     {[{
                       "type":"CHINESE",
                       "name":"中药处方"
@@ -585,14 +781,65 @@ class TemplateAdd extends PureComponent {
           </FormItem>
           
           <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="科别">
-            {form.getFieldDecorator('disease', {
+            {form.getFieldDecorator('classfication', {
             })(<Input placeholder="请输入科别" />)}
           </FormItem>
 
           <Divider style={{ margin: '40px 0 24px' }} />
 
+           {selectedRows.map((selectedRow,index) =>{
+             return(
+              <Row gutter={{ md: 4, lg: 12, xl: 24 }}>
+              <Col md={10} sm={24}>
+              <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="药品编号">
+            {form.getFieldDecorator('recipeTemplateDetailVOS['+index+'].medicineVO.medicineNo', {
+              initialValue:selectedRow.medicineNo
+            })(<Input placeholder="请输入科别" disabled = 'disabled'/>)}
+          </FormItem>
+              </Col>
+              <Col md={8}  sm={24}>
+              <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="药品名称">
+            {form.getFieldDecorator('recipeTemplateDetailVOS['+index+'].medicineVO.name', {
+              initialValue:selectedRow.name
+            })(<Input placeholder="请输入科别" />)}
+          </FormItem>
+              </Col>
+              <Col md={4}  sm={24}>
+              <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="数量">
+            {form.getFieldDecorator('recipeTemplateDetailVOS['+index+'].medicineNum', {
+               rules: [{ required: true, message: '数量不可为空', }],
+            })(<InputNumber placeholder="请输入数量"  precision='0'/>)}
+          </FormItem>
+              </Col>
+              <Icon
+            type="minus-circle-o" style={{marginTop:10}}
+          />
+            </Row>)
+
+           })}   
+
+          <Divider style={{ margin: '40px 0 24px' }} />
+            <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
+            <Col md={4} offset={8} sm={24}>
+              <span className={styles.submitButtons}>
+                <Button type="primary" onClick={() => this.handleModalVisible(true)}>
+                  添加药品
+                </Button>
+              </span>
+            </Col>
+            <Col md={4}  sm={24}>
+              <span className={styles.submitButtons}>
+                <Button type="primary"  onClick={() => this.handleOK()}>
+                  提交表单
+                </Button>
+              </span>
+            </Col>
+          </Row>
           </Form>
         </Card>
+        <MedicineForm {...parentMethods} modalVisible={modalVisible} selectedRows={selectedRows}
+        loading = {medicineLoading} medicines = {medicine} recipeType={recipeType}
+        />
       </PageHeaderWrapper>
     );
   }
