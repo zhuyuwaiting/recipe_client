@@ -230,6 +230,17 @@ class TemplateAdd extends PureComponent {
     });
   }
 
+  onMedicineDel = (row)=>{
+    let newSelectedRows = this.state.selectedMedicines;
+    newSelectedRows = newSelectedRows.filter(selectRow =>{
+        return selectRow.medicineNo !=  row.medicineNo;
+    })    
+    
+    this.setState({
+      selectedMedicines: newSelectedRows,
+    });
+  }
+
 
   handleSelectRows = rows => {
 
@@ -566,6 +577,7 @@ class TemplateAdd extends PureComponent {
       ,recipeType } = this.state;
     let columns = this.getColumns(recipeType);
     let onMedicineNumChange = this.onMedicineNumChange;
+    let onMedicineDel = this.onMedicineDel;
     columns.pop();
     columns.push(
       {
@@ -573,6 +585,15 @@ class TemplateAdd extends PureComponent {
         dataIndex: 'medicineNum',
         render(val,row,index) {
           return <InputNumber min={1} max={1000} defaultValue={val} onChange={(val)=>onMedicineNumChange(val,index)} />
+        },
+      }
+    )
+    columns.push(
+      {
+        title: '',
+        dataIndex: 'operator',
+        render(val,row,index) {
+          return <Icon type="delete" onClick={()=>onMedicineDel(row)}/> 
         },
       }
     )

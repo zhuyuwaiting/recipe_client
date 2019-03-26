@@ -44,116 +44,79 @@ function info(record) {
     medicineVO.medicineNum = recipeDetailVO.medicineNum;
     return medicineVO;
   });
-
-  let columns = [
-    {
-      title: '药品编号',
-      dataIndex: 'medicineNo',
-    },
-    {
-      title: '药品名称',
-      dataIndex: 'name',
-    },
-    {
-      title: '英文名称',
-      dataIndex: 'englishName',
-    },
-    {
-      title: '药品单位',
-      dataIndex: 'unitInfo',
-      render(val,row) {
-        return val?val.name:row.unit;
-      },
-    },
-    {
-      title: '服用方式',
-      dataIndex: 'takingWayInfo',
-      render(val,row) {
-        return val?val.name:row.takingWay;
-      },
-    },
-    {
-      title: '数量',
-      dataIndex: 'medicineNum',
-    }
-  ];
-
-  if(recipeType =='WESTERN'){
-    columns = [
-      {
-        title: '药品编号',
-        dataIndex: 'medicineNo',
-        render(val,row){
-          return (<Tooltip placement="rightTop" title={val}>
-          {val.substring(0,5) + '...'}
-        </Tooltip>);
-        }
-      },
-      {
-        title: '药品名称',
-        dataIndex: 'name',
-      },
-      {
-        title: '英文名称',
-        dataIndex: 'englishName',
-      },
-      {
-        title: '单元组成',
-        dataIndex: 'cellWeight',
-        render(val,row) {
-          return (row.cellWeight/100).toFixed(2)+''+(row.cellUnitInfo?row.cellUnitInfo.name:'')
-          +'*'+row.cellNum+'/'+row.unitInfo.name;
-        },
-      },
-      {
-        title: '每次剂量',
-        dataIndex: 'eachDose',
-        render(val,row) {
-          return (row.eachDose/100).toFixed(2) + (row.cellUnitInfo?row.cellUnitInfo.name:'');
-        },
-      },
-      {
-        title: '每日次数',
-        dataIndex: 'dailyTimes',
-        render(val,row) {
-          return (row.dailyTimes) + '次';
-        },
-      },
-      {
-        title: '服用方式',
-        dataIndex: 'takingWayInfo',
-        render(val,row) {
-          return val?val.name:row.unit;
-        },
-      },
-      {
-        title: '数量',
-        dataIndex: 'medicineNum',
-      }
-    ];
+  //转为两个两个的
+  let chineseMedicine =[];
+  for(let i=0;i<parseInt((medicines.length+1)/2);i++){
+     if(i*2+1>=medicines.length){
+      chineseMedicine.push([medicines[i*2]])
+    }else{
+      chineseMedicine.push([medicines[i*2],medicines[i*2+1]])
+     }
   }
-  Modal.info({
-    title: '处方模板详情',
-    width:800,
+  console.log(chineseMedicine);
+
+  Modal.confirm({
+    title: '处方详情',
+    width:1000,
+    okText:"打印",
     content: (
       <Card bordered={false}>
-        <Row>
-            <Col span={6} offset={6}>处方编号：</Col>
-            <Col span={12}>{record.recipeNo}</Col>
-        </Row>
-        <Row>
-            <Col span={6} offset={6}>处方类型：</Col>
-            <Col span={12}>{record.recipeType=='CHINESE'?'中药处方':'西药处方'}</Col>
-        </Row>
-        <Row>
-            <Col span={6} offset={6}>疾病：</Col>
-            <Col span={12}>{record.disease}</Col>
-        </Row>
-        <Row>
-            <Col span={6} offset={6}>科室：</Col>
-            <Col span={12}>{record.classfication}</Col>
-        </Row>
-        <Table style={{marginTop:20}} columns={columns} dataSource={medicines} size="middle" />
+          <table style={{width:750}} border="1">
+              <tr>
+                <th>姓名:{record.patientName}</th>
+                <th>性别:{record.patientSex==0?'男':'女'}</th>
+                <th>年龄:{record.patientAge}</th>
+                <th>处方类别:{record.recipeType=='CHINESE'?'中药处方':'西药处方'}</th>
+              </tr>
+              <tr>
+                <th colSpan="2">临床诊断:{record.disease}</th>
+                <th colSpan="2">科别:{record.classfication}</th>
+              </tr>
+          </table>
+          <h2 style={{marginTop:5,marginBottom:5}}>Rp</h2>
+
+          {record.recipeType=='CHINESE'?(<Card bordered={false}>
+            {chineseMedicine.map(medicines=>{
+                return (
+            <Row style={{marginTop:40}}>
+                <Col span={3}><Icon type="star" theme="filled" />&nbsp; {medicines[0].name }</Col>
+                <Col span={3}>{medicines[0].takingWayInfo.name}</Col>
+                <Col span={3}>{medicines[0].medicineNum+' '+medicines[0].unitInfo.name}</Col>
+                <Col span={3}> </Col>
+                {
+                  medicines[1]?(<Col span={3}><Icon type="star" theme="filled" />&nbsp;{medicines[1]?medicines[1].name:"" }</Col>):(
+                    <Col span={3}></Col>
+                  )
+                }
+                
+                <Col span={3}>{medicines[1]?medicines[1].takingWayInfo.name:""}</Col>
+                <Col span={3}>{medicines[1]?(medicines[1].medicineNum+" "+medicines[1].unitInfo.name):''}</Col>
+            </Row>
+                );
+              })}
+          </Card>):(<Card bordered={false}>
+            {medicines.map(medicine=>{
+                return (
+            <Row style={{marginTop:40}}>
+                <Col span={8}>{medicine.name }</Col>
+                <Col span={8}>{(medicine.cellWeight/100).toFixed(2)+''+(medicine.cellUnitInfo?medicine.cellUnitInfo.name:'')
+          +'*'+medicine.cellNum+'/'+medicine.unitInfo.name }</Col>
+                <Col span={8}>{medicine.medicineNum+"  "+ medicine.unitInfo.name}</Col>
+                <Col span={8}>{"每次剂量： "+(medicine.eachDose/100).toFixed(2)+medicine.cellUnitInfo.name}</Col>
+                <Col span={8}>{medicine.takingWayInfo.name}</Col>
+                <Col span={8}>{"每天"+medicine.dailyTimes+"次"}</Col>
+            </Row>
+                );
+              })}
+           
+            
+          </Card>)}
+          <Row style={{marginTop:40}}>
+            {record.recipeType=='CHINESE'?(<Col span={12}>付数： <strong style={{fontSize:20}}>{record.num}</strong>&nbsp;付</Col>):(
+              <Col span={12}></Col>
+            )}
+            <Col span={8} offset={4}>总金额：&nbsp;&nbsp;&nbsp; <strong style={{fontSize:20}}>{record.num}</strong></Col>
+            </Row>
       </Card>
     ),
     onOk() {},
@@ -385,7 +348,17 @@ class RecipeManage extends PureComponent {
 
 
   handleView = (flag,record) =>{
-      router.push("/recipe/recipeManage/view/"+record.recipeNo);
+    console.log(record);
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'recipe/query',
+      payload: {
+        recipeNo:record.recipeNo,
+      },
+      callback: (success,response) =>{
+       info(response.recipeInfoVO);
+      }
+    });
   }
 
 

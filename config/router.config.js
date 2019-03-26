@@ -139,10 +139,6 @@ export default [
             path: '/recipe/recipeManage/edit/:operator/:recipeNo',
             component: './recipe/RecipeEdit',
           },
-          {
-            path: '/recipe/recipeManage/view/:recipeNo',
-            component: './recipe/RecipeView',
-          },
         ],
       },
 
