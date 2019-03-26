@@ -199,7 +199,7 @@ class ChineseMedicine extends PureComponent {
       title: '服用方式',
       dataIndex: 'takingWayInfo',
       render(val,row) {
-        return val?val.name:row.unit;
+        return val?val.name:row.takingWay;
       },
     },
     { title: '创建时间', dataIndex: 'createTime', key: 'createTime' ,
@@ -263,6 +263,11 @@ class ChineseMedicine extends PureComponent {
     dispatch({
       type: 'medicine/fetch',
       payload: params,
+      callback:(success)=>{
+        this.setState({
+          selectedRows: [],
+        });
+      }
     });
   };
 

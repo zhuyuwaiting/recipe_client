@@ -126,8 +126,22 @@ export default [
             component: './recipe/TemplateAdd',
           },
           {
-            path: '/recipe/template/update',
+            path: '/recipe/template/update/:recipeTemplateNo',
             component: './recipe/TemplateUpdate',
+          },
+
+          {
+            path: '/recipe/recipeManage',
+            name: 'recipeManage',
+            component: './recipe/RecipeManage',
+          },
+          {
+            path: '/recipe/recipeManage/edit/:operator/:recipeNo',
+            component: './recipe/RecipeEdit',
+          },
+          {
+            path: '/recipe/recipeManage/view/:recipeNo',
+            component: './recipe/RecipeView',
           },
         ],
       },

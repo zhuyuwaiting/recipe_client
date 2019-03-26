@@ -1,5 +1,5 @@
-import { stringify } from 'qs';
 import request from '@/utils/request';
+import { stringify } from 'qs';
 
 export async function queryProjectNotice() {
   return request('/api/project/notice');
@@ -180,8 +180,12 @@ export async function addEnumInfo(params) {
 // ------------------------medicine---------------------
 
 
-export async function queryRecipeTemplate(params) {
+export async function queryRecipeTemplateList(params) {
   return request(`/api/recipeTemplate/list?${stringify(params)}`);
+}
+
+export async function queryRecipeTemplate(params) {
+  return request(`/api/recipeTemplate/query?${stringify(params)}`);
 }
 
 export async function removeRecipeTemplate(params) {
@@ -204,3 +208,36 @@ export async function updateRecipeTemplate(params = {}) {
     body: params,
   });
 }
+
+//----------------
+
+
+export async function queryRecipeList(params) {
+  return request(`/api/recipe/list?${stringify(params)}`);
+}
+
+export async function queryRecipe(params) {
+  return request(`/api/recipe/query?${stringify(params)}`);
+}
+
+export async function removeRecipe(params) {
+  return request('/api/recipe/del', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+export async function addRecipe(params) {
+  return request('/api/recipe/add', {
+    method: 'POST',
+    body:params,
+  });
+}
+
+export async function updateRecipe(params = {}) {
+  return request(`/api/recipe/update`, {
+    method: 'POST',
+    body: params,
+  });
+}
+

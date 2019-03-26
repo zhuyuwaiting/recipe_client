@@ -102,5 +102,15 @@ export default {
         success:action.payload.success,
       };
     },
+    flush(state,action){
+      state ={list: [],
+        pagination: {},
+        success:true,
+        enumInfos:{},
+      }
+      return {
+        ...state
+      }
+    }
   },
 };

@@ -367,6 +367,11 @@ class WesternMedicine extends PureComponent {
     dispatch({
       type: 'westMedicine/fetch',
       payload: params,
+      callback:(success)=>{
+        this.setState({
+          selectedRows: [],
+        });
+      }
     });
   };
 

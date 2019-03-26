@@ -1,8 +1,9 @@
-import { queryRecipeTemplate, queryRecipeTemplateList,removeRecipeTemplate, addRecipeTemplate, updateRecipeTemplate } from '@/services/api';
+import { queryRecipeList, 
+  queryRecipe, removeRecipe, addRecipe,updateRecipe } from '@/services/api';
 import { message } from 'antd';
 import { routerRedux } from 'dva/router';
 export default {
-  namespace: 'recipeTemplate',
+  namespace: 'recipe',
 
   state: {
       list: [],
@@ -16,7 +17,7 @@ export default {
 
   effects: {
     *fetch({ payload ,callback}, { call, put }) {
-      const response = yield call(queryRecipeTemplateList, payload);
+      const response = yield call(queryRecipeList, payload);
       yield put({
         type: 'save',
         payload: response,
@@ -24,7 +25,7 @@ export default {
       if (callback) callback(response.success);
     },
     *query({ payload ,callback}, { call, put }) {
-      const response = yield call(queryRecipeTemplate, payload);
+      const response = yield call(queryRecipe, payload);
       yield put({
         type: 'saveQuery',
         payload: response,
@@ -32,11 +33,11 @@ export default {
       if (callback) callback(response.success,response);
     },
     *add({ payload, callback }, { call, put }) {
-      const response = yield call(addRecipeTemplate, payload);
+      const response = yield call(addRecipe, payload);
       if (callback) callback(response.success);
     },
     *remove({ payload, callback }, { call, put }) {
-      const response = yield call(removeRecipeTemplate, payload);
+      const response = yield call(removeRecipe, payload);
       if(response.success){
         yield put({
           type: 'delSuccess',
@@ -46,7 +47,7 @@ export default {
       if (callback) callback(response.success);
     },
     *batchRemove({ payload, callback }, { call, put }) {
-      const response = yield call(removeRecipeTemplate, payload);
+      const response = yield call(removeRecipe, payload);
       if(response.success){
         message.success('批量删除成功');
         yield put({
@@ -58,7 +59,7 @@ export default {
       if (callback) callback(response.success);
     },
     *update({ payload, callback }, { call, put }) {
-      const response = yield call(updateRecipeTemplate, payload);
+      const response = yield call(updateRecipe, payload);
       if(response.success){
         yield put({
           type: 'updateSuccess',
@@ -73,7 +74,7 @@ export default {
     save(state, action) {
       return {
         ...state,
-        list: action.payload.recipeTemplateVOS,
+        list: action.payload.recipeInfoVOS,
         pagination:action.payload.pagination,
         success:action.payload.success,
         enumInfos:action.payload.enumInfos,
@@ -82,7 +83,7 @@ export default {
     saveQuery(state, action) {
       return {
         ...state,
-        queryObject: action.payload.recipeTemplateVO,
+        queryObject: action.payload.recipeInfoVO,
         success:action.payload.success,
       };
     },
@@ -114,21 +115,5 @@ export default {
         success:action.payload.success,
       };
     },
-
-
-    flush(state,action){
-      state ={list: [],
-        list: [],
-        pagination: {},
-        success:true,
-        enumInfos:{},
-        addObject:{},
-        updateObject:{},
-        queryObject:{},
-      }
-      return {
-        ...state
-      }
-    }
   },
 };

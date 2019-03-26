@@ -27,7 +27,7 @@ import {
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
-import styles from './Template.less';
+import styles from './RecipeManage.less';
 
 const FormItem = Form.Item;
 const { Step } = Steps;
@@ -39,9 +39,9 @@ const RadioGroup = Radio.Group;
 
 function info(record) {
   console.log("---",record);
-  let medicines = record.recipeTemplateDetailVOS.map(recipeTemplateDetailVO =>{
-    let medicineVO = recipeTemplateDetailVO.medicineVO;
-    medicineVO.medicineNum = recipeTemplateDetailVO.medicineNum;
+  let medicines = record.recipeDetailVOS.map(recipeDetailVO =>{
+    let medicineVO = recipeDetailVO.medicineVO;
+    medicineVO.medicineNum = recipeDetailVO.medicineNum;
     return medicineVO;
   });
 
@@ -139,7 +139,7 @@ function info(record) {
       <Card bordered={false}>
         <Row>
             <Col span={6} offset={6}>处方编号：</Col>
-            <Col span={12}>{record.recipeTemplateNo}</Col>
+            <Col span={12}>{record.recipeNo}</Col>
         </Row>
         <Row>
             <Col span={6} offset={6}>处方类型：</Col>
@@ -164,12 +164,12 @@ function info(record) {
 
 
 /* eslint react/no-multi-comp:0 */
-@connect(({ recipeTemplate, loading }) => ({
-  recipeTemplate,
-  loading: loading.models.recipeTemplate,
+@connect(({ recipe, loading }) => ({
+  recipe,
+  loading: loading.models.recipe,
 }))
 @Form.create()
-class Template extends PureComponent {
+class RecipeManage extends PureComponent {
   state = {
     modalVisible: false,
     updateModalVisible: false,
@@ -183,7 +183,25 @@ class Template extends PureComponent {
   columns = [
     {
       title: '处方编号',
-      dataIndex: 'recipeTemplateNo',
+      dataIndex: 'recipeNo',
+    },
+    {
+      title: '姓名',
+      dataIndex: 'patientName',
+    },
+    {
+      title: '性别',
+      dataIndex: 'patientSex',
+      render(val,row){
+        if(val =='0'){
+          return '男'
+        }
+        return '女';
+      }
+    },
+    {
+      title: '年龄',
+      dataIndex: 'patientAge',
     },
     {
       title: '处方类型',
@@ -213,15 +231,15 @@ class Template extends PureComponent {
       title: '操作',
       render: (text, record,index) => (
         <Fragment>
-          <a onClick={() => this.handleViewModalVisible(true,record,index)}>查看</a>
+          <a onClick={() => this.handleView(true,record,index)}>查看</a>
           <Divider type="vertical" />
-          <a onClick={() => this.handleUpdateTemplate(true,record,index)}>修改</a>
+          <a onClick={() => this.handleUpdate(true,record,index)}>修改</a>
           <Divider type="vertical" />
           <a onClick={
             () =>
             (Modal.confirm({
-              title: '删除药品',
-              content: '确定删除该模板吗？',
+              title: '删除处方',
+              content: '确定删除该处方数据吗？',
               okText: '确认',
               cancelText: '取消',
               onOk:  () => this.handleDelete(record,index),
@@ -235,7 +253,7 @@ class Template extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'recipeTemplate/fetch',
+      type: 'recipe/fetch',
       payload:{
       }
     });
@@ -270,7 +288,7 @@ class Template extends PureComponent {
     }
 
     dispatch({
-      type: 'recipeTemplate/fetch',
+      type: 'recipe/fetch',
       payload: params,
       callback:(success)=>{
         this.setState({
@@ -287,7 +305,7 @@ class Template extends PureComponent {
       formValues: {},
     });
     dispatch({
-      type: 'recipeTemplate/fetch',
+      type: 'recipe/fetch',
       payload: {
       },
     });
@@ -319,22 +337,22 @@ class Template extends PureComponent {
       });
 
       dispatch({
-        type: 'recipeTemplate/fetch',
+        type: 'recipe/fetch',
         payload: values,
       });
     });
   };
 
-  handleTemplateAdd = () => {
-    router.push("/recipe/template/add")
+  handleAdd = () => {
+    router.push("/recipe/recipeManage/edit/add/null")
   };
 
   handleDelete = (row,index) => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'recipeTemplate/remove',
+      type: 'recipe/remove',
       payload: {
-        recipeTemplateNos:[row.recipeTemplateNo],
+        recipeNos:[row.recipeNo],
         index:index,
       },
       callback: (success) =>{
@@ -348,9 +366,9 @@ class Template extends PureComponent {
   handleBatchDelete = (rows,index) => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'recipeTemplate/batchRemove',
+      type: 'recipe/batchRemove',
       payload: {
-        recipeTemplateNos:rows.map((row)=>row.recipeTemplateNo),
+        recipeNos:rows.map((row)=>row.recipeNo),
       },
       callback: (success) =>{
         this.setState({
@@ -360,24 +378,14 @@ class Template extends PureComponent {
     });
   };
 
-  handleUpdateTemplate = (flag,record) => {
-    router.push(`/recipe/template/update/${record.recipeTemplateNo}`);
-    // router.push("/recipe/template/update?recipeTemplateNo="+record.recipeTemplateNo)
+  handleUpdate = (flag,record) => {
+    router.push(`/recipe/recipeManage/edit/update/${record.recipeNo}`);
+    // router.push("/recipe//update?recipeNo="+record.recipeNo)
   };
 
 
-  handleViewModalVisible = (flag,record) =>{
-      console.log(record);
-      const { dispatch } = this.props;
-      dispatch({
-        type: 'recipeTemplate/query',
-        payload: {
-          recipeTemplateNo:record.recipeTemplateNo,
-        },
-        callback: (success,response) =>{
-         info(response.recipeTemplateVO);
-        }
-      });
+  handleView = (flag,record) =>{
+      router.push("/recipe/recipeManage/view/"+record.recipeNo);
   }
 
 
@@ -391,12 +399,12 @@ class Template extends PureComponent {
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
             <FormItem label="处方编号">
-              {getFieldDecorator('recipeTemplateNo')(<Input placeholder="请输入" />)}
+              {getFieldDecorator('recipeNo')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
-            <FormItem label="疾病">
-              {getFieldDecorator('disease')(<Input placeholder="请输入" />)}
+            <FormItem label="病人姓名">
+              {getFieldDecorator('patientName')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
 
@@ -425,7 +433,7 @@ class Template extends PureComponent {
           </Col>
         
           <Col md={8} sm={24}>
-            <FormItem label="科别">
+            <FormItem label="疾病名称">
               {getFieldDecorator('classfication')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
@@ -451,7 +459,7 @@ class Template extends PureComponent {
 
   render() {
     const {
-      recipeTemplate: { list,pagination,enumInfos },
+      recipe: { list,pagination,enumInfos },
       loading,
     } = this.props;
     let data = {
@@ -469,7 +477,7 @@ class Template extends PureComponent {
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderForm()}</div>
             <div className={styles.tableListOperator}>
-              <Button icon="plus" type="primary" onClick={() => this.handleTemplateAdd()}>
+              <Button icon="plus" type="primary" onClick={() => this.handleAdd()}>
                 新建
               </Button>
               {selectedRows.length > 0 && (
@@ -502,4 +510,4 @@ class Template extends PureComponent {
   }
 }
 
-export default Template;
+export default RecipeManage;
