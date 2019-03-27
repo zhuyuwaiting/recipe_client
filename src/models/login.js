@@ -1,11 +1,10 @@
 import { routerRedux } from 'dva/router';
-import { stringify } from 'qs';
+import { parse,stringify } from 'qs';
 import { accountLogin, getFakeCaptcha } from '@/services/api';
 import { logout } from '@/services/user';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { reloadAuthorized } from '@/utils/Authorized';
-
 export default {
   namespace: 'login',
 
@@ -26,6 +25,9 @@ export default {
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let { redirect } = params;
+        if(redirect&&redirect.split('redirect').length >1 ){
+            redirect = decodeURIComponent(redirect.split('redirect')[1].substring(1));
+        }
         if (redirect) {
           const redirectUrlParams = new URL(redirect);
           if (redirectUrlParams.origin === urlParams.origin) {

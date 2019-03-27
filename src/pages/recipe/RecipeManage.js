@@ -35,7 +35,29 @@ const { TextArea } = Input;
 const { Option } = Select;
 const RadioGroup = Radio.Group;
 
+function print(){
 
+  // const el = document.getElementById("recipeDetail");
+  //       const iframe = document.createElement('IFRAME');
+  //       let doc = null;
+  //       iframe.setAttribute('style', 'position:absolute;width:0px;height:0px;left:500px;top:500px;');
+  //       document.body.appendChild(iframe);
+  //       doc = iframe.contentWindow.document;
+  //       // 引入打印的专有CSS样式，根据实际修改
+  //       doc.write('<LINK rel="stylesheet" type="text/css" href="./RecipeManage.less">');
+  //       doc.write(el.innerHTML);
+  //       doc.close();
+  //       // 获取iframe的焦点，从iframe开始打印
+  //       iframe.contentWindow.focus();
+  //       iframe.contentWindow.print();
+  //       if (navigator.userAgent.indexOf("MSIE") > 0)
+  //       {
+  //           document.body.removeChild(iframe);
+  //       }
+  window.document.body.innerHTML = window.document.getElementById('recipeDetail').innerHTML;  
+  window.print(); 
+  window.location.reload();
+}
 
 function info(record) {
   console.log("---",record);
@@ -59,8 +81,11 @@ function info(record) {
     title: '处方详情',
     width:1000,
     okText:"打印",
+    onOk() {
+      print();
+    },
     content: (
-      <Card bordered={false}>
+      <Card bordered={false} id={"recipeDetail"}>
           <table style={{width:750}} border="1">
               <tr>
                 <th>姓名:{record.patientName}</th>
@@ -115,11 +140,11 @@ function info(record) {
             {record.recipeType=='CHINESE'?(<Col span={12}>付数： <strong style={{fontSize:20}}>{record.num}</strong>&nbsp;付</Col>):(
               <Col span={12}></Col>
             )}
-            <Col span={8} offset={4}>总金额：&nbsp;&nbsp;&nbsp; <strong style={{fontSize:20}}>{record.num}</strong></Col>
+            {/* <Col span={8} offset={4}>总金额：&nbsp;&nbsp;&nbsp; <strong style={{fontSize:20}}>{record.num}</strong></Col> */}
             </Row>
       </Card>
     ),
-    onOk() {},
+    
   });
 }
 

@@ -69,7 +69,7 @@ export default {
       for(var i = 0; i < state.list.length; i++) {
         if(state.list[i].key == action.payload.enumInfo.key){
           if(!state.list[i].enumInfoVOList){
-            state.list[i].enumInfoVOList[0]=(action.payload.enumInfo);
+            state.list[i].enumInfoVOList = [action.payload.enumInfo];
           }else{
             state.list[i].enumInfoVOList.unshift(action.payload.enumInfo);
           }

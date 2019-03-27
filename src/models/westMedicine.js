@@ -76,7 +76,11 @@ export default {
     },
 
     addSuccess(state, action) {
-      state.list.unshift(action.payload.medicineVO)
+      if(state.list){
+        state.list.unshift(action.payload.medicineVO)
+      }else{
+        state.list = [action.payload.medicineVO]
+      }
       return {
         ...state,
         success:action.payload.success,
