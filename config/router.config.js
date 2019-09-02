@@ -46,81 +46,13 @@ export default [
       //   ],
       // },
       { path: '/', redirect: '/enumInfo/manage' },
-      {
-        path: '/enumInfo',
-        icon: 'table',
-        name: 'enumInfo',
-        routes: [
-          {
-            path: '/enumInfo/manage',
-            name: 'manage',
-            component: './recipe/EnumInfo',
-          },
-        ],
-      },
-      // forms
-      {
-        path: '/medicine',
-        icon: 'table',
-        name: 'medicine',
-        routes: [
-          {
-            path: '/medicine/chinese',
-            name: 'chinese',
-            component: './recipe/ChineseMedicine',
-          },
-          {
-            path: '/medicine/western',
-            name: 'western',
-            component: './recipe/WesternMedicine',
-          },
-          // {
-          //   path: '/form/step-form',
-          //   name: 'stepform',
-          //   component: './Forms/StepForm',
-          //   hideChildrenInMenu: true,
-          //   routes: [
-          //     {
-          //       path: '/form/step-form',
-          //       redirect: '/form/step-form/info',
-          //     },
-          //     {
-          //       path: '/form/step-form/info',
-          //       name: 'info',
-          //       component: './Forms/StepForm/Step1',
-          //     },
-          //     {
-          //       path: '/form/step-form/confirm',
-          //       name: 'confirm',
-          //       component: './Forms/StepForm/Step2',
-          //     },
-          //     {
-          //       path: '/form/step-form/result',
-          //       name: 'result',
-          //       component: './Forms/StepForm/Step3',
-          //     },
-          //   ],
-          // },
-          // {
-          //   path: '/form/advanced-form',
-          //   name: 'advancedform',
-          //   authority: ['admin'],
-          //   component: './Forms/AdvancedForm',
-          // },
-        ],
-      },
 
       {
-        path: '/recipe',
-        icon: 'table',
+        path: '/recipe/recipeManage',
         name: 'recipe',
+        component: './recipe/RecipeManage',
+        icon: 'table',
         routes: [
-          {
-            path: '/recipe/template',
-            name: 'template',
-            component: './recipe/Template',
-          },
-         
           {
             path: '/recipe/template/add',
             component: './recipe/TemplateAdd',
@@ -129,18 +61,39 @@ export default [
             path: '/recipe/template/update/:recipeTemplateNo',
             component: './recipe/TemplateUpdate',
           },
-
-          {
-            path: '/recipe/recipeManage',
-            name: 'recipeManage',
-            component: './recipe/RecipeManage',
-          },
           {
             path: '/recipe/recipeManage/edit/:operator/:recipeNo',
             component: './recipe/RecipeEdit',
           },
         ],
       },
+      {
+        path: '/recipe/template',
+        name: 'template',
+        icon: 'table',
+        component: './recipe/Template',
+      },
+      // forms
+      {
+        path: '/medicine/chinese',
+        icon: 'table',
+        name: 'chineseMedicine',
+        component: './recipe/ChineseMedicine',
+      },
+      {
+        path: '/medicine/western',
+        icon: 'table',
+        name: 'westMedicine',
+        component: './recipe/WesternMedicine',
+      },
+      {
+        path: '/enumInfo/manage',
+        icon: 'table',
+        name: 'enumInfo',
+        component: './recipe/EnumInfo',
+      },
+
+
 
       // list
       // {

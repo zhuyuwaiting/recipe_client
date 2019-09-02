@@ -133,7 +133,6 @@
     "scripts/**/*.js"
   ],
   "husky": {
-    "hooks": {
-    }
+    "hooks": {}
   }
 }
