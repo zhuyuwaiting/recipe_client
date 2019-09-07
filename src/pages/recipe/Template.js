@@ -46,24 +46,10 @@ function info(record) {
   });
 
   let columns = [
-    {
-      title: '药品编号',
-      dataIndex: 'medicineNo',
-    },
+    
     {
       title: '药品名称',
       dataIndex: 'name',
-    },
-    {
-      title: '英文名称',
-      dataIndex: 'englishName',
-    },
-    {
-      title: '药品单位',
-      dataIndex: 'unitInfo',
-      render(val,row) {
-        return val?val.name:row.unit;
-      },
     },
     {
       title: '服用方式',
@@ -73,22 +59,22 @@ function info(record) {
       },
     },
     {
+      title: '备注',
+      dataIndex: 'memo',
+    },
+    {
       title: '数量',
       dataIndex: 'medicineNum',
+    },
+    {
+      title: '单位',
+      dataIndex: 'unitStr',
     }
   ];
 
   if(recipeType =='WESTERN'){
     columns = [
-      {
-        title: '药品编号',
-        dataIndex: 'medicineNo',
-        render(val,row){
-          return (<Tooltip placement="rightTop" title={val}>
-          {val.substring(0,5) + '...'}
-        </Tooltip>);
-        }
-      },
+     
       {
         title: '药品名称',
         dataIndex: 'name',
@@ -137,10 +123,7 @@ function info(record) {
     width:800,
     content: (
       <Card bordered={false}>
-        <Row>
-            <Col span={6} offset={6}>处方编号：</Col>
-            <Col span={12}>{record.recipeTemplateNo}</Col>
-        </Row>
+        
         <Row>
             <Col span={6} offset={6}>处方类型：</Col>
             <Col span={12}>{record.recipeType=='CHINESE'?'中药处方':'西药处方'}</Col>
@@ -181,10 +164,7 @@ class Template extends PureComponent {
   };
 
   columns = [
-    {
-      title: '处方编号',
-      dataIndex: 'recipeTemplateNo',
-    },
+    
     {
       title: '处方类型',
       dataIndex: 'recipeType',
@@ -199,10 +179,7 @@ class Template extends PureComponent {
       title: '疾病',
       dataIndex: 'disease',
     },
-    {
-      title: '科别',
-      dataIndex: 'classfication',
-    },
+
     { title: '创建时间', dataIndex: 'createTime', key: 'createTime' ,
         render:(value,index)=>{
           var time = moment(new Date(value)).format("YYYY-MM-DD HH:mm:ss"); ;
@@ -389,20 +366,13 @@ class Template extends PureComponent {
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-          <Col md={8} sm={24}>
-            <FormItem label="处方编号">
-              {getFieldDecorator('recipeTemplateNo')(<Input placeholder="请输入" />)}
-            </FormItem>
-          </Col>
+          
           <Col md={8} sm={24}>
             <FormItem label="疾病">
               {getFieldDecorator('disease')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
 
-  
-        </Row>
-        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
             <FormItem label="处方类型">
               {getFieldDecorator('recipeType')(
@@ -421,12 +391,6 @@ class Template extends PureComponent {
                 })}
               </Select>
               )}
-            </FormItem>
-          </Col>
-        
-          <Col md={8} sm={24}>
-            <FormItem label="科别">
-              {getFieldDecorator('classfication')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>

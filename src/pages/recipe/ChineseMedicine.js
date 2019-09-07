@@ -57,26 +57,12 @@ const CreateForm = Form.create()(props => {
         })(<Input placeholder="请输入药品名称" />)}
       </FormItem>
 
-       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="英文名称">
-        {form.getFieldDecorator('englishName', {
-
-        })(<Input placeholder="请输入英文名称" />)}
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="单  位">
+        {form.getFieldDecorator('unitStr', {
+          rules: [{ required: true, message: '单位不可以为空', }],
+        })(<Input placeholder="请输入单位：例如克" />)}
       </FormItem>
-
-    <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="药品单位">
-        {form.getFieldDecorator('unit', {
-          rules: [{ required: true, message: '药品单位不可以为空', }],
-        })(
-          <Select placeholder="请选择" style={{ width: '100%' }}>
-            {(enumInfos&&enumInfos['MEDICINE_UNIT_CN'])?
-            enumInfos['MEDICINE_UNIT_CN'].map(function(k) {
-              return <Option value={k.value}>{k.name}</Option>
-            }):"" }
-          </Select>
-        )}
-      </FormItem>
-
-     <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="服用方式">
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="服用方式">
         {form.getFieldDecorator('takingWay', {
           rules: [{ required: true, message: '服用方式不可以为空', }],
         })(
@@ -88,7 +74,11 @@ const CreateForm = Form.create()(props => {
           </Select>
         )}
       </FormItem>
+       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="备  注">
+        {form.getFieldDecorator('memo', {
 
+        })(<Input placeholder="请输入备注" />)}
+      </FormItem>
     </Modal>
   );
 });
@@ -107,7 +97,7 @@ const UpdateForm = Form.create()(props => {
   return (
     <Modal
       destroyOnClose
-      title="新建药品"
+      title="修改药品"
       visible={updateModalVisible}
       onOk={okHandle}
       onCancel={() => handleUpdateModalVisible(false,{})}
@@ -118,27 +108,13 @@ const UpdateForm = Form.create()(props => {
           initialValue:updateRow?updateRow.name:"",
         })(<Input placeholder="请输入药品名称" />)}
       </FormItem>
-
-       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="英文名称">
-        {form.getFieldDecorator('englishName', {
-          initialValue:updateRow?updateRow.englishName:"",
-        })(<Input placeholder="请输入英文名称" />)}
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="单  位">
+        {form.getFieldDecorator('unitStr', {
+          rules: [{ required: true, message: '单位不可以为空', }],
+          initialValue:updateRow?updateRow.unitStr:"",
+        })(<Input placeholder="请输入药品单位" />)}
       </FormItem>
-
-    <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="药品单位">
-        {form.getFieldDecorator('unit', {
-          rules: [{ required: true, message: '药品单位不可以为空', }],
-          initialValue:updateRow?updateRow.unit:"",
-        })(
-          <Select placeholder="请选择" style={{ width: '100%' }}>
-            {(enumInfos&&enumInfos['MEDICINE_UNIT_CN'])?
-            enumInfos['MEDICINE_UNIT_CN'].map(function(k) {
-              return <Option value={k.value}>{k.name}</Option>
-            }):"" }
-          </Select>
-        )}
-      </FormItem>
-
+      
      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="服用方式">
         {form.getFieldDecorator('takingWay', {
           rules: [{ required: true, message: '服用方式不可以为空', }],
@@ -151,6 +127,12 @@ const UpdateForm = Form.create()(props => {
             }):"" }
           </Select>
         )}
+      </FormItem>
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="备注">
+        {form.getFieldDecorator('memo', {
+          initialValue:updateRow?updateRow.memo:"",
+        })(<Input placeholder="请输入备注" />)}
       </FormItem>
 
     </Modal>
@@ -176,24 +158,17 @@ class ChineseMedicine extends PureComponent {
   };
 
   columns = [
-    {
-      title: '药品编号',
-      dataIndex: 'medicineNo',
-    },
+    // {
+    //   title: '药品编号',
+    //   dataIndex: 'medicineNo',
+    // },
     {
       title: '药品名称',
       dataIndex: 'name',
     },
     {
-      title: '英文名称',
-      dataIndex: 'englishName',
-    },
-    {
-      title: '药品单位',
-      dataIndex: 'unitInfo',
-      render(val,row) {
-        return val?val.name:row.unit;
-      },
+      title: '单位',
+      dataIndex: 'unitStr',
     },
     {
       title: '服用方式',
@@ -201,6 +176,10 @@ class ChineseMedicine extends PureComponent {
       render(val,row) {
         return val?val.name:row.takingWay;
       },
+    },
+    {
+      title: '备注',
+      dataIndex: 'memo',
     },
     { title: '创建时间', dataIndex: 'createTime', key: 'createTime' ,
         render:(value,index)=>{
@@ -441,11 +420,6 @@ class ChineseMedicine extends PureComponent {
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-        <Col md={8} sm={24}>
-            <FormItem label="药品编号">
-              {getFieldDecorator('medicineNo')(<Input placeholder="请输入" />)}
-            </FormItem>
-          </Col>
           <Col md={8} sm={24}>
             <FormItem label="药品名称">
               {getFieldDecorator('name')(<Input placeholder="请输入" />)}

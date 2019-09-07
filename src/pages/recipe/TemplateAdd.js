@@ -57,11 +57,7 @@ const MedicineForm = Form.create()(props => {
     return (
       <Form onSubmit={(e)=>handleMedicineSearch(e,form)} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-        <Col md={8} sm={24}>
-            <FormItem label="药品编号">
-              {getFieldDecorator('medicineNo')(<Input placeholder="请输入" />)}
-            </FormItem>
-          </Col>
+       
           <Col md={8} sm={24}>
             <FormItem label="药品名称">
               {getFieldDecorator('name')(<Input placeholder="请输入" />)}
@@ -352,24 +348,14 @@ class TemplateAdd extends PureComponent {
 
   getColumns = (recipeType) =>{
     let columns = [
-      {
-        title: '药品编号',
-        dataIndex: 'medicineNo',
-      },
+     
       {
         title: '药品名称',
         dataIndex: 'name',
       },
       {
-        title: '英文名称',
-        dataIndex: 'englishName',
-      },
-      {
-        title: '药品单位',
-        dataIndex: 'unitInfo',
-        render(val,row) {
-          return val?val.name:row.unit;
-        },
+        title: '单位',
+        dataIndex: 'unitStr',
       },
       {
         title: '服用方式',
@@ -377,6 +363,10 @@ class TemplateAdd extends PureComponent {
         render(val,row) {
           return val?val.name:row.takingWay;
         },
+      },
+      {
+        title: '备注',
+        dataIndex: 'memo',
       },
       { title: '创建时间', dataIndex: 'createTime', key: 'createTime' ,
           render:(value,index)=>{
@@ -388,51 +378,30 @@ class TemplateAdd extends PureComponent {
   
     if(recipeType =='WESTERN'){
       columns = [
-        {
-          title: '药品编号',
-          dataIndex: 'medicineNo',
-          render(val,row){
-            return (<Tooltip placement="rightTop" title={val}>
-            {val.substring(0,5) + '...'}
-          </Tooltip>);
-          }
-        },
+        
         {
           title: '药品名称',
           dataIndex: 'name',
         },
         {
-          title: '英文名称',
-          dataIndex: 'englishName',
+          title: '单位',
+          dataIndex: 'unitStr',
         },
         {
-          title: '单元组成',
-          dataIndex: 'cellWeight',
-          render(val,row) {
-            return (row.cellWeight/100).toFixed(2)+''+(row.cellUnitInfo?row.cellUnitInfo.name:'')
-            +'*'+row.cellNum+'/'+row.unitInfo.name;
-          },
+          title: '规格',
+          dataIndex: 'spec',
         },
-        {
-          title: '每次剂量',
-          dataIndex: 'eachDose',
-          render(val,row) {
-            return (row.eachDose/100).toFixed(2) + (row.cellUnitInfo?row.cellUnitInfo.name:'');
-          },
-        },
-        {
-          title: '每日次数',
-          dataIndex: 'dailyTimes',
-          render(val,row) {
-            return (row.dailyTimes) + '次';
-          },
-        },
+       
         {
           title: '服用方式',
           dataIndex: 'takingWayInfo',
           render(val,row) {
             return val?val.name:row.unit;
           },
+        },
+        {
+          title: '备注',
+          dataIndex: 'memo',
         },
         { title: '创建时间', dataIndex: 'createTime', key: 'createTime' ,
             render:(value,index)=>{
@@ -477,11 +446,7 @@ class TemplateAdd extends PureComponent {
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-          <Col md={8} sm={24}>
-            <FormItem label="处方编号">
-              {getFieldDecorator('recipeTemplateNo')(<Input placeholder="请输入" />)}
-            </FormItem>
-          </Col>
+         
           <Col md={8} sm={24}>
             <FormItem label="疾病">
               {getFieldDecorator('disease')(<Input placeholder="请输入" />)}
@@ -514,11 +479,6 @@ class TemplateAdd extends PureComponent {
             </FormItem>
           </Col>
         
-          <Col md={8} sm={24}>
-            <FormItem label="科别">
-              {getFieldDecorator('classfication')(<Input placeholder="请输入" />)}
-            </FormItem>
-          </Col>
           <Col md={8} sm={24}>
             <span className={styles.submitButtons}>
               <Button type="primary" htmlType="submit">
@@ -565,8 +525,13 @@ class TemplateAdd extends PureComponent {
         render(val,row,index) {
           return <InputNumber min={1} max={1000} defaultValue={1} onChange={(val)=>onMedicineNumChange(val,index)} />
         },
+      },
+      {
+        title: '单位',
+        dataIndex: 'unitStr',
       }
     )
+    columns.splice(1,1);
     columns.push(
       {
         title: '',
@@ -616,11 +581,6 @@ class TemplateAdd extends PureComponent {
             })(<Input placeholder="请输入疾病名称" />)}
           </FormItem>
           
-          <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="科别">
-            {form.getFieldDecorator('classfication', {
-            })(<Input placeholder="请输入科别" />)}
-          </FormItem>
-
           {(selectedMedicines&&selectedMedicines.length>0)?(<Divider style={{ margin: '40px 0 24px' }} />):""} 
 
            {

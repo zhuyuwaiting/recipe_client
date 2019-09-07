@@ -59,11 +59,6 @@ const MedicineForm = Form.create()(props => {
     return (
       <Form onSubmit={(e)=>handleMedicineSearch(e,form)} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-        <Col md={8} sm={24}>
-            <FormItem label="药品编号">
-              {getFieldDecorator('medicineNo')(<Input placeholder="请输入" />)}
-            </FormItem>
-          </Col>
           <Col md={8} sm={24}>
             <FormItem label="药品名称">
               {getFieldDecorator('name')(<Input placeholder="请输入" />)}
@@ -136,11 +131,7 @@ const TemplateForm = Form.create()(props => {
     return (
       <Form onSubmit={(e)=>handleTemplateSearch(e,form)} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-        <Col md={8} sm={24}>
-            <FormItem label="模板编号">
-              {getFieldDecorator('recipeTemplateNo')(<Input placeholder="请输入" />)}
-            </FormItem>
-          </Col>
+       
           <Col md={8} sm={24}>
             <FormItem label="疾病名称">
               {getFieldDecorator('disease')(<Input placeholder="请输入疾病名称" />)}
@@ -163,10 +154,7 @@ const TemplateForm = Form.create()(props => {
 
 
   let columns=[
-    {
-      title: '处方编号',
-      dataIndex: 'recipeTemplateNo',
-    },
+    
     {
       title: '处方类型',
       dataIndex: 'recipeType',
@@ -180,10 +168,6 @@ const TemplateForm = Form.create()(props => {
     {
       title: '疾病',
       dataIndex: 'disease',
-    },
-    {
-      title: '科别',
-      dataIndex: 'classfication',
     },
     { title: '创建时间', dataIndex: 'createTime', key: 'createTime' ,
         render:(value,index)=>{
@@ -205,22 +189,21 @@ const TemplateForm = Form.create()(props => {
   const expandedRowRender = (fvalue,findex) => {
     console.log(fvalue,findex);
     let children = fvalue.recipeTemplateDetailVOS;
-    const columns = [
-      { title: '药品编号', dataIndex: 'medicineNo', key: 'medicineNo' },
+    let columns = [
       { title: '药品名称', dataIndex: 'medicineVO.name', key: 'name' },
-      { title: '单位', dataIndex: 'medicineVO.type', key: 'type' ,
-        render:(value,row)=>{
-          if(value=="CHINESE_MEDICINE"){
-            return row.medicineVO.unitInfo.name;
-          }else{
-            return (row.medicineVO.cellWeight/100).toFixed(2)+''+(row.medicineVO.cellUnitInfo?row.medicineVO.cellUnitInfo.name:'')
-        +'*'+row.medicineVO.cellNum+'/'+row.medicineVO.unitInfo.name;
-          }
-        }
-      },
       { title: '数量', dataIndex: 'medicineNum', key: 'medicineNum' },
+      { title: '单位', dataIndex: 'medicineVO.unitStr', key: 'unitStr'},
+      { title: '服用方式', dataIndex: 'medicineVO.takingWayInfo.name', key: 'takingWay' },
     ];
-
+    if(fvalue.recipeType =='WESTERN'){
+      columns = [
+        { title: '药品名称', dataIndex: 'medicineVO.name', key: 'name' },
+        { title: '规格', dataIndex: 'medicineVO.spec', key: 'spec' },
+        { title: '数量', dataIndex: 'medicineNum', key: 'medicineNum' },
+        { title: '单位', dataIndex: 'medicineVO.unitStr', key: 'unitStr'},
+        { title: '服用方式', dataIndex: 'medicineVO.takingWayInfo.name', key: 'takingWay' },
+      ];
+    }
     return (
       <Table
         columns={columns}
@@ -682,24 +665,14 @@ class RecipeEdit extends PureComponent {
 
   getColumns = (recipeType) =>{
     let columns = [
-      {
-        title: '药品编号',
-        dataIndex: 'medicineNo',
-      },
+     
       {
         title: '药品名称',
         dataIndex: 'name',
       },
       {
-        title: '英文名称',
-        dataIndex: 'englishName',
-      },
-      {
-        title: '药品单位',
-        dataIndex: 'unitInfo',
-        render(val,row) {
-          return val?val.name:row.unit;
-        },
+        title: '单位',
+        dataIndex: 'unitStr',
       },
       {
         title: '服用方式',
@@ -707,6 +680,10 @@ class RecipeEdit extends PureComponent {
         render(val,row) {
           return val?val.name:row.takingWay;
         },
+      },
+      {
+        title: '备注',
+        dataIndex: 'memo',
       },
       { title: '创建时间', dataIndex: 'createTime', key: 'createTime' ,
           render:(value,index)=>{
@@ -718,51 +695,31 @@ class RecipeEdit extends PureComponent {
   
     if(recipeType =='WESTERN'){
       columns = [
-        {
-          title: '药品编号',
-          dataIndex: 'medicineNo',
-          render(val,row){
-            return (<Tooltip placement="rightTop" title={val}>
-            {val.substring(0,5) + '...'}
-          </Tooltip>);
-          }
-        },
+       
         {
           title: '药品名称',
           dataIndex: 'name',
         },
         {
-          title: '英文名称',
-          dataIndex: 'englishName',
+          title: '单位',
+          dataIndex: 'unitStr',
         },
         {
-          title: '单元组成',
-          dataIndex: 'cellWeight',
-          render(val,row) {
-            return (row.cellWeight/100).toFixed(2)+''+(row.cellUnitInfo?row.cellUnitInfo.name:'')
-            +'*'+row.cellNum+'/'+row.unitInfo.name;
-          },
+          title: '规格',
+          dataIndex: 'spec',
         },
-        {
-          title: '每次剂量',
-          dataIndex: 'eachDose',
-          render(val,row) {
-            return (row.eachDose/100).toFixed(2) + (row.cellUnitInfo?row.cellUnitInfo.name:'');
-          },
-        },
-        {
-          title: '每日次数',
-          dataIndex: 'dailyTimes',
-          render(val,row) {
-            return (row.dailyTimes) + '次';
-          },
-        },
+       
+       
         {
           title: '服用方式',
           dataIndex: 'takingWayInfo',
           render(val,row) {
             return val?val.name:row.unit;
           },
+        },
+        {
+          title: '备注',
+          dataIndex: 'memo',
         },
         { title: '创建时间', dataIndex: 'createTime', key: 'createTime' ,
             render:(value,index)=>{
@@ -784,11 +741,7 @@ class RecipeEdit extends PureComponent {
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-          <Col md={8} sm={24}>
-            <FormItem label="处方编号">
-              {getFieldDecorator('recipeNo')(<Input placeholder="请输入" />)}
-            </FormItem>
-          </Col>
+          
           <Col md={8} sm={24}>
             <FormItem label="疾病">
               {getFieldDecorator('disease')(<Input placeholder="请输入" />)}
@@ -821,11 +774,7 @@ class RecipeEdit extends PureComponent {
             </FormItem>
           </Col>
         
-          <Col md={8} sm={24}>
-            <FormItem label="科别">
-              {getFieldDecorator('classfication')(<Input placeholder="请输入" />)}
-            </FormItem>
-          </Col>
+         
           <Col md={8} sm={24}>
             <span className={styles.submitButtons}>
               <Button type="primary" htmlType="submit">
@@ -880,8 +829,14 @@ class RecipeEdit extends PureComponent {
         render(val,row,index) {
           return <InputNumber min={1} max={1000} defaultValue={1} onChange={(val)=>onMedicineNumChange(val,index)} />
         },
+      },
+      {
+        title: '单位',
+        dataIndex: 'unitStr',
+        
       }
     )
+    columns.splice(1,1);
     columns.push(
       {
         title: '',
@@ -911,7 +866,6 @@ class RecipeEdit extends PureComponent {
       handleTemplateFormReset: this.handleTemplateFormReset,
     };
 
-
  
     return (
       <PageHeaderWrapper >
@@ -936,9 +890,9 @@ class RecipeEdit extends PureComponent {
               <FormItem labelCol={{ span: 8 }} wrapperCol={{ span: 15 }} label="性别">
               {form.getFieldDecorator('patientSex', {
                 rules: [{ required: true, message: '性别不可以为空', }],
-                initialValue:updateRecipe?updateRecipe.patientAge:"0"
+                initialValue:updateRecipe&&updateRecipe.patientSex !=undefined?updateRecipe.patientSex+"":"0"
               })(
-                      <Select placeholder="请选择" style={{ width: '100%' }} onChange ={(value) => this.handleRecipeTypeChange(value)} >
+                      <Select placeholder="请选择" style={{ width: '100%' }}  >
                       {[{
                         "value":"0",
                         "name":"男"
@@ -993,13 +947,7 @@ class RecipeEdit extends PureComponent {
             </FormItem>
             </Col>
 
-            <Col md={8}  sm={24}>
-            <FormItem labelCol={{ span: 8 }} wrapperCol={{ span: 15 }} label="科别">
-              {form.getFieldDecorator('classfication', {
-                initialValue:updateRecipe?updateRecipe.classfication:(selectedTemplate?selectedTemplate.classfication:""),
-              })(<Input placeholder="请输入科别" />)}
-            </FormItem>
-            </Col>
+          
           </Row>
 
 

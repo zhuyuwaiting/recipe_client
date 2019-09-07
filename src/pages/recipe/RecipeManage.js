@@ -91,11 +91,10 @@ function info(record) {
                 <th>姓名:{record.patientName}</th>
                 <th>性别:{record.patientSex==0?'男':'女'}</th>
                 <th>年龄:{record.patientAge}</th>
-                <th>处方类别:{record.recipeType=='CHINESE'?'中药处方':'西药处方'}</th>
               </tr>
               <tr>
+              <th>处方类别:{record.recipeType=='CHINESE'?'中药处方':'西药处方'}</th>
                 <th colSpan="2">临床诊断:{record.disease}</th>
-                <th colSpan="2">科别:{record.classfication}</th>
               </tr>
           </table>
           <h2 style={{marginTop:5,marginBottom:5}}>Rp</h2>
@@ -106,7 +105,7 @@ function info(record) {
             <Row style={{marginTop:40}}>
                 <Col span={3}><Icon type="star" theme="filled" />&nbsp; {medicines[0].name }</Col>
                 <Col span={3}>{medicines[0].takingWayInfo.name}</Col>
-                <Col span={3}>{medicines[0].medicineNum+' '+medicines[0].unitInfo.name}</Col>
+                <Col span={3}>{medicines[0].medicineNum+' '+medicines[0].unitStr}</Col>
                 <Col span={3}> </Col>
                 {
                   medicines[1]?(<Col span={3}><Icon type="star" theme="filled" />&nbsp;{medicines[1]?medicines[1].name:"" }</Col>):(
@@ -115,7 +114,7 @@ function info(record) {
                 }
                 
                 <Col span={3}>{medicines[1]?medicines[1].takingWayInfo.name:""}</Col>
-                <Col span={3}>{medicines[1]?(medicines[1].medicineNum+" "+medicines[1].unitInfo.name):''}</Col>
+                <Col span={3}>{medicines[1]?(medicines[1].medicineNum+" "+medicines[1].unitStr):''}</Col>
             </Row>
                 );
               })}
@@ -123,13 +122,10 @@ function info(record) {
             {medicines.map(medicine=>{
                 return (
             <Row style={{marginTop:40}}>
-                <Col span={8}>{medicine.name }</Col>
-                <Col span={8}>{(medicine.cellWeight/100).toFixed(2)+''+(medicine.cellUnitInfo?medicine.cellUnitInfo.name:'')
-          +'*'+medicine.cellNum+'/'+medicine.unitInfo.name }</Col>
-                <Col span={8}>{medicine.medicineNum+"  "+ medicine.unitInfo.name}</Col>
-                <Col span={8}>{"每次剂量： "+(medicine.eachDose/100).toFixed(2)+medicine.cellUnitInfo.name}</Col>
-                <Col span={8}>{medicine.takingWayInfo.name}</Col>
-                <Col span={8}>{"每天"+medicine.dailyTimes+"次"}</Col>
+                <Col span={6}>{medicine.name }</Col>
+                <Col span={6}>{medicine.spec }</Col>
+                <Col span={6}>{medicine.medicineNum+"  "+ medicine.unitStr}</Col>
+                <Col span={6}>{medicine.takingWayInfo.name}</Col>
             </Row>
                 );
               })}
@@ -169,10 +165,10 @@ class RecipeManage extends PureComponent {
   };
 
   columns = [
-    {
-      title: '处方编号',
-      dataIndex: 'recipeNo',
-    },
+    // {
+    //   title: '处方编号',
+    //   dataIndex: 'recipeNo',
+    // },
     {
       title: '姓名',
       dataIndex: 'patientName',
@@ -204,10 +200,6 @@ class RecipeManage extends PureComponent {
     {
       title: '疾病',
       dataIndex: 'disease',
-    },
-    {
-      title: '科别',
-      dataIndex: 'classfication',
     },
     { title: '创建时间', dataIndex: 'createTime', key: 'createTime' ,
         render:(value,index)=>{
@@ -395,21 +387,17 @@ class RecipeManage extends PureComponent {
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-          <Col md={8} sm={24}>
-            <FormItem label="处方编号">
-              {getFieldDecorator('recipeNo')(<Input placeholder="请输入" />)}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
+          <Col md={6} sm={24}>
             <FormItem label="病人姓名">
               {getFieldDecorator('patientName')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
-
-  
-        </Row>
-        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-          <Col md={8} sm={24}>
+          <Col md={6} sm={24}>
+            <FormItem label="疾病名称">
+              {getFieldDecorator('classfication')(<Input placeholder="请输入" />)}
+            </FormItem>
+          </Col>
+          <Col md={6} sm={24}>
             <FormItem label="处方类型">
               {getFieldDecorator('recipeType')(
                 <Select placeholder="请选择" style={{ width: '100%' }}>
@@ -429,13 +417,7 @@ class RecipeManage extends PureComponent {
               )}
             </FormItem>
           </Col>
-        
-          <Col md={8} sm={24}>
-            <FormItem label="疾病名称">
-              {getFieldDecorator('classfication')(<Input placeholder="请输入" />)}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
+          <Col md={4} sm={24}>
             <span className={styles.submitButtons}>
               <Button type="primary" htmlType="submit">
                 查询
@@ -446,6 +428,7 @@ class RecipeManage extends PureComponent {
             </span>
           </Col>
         </Row>
+      
       </Form>
     );
   }
