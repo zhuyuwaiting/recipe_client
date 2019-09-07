@@ -51,7 +51,16 @@ export default [
         path: '/recipe/recipeManage',
         name: 'recipe',
         component: './recipe/RecipeManage',
+        icon: 'table'
+      },
+      {
+        path: '/recipe/template',
+        name: 'template',
         icon: 'table',
+        component: './recipe/Template'
+      },
+      {
+        path: '/recipe',
         routes: [
           {
             path: '/recipe/template/add',
@@ -66,12 +75,6 @@ export default [
             component: './recipe/RecipeEdit',
           },
         ],
-      },
-      {
-        path: '/recipe/template',
-        name: 'template',
-        icon: 'table',
-        component: './recipe/Template',
       },
       // forms
       {
