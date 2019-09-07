@@ -8,7 +8,7 @@ export default {
   'menu.dashboard.monitor': '监控页',
   'menu.dashboard.workplace': '工作台',
   'menu.chineseMedicine': '中药管理',
-  'menu.westMedicine': '中药管理',
+  'menu.westMedicine': '西药管理',
   'menu.medicine.chinese': '中药管理',
   'menu.medicine.western': '西药管理',
   'menu.recipe': '处方管理',

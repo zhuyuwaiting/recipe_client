@@ -45,7 +45,7 @@ export default [
       //     },
       //   ],
       // },
-      { path: '/', redirect: '/enumInfo/manage' },
+      { path: '/', redirect: '/recipe/recipeManage' },
 
       {
         path: '/recipe/recipeManage',
