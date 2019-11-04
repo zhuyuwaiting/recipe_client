@@ -936,9 +936,9 @@ class RecipeEdit extends PureComponent {
               <FormItem labelCol={{ span: 8 }} wrapperCol={{ span: 15 }} label="性别">
               {form.getFieldDecorator('patientSex', {
                 rules: [{ required: true, message: '性别不可以为空', }],
-                initialValue:updateRecipe?updateRecipe.patientAge:"0"
+                initialValue:updateRecipe&&updateRecipe.patientSex !=undefined?updateRecipe.patientSex+"":"0"
               })(
-                      <Select placeholder="请选择" style={{ width: '100%' }} onChange ={(value) => this.handleRecipeTypeChange(value)} >
+                      <Select placeholder="请选择" style={{ width: '100%' }} >
                       {[{
                         "value":"0",
                         "name":"男"
