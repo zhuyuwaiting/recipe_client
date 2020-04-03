@@ -228,7 +228,7 @@ class TemplateAdd extends PureComponent {
       }
       return true;
     }).map(row =>{
-      row.medicineNum = 1;
+      row.medicineNum = row.type=='CHINESE_MEDICINE'?row.eachDose:1;
       return row;
     })
     newSelectedRows = newSelectedRows.concat(newRows);
@@ -365,6 +365,10 @@ class TemplateAdd extends PureComponent {
         dataIndex: 'englishName',
       },
       {
+        title: '药品数量',
+        dataIndex: 'eachDose',
+      },
+      {
         title: '药品单位',
         dataIndex: 'unitInfo',
         render(val,row) {
@@ -420,11 +424,18 @@ class TemplateAdd extends PureComponent {
             return (row.eachDose/100).toFixed(2) + (row.cellUnitInfo?row.cellUnitInfo.name:'');
           },
         },
+        // {
+        //   title: '每日次数',
+        //   dataIndex: 'dailyTimes',
+        //   render(val,row) {
+        //     return (row.dailyTimes) + '次';
+        //   },
+        // },
         {
-          title: '每日次数',
-          dataIndex: 'dailyTimes',
+          title: '用药频次',
+          dataIndex: 'frequencyInfo',
           render(val,row) {
-            return (row.dailyTimes) + '次';
+            return val?val.name:"";
           },
         },
         {
@@ -563,7 +574,7 @@ class TemplateAdd extends PureComponent {
         title: '数量',
         dataIndex: 'medicineNum',
         render(val,row,index) {
-          return <InputNumber min={1} max={1000} defaultValue={1} onChange={(val)=>onMedicineNumChange(val,index)} />
+          return <InputNumber min={1} max={1000} defaultValue={recipeType=='CHINESE'?row.eachDose:1} onChange={(val)=>onMedicineNumChange(val,index)} />
         },
       }
     )

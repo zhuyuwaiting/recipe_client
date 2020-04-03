@@ -452,7 +452,7 @@ class RecipeEdit extends PureComponent {
       }
       return true;
     }).map(row =>{
-      row.medicineNum = 1;
+      row.medicineNum = row.medicineNum?row.medicineNum:row.type=='CHINESE_MEDICINE'?row.eachDose:1;
       return row;
     })
     newSelectedRows = newSelectedRows.concat(newRows);
@@ -751,10 +751,10 @@ class RecipeEdit extends PureComponent {
           },
         },
         {
-          title: '每日次数',
-          dataIndex: 'dailyTimes',
+          title: '服用方式',
+          dataIndex: 'frequencyInfo',
           render(val,row) {
-            return (row.dailyTimes) + '次';
+            return val?val.name:"";
           },
         },
         {
@@ -878,7 +878,7 @@ class RecipeEdit extends PureComponent {
         title: '数量',
         dataIndex: 'medicineNum',
         render(val,row,index) {
-          return <InputNumber min={1} max={1000} defaultValue={1} onChange={(val)=>onMedicineNumChange(val,index)} />
+          return <InputNumber min={1} max={1000} defaultValue={row.medicineNum?row.medicineNum:recipeType=='CHINESE'?row.eachDose:1} onChange={(val)=>onMedicineNumChange(val,index)} />
         },
       }
     )

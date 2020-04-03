@@ -442,10 +442,10 @@ class TemplateAdd extends PureComponent {
           },
         },
         {
-          title: '每日次数',
-          dataIndex: 'dailyTimes',
+          title: '用药频次',
+          dataIndex: 'frequencyInfo',
           render(val,row) {
-            return (row.dailyTimes) + '次';
+            return val?val.name:'';
           },
         },
         {

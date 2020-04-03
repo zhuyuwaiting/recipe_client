@@ -63,6 +63,12 @@ const CreateForm = Form.create()(props => {
         })(<Input placeholder="请输入英文名称" />)}
       </FormItem>
 
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="药品数量">
+        {form.getFieldDecorator('eachDose', {
+          rules: [{ required: true, message: '药品数量', }],
+        })(<InputNumber placeholder="药品数量" precision='0' style={{ width: '100%' }}/>)}
+      </FormItem>
+
     <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="药品单位">
         {form.getFieldDecorator('unit', {
           rules: [{ required: true, message: '药品单位不可以为空', }],
@@ -123,6 +129,12 @@ const UpdateForm = Form.create()(props => {
         {form.getFieldDecorator('englishName', {
           initialValue:updateRow?updateRow.englishName:"",
         })(<Input placeholder="请输入英文名称" />)}
+      </FormItem>
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="药品数量">
+        {form.getFieldDecorator('eachDose', {
+          initialValue:updateRow?updateRow.eachDose:"",
+        })(<InputNumber placeholder="药品数量" precision='0' style={{ width: '100%' }}/>)}
       </FormItem>
 
     <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="药品单位">
@@ -187,6 +199,11 @@ class ChineseMedicine extends PureComponent {
     {
       title: '英文名称',
       dataIndex: 'englishName',
+    },
+    {
+      title: '药品数量',
+      dataIndex: 'eachDose',
+  
     },
     {
       title: '药品单位',

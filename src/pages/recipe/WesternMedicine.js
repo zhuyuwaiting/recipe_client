@@ -109,10 +109,23 @@ const CreateForm = Form.create()(props => {
         })(<InputNumber placeholder="每日剂量" precision='2' style={{ width: '100%' }}/>)}
       </FormItem>
 
-       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="每日次数">
+       {/* <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="每日次数">
         {form.getFieldDecorator('dailyTimes', {
           rules: [{ required: true, message: '每日次数不可以为空', }],
         })(<InputNumber placeholder="每日次数" precision='0' style={{ width: '100%' }}/>)}
+      </FormItem> */}
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="用药频次">
+        {form.getFieldDecorator('frequency', {
+          rules: [{ required: true, message: '用药频次不可以为空', }],
+        })(
+          <Select placeholder="请选择" style={{ width: '100%' }}>
+            {(enumInfos&&enumInfos['MEDICINE_FREQUENCY'])?
+            enumInfos['MEDICINE_FREQUENCY'].map(function(k) {
+              return <Option value={k.value}>{k.name}</Option>
+            }):"" }
+          </Select>
+        )}
       </FormItem>
 
      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="服用方式">
@@ -216,11 +229,25 @@ const UpdateForm = Form.create()(props => {
         })(<InputNumber placeholder="每日剂量" precision='2' style={{ width: '100%' }}/>)}
       </FormItem>
 
-       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="每日次数">
+       {/* <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="每日次数">
         {form.getFieldDecorator('dailyTimes', {
           rules: [{ required: true, message: '每日次数不可以为空', }],
           initialValue:updateRow?updateRow.dailyTimes:"",
         })(<InputNumber placeholder="每日次数" precision='0' style={{ width: '100%' }}/>)}
+      </FormItem> */}
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="用药频次">
+        {form.getFieldDecorator('frequency', {
+          rules: [{ required: true, message: '用药频次不可以为空', }],
+          initialValue:updateRow?updateRow.frequency:"",
+        })(
+          <Select placeholder="请选择" style={{ width: '100%' }}>
+            {(enumInfos&&enumInfos['MEDICINE_FREQUENCY'])?
+            enumInfos['MEDICINE_FREQUENCY'].map(function(k) {
+              return <Option value={k.value}>{k.name}</Option>
+            }):"" }
+          </Select>
+        )}
       </FormItem>
 
      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="服用方式">
@@ -293,17 +320,17 @@ class WesternMedicine extends PureComponent {
       },
     },
     {
-      title: '每日次数',
-      dataIndex: 'dailyTimes',
+      title: '用药频次',
+      dataIndex: 'frequencyInfo',
       render(val,row) {
-        return (row.dailyTimes) + '次';
+        return val?val.name:"";
       },
     },
     {
       title: '服用方式',
       dataIndex: 'takingWayInfo',
       render(val,row) {
-        return val?val.name:row.unit;
+        return val?val.name:"";
       },
     },
     { title: '创建时间', dataIndex: 'createTime', key: 'createTime' ,

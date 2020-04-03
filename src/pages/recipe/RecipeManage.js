@@ -129,7 +129,7 @@ function info(record) {
                 <Col span={8}>{medicine.medicineNum+"  "+ medicine.unitInfo.name}</Col>
                 <Col span={8}>{"每次剂量： "+(medicine.eachDose/100).toFixed(2)+medicine.cellUnitInfo.name}</Col>
                 <Col span={8}>{medicine.takingWayInfo.name}</Col>
-                <Col span={8}>{"每天"+medicine.dailyTimes+"次"}</Col>
+                <Col span={8}>{medicine.frequencyInfo.name}</Col>
             </Row>
                 );
               })}
