@@ -53,11 +53,11 @@ const CreateForm = Form.create()(props => {
         })(<Input  disabled/>)}
       </FormItem>
         
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="值">
+      {/* <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="值">
         {form.getFieldDecorator('value', {
           rules: [{ required: true, message: 'enum值必填' }],
         })(<Input  />)}
-      </FormItem>
+      </FormItem> */}
 
        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="值名称">
         {form.getFieldDecorator('name', {
@@ -66,7 +66,7 @@ const CreateForm = Form.create()(props => {
       </FormItem>
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="值描述">
         {form.getFieldDecorator('desc', {
-               rules: [{ required: true, message: "描述必填" }],
+               rules: [{ required: false, message: "描述必填" }],
         })(<Input  />)}
       </FormItem>
 
@@ -114,7 +114,7 @@ class EnumInfo extends PureComponent {
       type: 'enumInfo/remove',
       payload:  {
         key:row.key,
-        value:row.value,
+        name:row.name,
         index:index,
         findex:findex,
       },
@@ -166,7 +166,7 @@ class EnumInfo extends PureComponent {
     const expandedRowRender = (fvalue,findex) => {
       let children = fvalue.enumInfoVOList;
       const columns = [
-        { title: '取值', dataIndex: 'value', key: 'value' },
+        // { title: '取值', dataIndex: 'value', key: 'value' },
         { title: '名称', dataIndex: 'name', key: 'name' },
         { title: '描述', dataIndex: 'desc', key: 'desc' },
         { title: '创建时间', dataIndex: 'createTime', key: 'createTime' ,

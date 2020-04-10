@@ -82,13 +82,26 @@ const CreateForm = Form.create()(props => {
         )}
       </FormItem>
 
-     <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="服用方式">
+     <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="用药方式">
         {form.getFieldDecorator('takingWay', {
-          rules: [{ required: true, message: '服用方式不可以为空', }],
+          rules: [{ required: true, message: '用药方式不可以为空', }],
         })(
           <Select placeholder="请选择" style={{ width: '100%' }}>
             {(enumInfos&&enumInfos['MEDICINE_TAKING_WAY_CN'])?
             enumInfos['MEDICINE_TAKING_WAY_CN'].map(function(k) {
+              return <Option value={k.value}>{k.name}</Option>
+            }):"" }
+          </Select>
+        )}
+      </FormItem>
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="医嘱">
+        {form.getFieldDecorator('medicalAdvice', {
+          rules: [{ required: false, message: '医嘱不可以为空', }],
+        })(
+          <Select placeholder="请选择" style={{ width: '100%' }}>
+            {(enumInfos&&enumInfos['MEDICAL_ADVICE'])?
+            enumInfos['MEDICAL_ADVICE'].map(function(k) {
               return <Option value={k.value}>{k.name}</Option>
             }):"" }
           </Select>
@@ -151,14 +164,29 @@ const UpdateForm = Form.create()(props => {
         )}
       </FormItem>
 
-     <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="服用方式">
+     <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="用药方式">
         {form.getFieldDecorator('takingWay', {
-          rules: [{ required: true, message: '服用方式不可以为空', }],
+          rules: [{ required: true, message: '用药方式不可以为空', }],
           initialValue:updateRow?updateRow.takingWay:"",
         })(
           <Select placeholder="请选择" style={{ width: '100%' }}>
             {(enumInfos&&enumInfos['MEDICINE_TAKING_WAY_CN'])?
             enumInfos['MEDICINE_TAKING_WAY_CN'].map(function(k) {
+              return <Option value={k.value}>{k.name}</Option>
+            }):"" }
+          </Select>
+        )}
+      </FormItem>
+
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="医嘱">
+        {form.getFieldDecorator('medicalAdvice', {
+          rules: [{ required: true, message: '医嘱不可以为空', }],
+          initialValue:updateRow?updateRow.medicalAdvice:"",
+        })(
+          <Select placeholder="请选择" style={{ width: '100%' }}>
+            {(enumInfos&&enumInfos['MEDICAL_ADVICE'])?
+            enumInfos['MEDICAL_ADVICE'].map(function(k) {
               return <Option value={k.value}>{k.name}</Option>
             }):"" }
           </Select>
@@ -188,10 +216,10 @@ class ChineseMedicine extends PureComponent {
   };
 
   columns = [
-    {
-      title: '药品编号',
-      dataIndex: 'medicineNo',
-    },
+    // {
+    //   title: '药品编号',
+    //   dataIndex: 'medicineNo',
+    // },
     {
       title: '药品名称',
       dataIndex: 'name',
@@ -213,10 +241,17 @@ class ChineseMedicine extends PureComponent {
       },
     },
     {
-      title: '服用方式',
+      title: '用药方式',
       dataIndex: 'takingWayInfo',
       render(val,row) {
         return val?val.name:row.takingWay;
+      },
+    },
+    {
+      title: '医嘱',
+      dataIndex: 'medicalAdviceInfo',
+      render(val,row) {
+        return val?val.name:row.medicalAdvice;
       },
     },
     { title: '创建时间', dataIndex: 'createTime', key: 'createTime' ,

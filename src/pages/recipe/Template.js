@@ -66,10 +66,17 @@ function info(record) {
       },
     },
     {
-      title: '服用方式',
+      title: '用药方式',
       dataIndex: 'takingWayInfo',
       render(val,row) {
         return val?val.name:row.takingWay;
+      },
+    },
+    {
+      title: '医嘱',
+      dataIndex: 'medicalAdviceInfo',
+      render(val,row) {
+        return val?val.name:"";
       },
     },
     {
@@ -120,10 +127,17 @@ function info(record) {
         },
       },
       {
-        title: '服用方式',
+        title: '用药方式',
         dataIndex: 'takingWayInfo',
         render(val,row) {
           return val?val.name:row.unit;
+        },
+      },
+      {
+        title: '医嘱',
+        dataIndex: 'medicalAdviceInfo',
+        render(val,row) {
+          return val?val.name:"";
         },
       },
       {
@@ -181,10 +195,10 @@ class Template extends PureComponent {
   };
 
   columns = [
-    {
-      title: '处方编号',
-      dataIndex: 'recipeTemplateNo',
-    },
+    // {
+    //   title: '处方编号',
+    //   dataIndex: 'recipeTemplateNo',
+    // },
     {
       title: '处方类型',
       dataIndex: 'recipeType',

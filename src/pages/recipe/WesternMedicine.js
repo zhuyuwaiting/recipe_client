@@ -103,10 +103,10 @@ const CreateForm = Form.create()(props => {
           </Select>
         )}
       </FormItem>
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="每日剂量">
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="每次剂量">
         {form.getFieldDecorator('eachDose', {
-          rules: [{ required: true, message: '每日剂量不可以为空', }],
-        })(<InputNumber placeholder="每日剂量" precision='2' style={{ width: '100%' }}/>)}
+          rules: [{ required: true, message: '每次剂量不可以为空', }],
+        })(<InputNumber placeholder="每次剂量" precision='2' style={{ width: '100%' }}/>)}
       </FormItem>
 
        {/* <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="每日次数">
@@ -128,13 +128,26 @@ const CreateForm = Form.create()(props => {
         )}
       </FormItem>
 
-     <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="服用方式">
+     <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="用药方式">
         {form.getFieldDecorator('takingWay', {
-          rules: [{ required: true, message: '服用方式不可以为空', }],
+          rules: [{ required: true, message: '用药方式不可以为空', }],
         })(
           <Select placeholder="请选择" style={{ width: '100%' }}>
             {(enumInfos&&enumInfos['MEDICINE_TAKING_WAY_EN'])?
             enumInfos['MEDICINE_TAKING_WAY_EN'].map(function(k) {
+              return <Option value={k.value}>{k.name}</Option>
+            }):"" }
+          </Select>
+        )}
+      </FormItem>
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="医嘱">
+        {form.getFieldDecorator('medicalAdvice', {
+          rules: [{ required: false, message: '医嘱不可以为空', }],
+        })(
+          <Select placeholder="请选择" style={{ width: '100%' }}>
+            {(enumInfos&&enumInfos['MEDICAL_ADVICE'])?
+            enumInfos['MEDICAL_ADVICE'].map(function(k) {
               return <Option value={k.value}>{k.name}</Option>
             }):"" }
           </Select>
@@ -222,11 +235,11 @@ const UpdateForm = Form.create()(props => {
           </Select>
         )}
       </FormItem>
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="每日剂量">
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="每次剂量">
         {form.getFieldDecorator('eachDose', {
-          rules: [{ required: true, message: '每日剂量不可以为空', }],
+          rules: [{ required: true, message: '每次剂量不可以为空', }],
           initialValue:updateRow?(updateRow.eachDose/100).toFixed(2):"",
-        })(<InputNumber placeholder="每日剂量" precision='2' style={{ width: '100%' }}/>)}
+        })(<InputNumber placeholder="每次剂量" precision='2' style={{ width: '100%' }}/>)}
       </FormItem>
 
        {/* <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="每日次数">
@@ -250,14 +263,28 @@ const UpdateForm = Form.create()(props => {
         )}
       </FormItem>
 
-     <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="服用方式">
+     <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="用药方式">
         {form.getFieldDecorator('takingWay', {
-          rules: [{ required: true, message: '服用方式不可以为空', }],
+          rules: [{ required: true, message: '用药方式不可以为空', }],
           initialValue:updateRow?updateRow.takingWay:"",
         })(
           <Select placeholder="请选择" style={{ width: '100%' }}>
             {(enumInfos&&enumInfos['MEDICINE_TAKING_WAY_EN'])?
             enumInfos['MEDICINE_TAKING_WAY_EN'].map(function(k) {
+              return <Option value={k.value}>{k.name}</Option>
+            }):"" }
+          </Select>
+        )}
+      </FormItem>
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="医嘱">
+        {form.getFieldDecorator('medicalAdvice', {
+          rules: [{ required: false, message: '医嘱不可以为空', }],
+          initialValue:updateRow?updateRow.medicalAdvice:"",
+        })(
+          <Select placeholder="请选择" style={{ width: '100%' }}>
+            {(enumInfos&&enumInfos['MEDICAL_ADVICE'])?
+            enumInfos['MEDICAL_ADVICE'].map(function(k) {
               return <Option value={k.value}>{k.name}</Option>
             }):"" }
           </Select>
@@ -287,15 +314,15 @@ class WesternMedicine extends PureComponent {
   };
 
   columns = [
-    {
-      title: '药品编号',
-      dataIndex: 'medicineNo',
-      render(val,row){
-        return (<Tooltip placement="rightTop" title={val}>
-        {val.substring(0,5) + '...'}
-      </Tooltip>);
-      }
-    },
+    // {
+    //   title: '药品编号',
+    //   dataIndex: 'medicineNo',
+    //   render(val,row){
+    //     return (<Tooltip placement="rightTop" title={val}>
+    //     {val.substring(0,5) + '...'}
+    //   </Tooltip>);
+    //   }
+    // },
     {
       title: '药品名称',
       dataIndex: 'name',
@@ -327,8 +354,15 @@ class WesternMedicine extends PureComponent {
       },
     },
     {
-      title: '服用方式',
+      title: '用药方式',
       dataIndex: 'takingWayInfo',
+      render(val,row) {
+        return val?val.name:"";
+      },
+    },
+    {
+      title: '医嘱',
+      dataIndex: 'medicalAdviceInfo',
       render(val,row) {
         return val?val.name:"";
       },

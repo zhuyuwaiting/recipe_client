@@ -101,35 +101,53 @@ function info(record) {
           <h2 style={{marginTop:5,marginBottom:5}}>Rp</h2>
 
           {record.recipeType=='CHINESE'?(<Card bordered={false}>
-            {chineseMedicine.map(medicines=>{
-                return (
-            <Row style={{marginTop:40}}>
-                <Col span={3}><Icon type="star" theme="filled" />&nbsp; {medicines[0].name }</Col>
-                <Col span={3}>{medicines[0].takingWayInfo.name}</Col>
-                <Col span={3}>{medicines[0].medicineNum+' '+medicines[0].unitInfo.name}</Col>
-                <Col span={3}> </Col>
-                {
-                  medicines[1]?(<Col span={3}><Icon type="star" theme="filled" />&nbsp;{medicines[1]?medicines[1].name:"" }</Col>):(
-                    <Col span={3}></Col>
-                  )
-                }
+            {
+            // chineseMedicine.map(medicines=>{
+            //     return (
+            // <Row style={{marginTop:40}}>
+            //     <Col span={3}><Icon type="star" theme="filled" />&nbsp; {medicines[0].name }</Col>
+            //     <Col span={3}>{medicines[0].takingWayInfo.name}</Col>
+            //     <Col span={3}>{medicines[0].medicineNum+' '+medicines[0].unitInfo.name}</Col>
+            //     {/* <Col span={3}>{medicines[0].medicalAdviceInfo.name}</Col> */}
+
+            //     <Col span={3}> </Col>
+            //     {
+            //       medicines[1]?(<Col span={3}><Icon type="star" theme="filled" />&nbsp;{medicines[1]?medicines[1].name:"" }</Col>):(
+            //         <Col span={3}></Col>
+            //       )
+            //     }
                 
-                <Col span={3}>{medicines[1]?medicines[1].takingWayInfo.name:""}</Col>
-                <Col span={3}>{medicines[1]?(medicines[1].medicineNum+" "+medicines[1].unitInfo.name):''}</Col>
-            </Row>
-                );
-              })}
+            //     <Col span={3}>{medicines[1]?medicines[1].takingWayInfo.name:""}</Col>
+            //     <Col span={3}>{medicines[1]?(medicines[1].medicineNum+" "+medicines[1].unitInfo.name):''}</Col>
+            //     {/* <Col span={3}>{medicines[1]?medicines[1].medicalAdviceInfo.name:""}</Col> */}
+            // </Row>
+            //     );
+            //   })
+
+            medicines.map(medicine=>{
+              return (
+          <Row style={{marginTop:40}}>
+              <Col span={3}><Icon type="star" theme="filled" />&nbsp; {medicine.name }</Col>
+              <Col span={3}>{medicine.takingWayInfo.name}</Col>
+              <Col span={3}>{medicine.medicineNum+' '+medicine.unitInfo.name}</Col>
+              <Col span={3}>{medicine.medicalAdviceInfo?medicine.medicalAdviceInfo.name:""}</Col>
+          </Row>
+              );
+            })
+
+              }
           </Card>):(<Card bordered={false}>
             {medicines.map(medicine=>{
                 return (
             <Row style={{marginTop:40}}>
-                <Col span={8}>{medicine.name }</Col>
-                <Col span={8}>{(medicine.cellWeight/100).toFixed(2)+''+(medicine.cellUnitInfo?medicine.cellUnitInfo.name:'')
+                <Col span={4}>{medicine.name }</Col>
+                <Col span={4}>{(medicine.cellWeight/100).toFixed(2)+''+(medicine.cellUnitInfo?medicine.cellUnitInfo.name:'')
           +'*'+medicine.cellNum+'/'+medicine.unitInfo.name }</Col>
-                <Col span={8}>{medicine.medicineNum+"  "+ medicine.unitInfo.name}</Col>
-                <Col span={8}>{"每次剂量： "+(medicine.eachDose/100).toFixed(2)+medicine.cellUnitInfo.name}</Col>
-                <Col span={8}>{medicine.takingWayInfo.name}</Col>
-                <Col span={8}>{medicine.frequencyInfo.name}</Col>
+                <Col span={2}>{medicine.medicineNum+"  "+ medicine.unitInfo.name}</Col>
+                <Col span={4}>{"每次剂量： "+(medicine.eachDose/100).toFixed(2)+medicine.cellUnitInfo.name}</Col>
+                <Col span={2}>{medicine.takingWayInfo.name}</Col>
+                <Col span={4}>{medicine.frequencyInfo.name}</Col>
+                <Col span={4}>{medicine.medicalAdviceInfo.name}</Col>
             </Row>
                 );
               })}
@@ -169,10 +187,10 @@ class RecipeManage extends PureComponent {
   };
 
   columns = [
-    {
-      title: '处方编号',
-      dataIndex: 'recipeNo',
-    },
+    // {
+    //   title: '处方编号',
+    //   dataIndex: 'recipeNo',
+    // },
     {
       title: '姓名',
       dataIndex: 'patientName',

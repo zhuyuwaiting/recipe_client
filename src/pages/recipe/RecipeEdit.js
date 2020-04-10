@@ -702,10 +702,17 @@ class RecipeEdit extends PureComponent {
         },
       },
       {
-        title: '服用方式',
+        title: '用药方式',
         dataIndex: 'takingWayInfo',
         render(val,row) {
           return val?val.name:row.takingWay;
+        },
+      },
+      {
+        title: '医嘱',
+        dataIndex: 'medicalAdviceInfo',
+        render(val,row) {
+          return val?val.name:"";
         },
       },
       { title: '创建时间', dataIndex: 'createTime', key: 'createTime' ,
@@ -751,17 +758,24 @@ class RecipeEdit extends PureComponent {
           },
         },
         {
-          title: '服用方式',
+          title: '用药频次',
           dataIndex: 'frequencyInfo',
           render(val,row) {
             return val?val.name:"";
           },
         },
         {
-          title: '服用方式',
+          title: '用药方式',
           dataIndex: 'takingWayInfo',
           render(val,row) {
             return val?val.name:row.unit;
+          },
+        },
+        {
+          title: '医嘱',
+          dataIndex: 'medicalAdviceInfo',
+          render(val,row) {
+            return val?val.name:"";
           },
         },
         { title: '创建时间', dataIndex: 'createTime', key: 'createTime' ,
