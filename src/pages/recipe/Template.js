@@ -46,18 +46,18 @@ function info(record) {
   });
 
   let columns = [
-    {
-      title: '药品编号',
-      dataIndex: 'medicineNo',
-    },
+    // {
+    //   title: '药品编号',
+    //   dataIndex: 'medicineNo',
+    // },
     {
       title: '药品名称',
       dataIndex: 'name',
     },
-    {
-      title: '英文名称',
-      dataIndex: 'englishName',
-    },
+    // {
+    //   title: '英文名称',
+    //   dataIndex: 'englishName',
+    // },
     {
       title: '药品单位',
       dataIndex: 'unitInfo',
@@ -87,23 +87,23 @@ function info(record) {
 
   if(recipeType =='WESTERN'){
     columns = [
-      {
-        title: '药品编号',
-        dataIndex: 'medicineNo',
-        render(val,row){
-          return (<Tooltip placement="rightTop" title={val}>
-          {val.substring(0,5) + '...'}
-        </Tooltip>);
-        }
-      },
+      // {
+      //   title: '药品编号',
+      //   dataIndex: 'medicineNo',
+      //   render(val,row){
+      //     return (<Tooltip placement="rightTop" title={val}>
+      //     {val.substring(0,5) + '...'}
+      //   </Tooltip>);
+      //   }
+      // },
       {
         title: '药品名称',
         dataIndex: 'name',
       },
-      {
-        title: '英文名称',
-        dataIndex: 'englishName',
-      },
+      // {
+      //   title: '英文名称',
+      //   dataIndex: 'englishName',
+      // },
       {
         title: '单元组成',
         dataIndex: 'cellWeight',

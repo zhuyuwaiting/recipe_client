@@ -57,11 +57,11 @@ const CreateForm = Form.create()(props => {
         })(<Input placeholder="请输入药品名称" />)}
       </FormItem>
 
-       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="英文名称">
+       {/* <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="英文名称">
         {form.getFieldDecorator('englishName', {
 
         })(<Input placeholder="请输入英文名称" />)}
-      </FormItem>
+      </FormItem> */}
 
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="药品数量">
         {form.getFieldDecorator('eachDose', {
@@ -138,11 +138,11 @@ const UpdateForm = Form.create()(props => {
         })(<Input placeholder="请输入药品名称" />)}
       </FormItem>
 
-       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="英文名称">
+       {/* <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="英文名称">
         {form.getFieldDecorator('englishName', {
           initialValue:updateRow?updateRow.englishName:"",
         })(<Input placeholder="请输入英文名称" />)}
-      </FormItem>
+      </FormItem> */}
 
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="药品数量">
         {form.getFieldDecorator('eachDose', {
@@ -224,10 +224,10 @@ class ChineseMedicine extends PureComponent {
       title: '药品名称',
       dataIndex: 'name',
     },
-    {
-      title: '英文名称',
-      dataIndex: 'englishName',
-    },
+    // {
+    //   title: '英文名称',
+    //   dataIndex: 'englishName',
+    // },
     {
       title: '药品数量',
       dataIndex: 'eachDose',

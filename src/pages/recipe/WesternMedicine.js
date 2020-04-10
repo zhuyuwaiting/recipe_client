@@ -60,12 +60,12 @@ const CreateForm = Form.create()(props => {
         })(<Input placeholder="请输入药品名称" />)}
       </FormItem>
 
-       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="英文名称">
+       {/* <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="英文名称">
         {form.getFieldDecorator('englishName', {
 
         })(<Input placeholder="请输入英文名称" />)}
       </FormItem>
-      
+       */}
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="基础重量">
         {form.getFieldDecorator('cellWeight', {
           rules: [{ required: true, message: '药品基础重量不可以为空', }],
@@ -188,11 +188,11 @@ const UpdateForm = Form.create()(props => {
         })(<Input placeholder="请输入药品名称" />)}
       </FormItem>
 
-       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="英文名称">
+       {/* <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="英文名称">
         {form.getFieldDecorator('englishName', {
           initialValue:updateRow?updateRow.englishName:"",
         })(<Input placeholder="请输入英文名称" />)}
-      </FormItem>
+      </FormItem> */}
       
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="基础重量">
         {form.getFieldDecorator('cellWeight', {
@@ -327,10 +327,10 @@ class WesternMedicine extends PureComponent {
       title: '药品名称',
       dataIndex: 'name',
     },
-    {
-      title: '英文名称',
-      dataIndex: 'englishName',
-    },
+    // {
+    //   title: '英文名称',
+    //   dataIndex: 'englishName',
+    // },
     {
       title: '单元组成',
       dataIndex: 'cellWeight',
