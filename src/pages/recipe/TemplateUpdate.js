@@ -435,11 +435,7 @@ class TemplateAdd extends PureComponent {
         // },
         {
           title: '单元组成',
-          dataIndex: 'cellWeight',
-          render(val,row) {
-            return (row.cellWeight/100).toFixed(2)+''+(row.cellUnitInfo?row.cellUnitInfo.name:'')
-            +'*'+row.cellNum+'/'+row.unitInfo.name;
-          },
+          dataIndex: 'spec'
         },
         {
           title: '每次剂量',

@@ -369,11 +369,8 @@ class TemplateAdd extends PureComponent {
         dataIndex: 'eachDose',
       },
       {
-        title: '药品单位',
-        dataIndex: 'unitInfo',
-        render(val,row) {
-          return val?val.name:row.unit;
-        },
+        title: '规格',
+        dataIndex: 'spec'
       },
       {
         title: '用药方式',
@@ -417,12 +414,8 @@ class TemplateAdd extends PureComponent {
         //   dataIndex: 'englishName',
         // },
         {
-          title: '单元组成',
-          dataIndex: 'cellWeight',
-          render(val,row) {
-            return (row.cellWeight/100).toFixed(2)+''+(row.cellUnitInfo?row.cellUnitInfo.name:'')
-            +'*'+row.cellNum+'/'+row.unitInfo.name;
-          },
+          title: '规格',
+          dataIndex: 'spec'
         },
         {
           title: '每次剂量',

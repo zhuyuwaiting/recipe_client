@@ -141,13 +141,11 @@ function info(record) {
                 return (
             <Row style={{marginTop:40}}>
                 <Col span={4}>{medicine.name }</Col>
-                <Col span={4}>{(medicine.cellWeight/100).toFixed(2)+''+(medicine.cellUnitInfo?medicine.cellUnitInfo.name:'')
-          +'*'+medicine.cellNum+'/'+medicine.unitInfo.name }</Col>
-                <Col span={2}>{medicine.medicineNum+"  "+ medicine.unitInfo.name}</Col>
-                <Col span={4}>{"每次剂量： "+(medicine.eachDose/100).toFixed(2)+medicine.cellUnitInfo.name}</Col>
+                <Col span={6}>{'('+medicine.spec+')  X '+ medicine.medicineNum}</Col>
+                <Col span={5}>{"每次剂量： "+(medicine.eachDose/100).toFixed(2)+medicine.cellUnitInfo.name}</Col>
                 <Col span={2}>{medicine.takingWayInfo.name}</Col>
-                <Col span={4}>{medicine.frequencyInfo.name}</Col>
-                <Col span={4}>{medicine.medicalAdviceInfo.name}</Col>
+                <Col span={2}>{medicine.frequencyInfo.name}</Col>
+                <Col span={5}>{medicine.medicalAdviceInfo.name}</Col>
             </Row>
                 );
               })}

@@ -59,10 +59,14 @@ function info(record) {
     //   dataIndex: 'englishName',
     // },
     {
-      title: '药品单位',
-      dataIndex: 'unitInfo',
+      title: '规格',
+      dataIndex: 'spec'
+    },
+    {
+      title: '每次剂量',
+      dataIndex: 'eachDose',
       render(val,row) {
-        return val?val.name:row.unit;
+        return val?(val/100).toFixed(2)+""+(row.cellUnitInfo?row.cellUnitInfo.name:""):"";
       },
     },
     {

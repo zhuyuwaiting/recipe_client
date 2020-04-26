@@ -742,13 +742,18 @@ class RecipeEdit extends PureComponent {
         //   title: '英文名称',
         //   dataIndex: 'englishName',
         // },
+        // {
+        //   title: '单元组成',
+        //   dataIndex: 'cellWeight',
+        //   render(val,row) {
+        //     return (row.cellWeight/100).toFixed(2)+''+(row.cellUnitInfo?row.cellUnitInfo.name:'')
+        //     +'*'+row.cellNum+'/'+row.unitInfo.name;
+        //   },
+        // },
+
         {
-          title: '单元组成',
-          dataIndex: 'cellWeight',
-          render(val,row) {
-            return (row.cellWeight/100).toFixed(2)+''+(row.cellUnitInfo?row.cellUnitInfo.name:'')
-            +'*'+row.cellNum+'/'+row.unitInfo.name;
-          },
+          title: '规格',
+          dataIndex: 'spec'
         },
         {
           title: '每次剂量',

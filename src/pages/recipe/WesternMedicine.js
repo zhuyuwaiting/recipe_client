@@ -66,15 +66,21 @@ const CreateForm = Form.create()(props => {
         })(<Input placeholder="请输入英文名称" />)}
       </FormItem>
        */}
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="基础重量">
-        {form.getFieldDecorator('cellWeight', {
-          rules: [{ required: true, message: '药品基础重量不可以为空', }],
-        })(<InputNumber placeholder="基础重量(0.3g*12/盒中的0.3)" precision='2' style={{ width: '100%' }}/>)}
+     
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="药品规格">
+        {form.getFieldDecorator('spec', {
+          rules: [{ required: true, message: '药品规格不可以为空', }],
+        })(<Input placeholder="请输入药品规格  例子:50mg x 10粒/盒" />)}
       </FormItem>
 
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="药品组成单位">
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="每次剂量">
+        {form.getFieldDecorator('eachDose', {
+          rules: [{ required: true, message: '每次剂量不可以为空', }],
+        })(<InputNumber placeholder="每次剂量" precision='2' style={{ width: '100%' }}/>)}
+      </FormItem>
+    <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="每次剂量单位">
         {form.getFieldDecorator('cellUnit', {
-          rules: [{ required: true, message: '药品基础单位不可以为空', }],
+          rules: [{ required: true, message: '每次剂量单位不可以为空', }],
         })(
           <Select placeholder="请选择" style={{ width: '100%' }}>
             {(enumInfos&&enumInfos['MEDICINE_CELL_UNIT'])?
@@ -84,30 +90,7 @@ const CreateForm = Form.create()(props => {
           </Select>
         )}
       </FormItem>
-
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="基础组成数量">
-        {form.getFieldDecorator('cellNum', {
-          rules: [{ required: true, message: '药品基础组成数量不可以为空', }],
-        })(<InputNumber placeholder="药品1单位的基础单位数量(0.3g*12/盒中的12)" precision='0' style={{ width: '100%' }}/>)}
-      </FormItem>
-
-    <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="药品单位">
-        {form.getFieldDecorator('unit', {
-          rules: [{ required: true, message: '药品单位不可以为空', }],
-        })(
-          <Select placeholder="请选择" style={{ width: '100%' }}>
-            {(enumInfos&&enumInfos['MEDICINE_UNIT_EN'])?
-            enumInfos['MEDICINE_UNIT_EN'].map(function(k) {
-              return <Option value={k.value}>{k.name}</Option>
-            }):"" }
-          </Select>
-        )}
-      </FormItem>
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="每次剂量">
-        {form.getFieldDecorator('eachDose', {
-          rules: [{ required: true, message: '每次剂量不可以为空', }],
-        })(<InputNumber placeholder="每次剂量" precision='2' style={{ width: '100%' }}/>)}
-      </FormItem>
+     
 
        {/* <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="每日次数">
         {form.getFieldDecorator('dailyTimes', {
@@ -194,16 +177,24 @@ const UpdateForm = Form.create()(props => {
         })(<Input placeholder="请输入英文名称" />)}
       </FormItem> */}
       
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="基础重量">
-        {form.getFieldDecorator('cellWeight', {
-          rules: [{ required: true, message: '药品基础重量不可以为空', }],
-          initialValue:updateRow?(updateRow.cellWeight/100).toFixed(2):"",
-        })(<InputNumber placeholder="基础重量(0.3g*12/盒中的0.3)" precision='2' style={{ width: '100%' }}/>)}
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="药品规格">
+      {form.getFieldDecorator('spec', {
+          rules: [{ required: true, message: '药品规格不可以为空', }],
+          initialValue:updateRow?updateRow.spec:"",
+        })(<Input placeholder="请输入药品规格 例子: 50mg x 10粒/盒" />)}
       </FormItem>
 
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="药品组成单位">
+    
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="每次剂量">
+        {form.getFieldDecorator('eachDose', {
+          rules: [{ required: true, message: '每次剂量不可以为空', }],
+          initialValue:updateRow?(updateRow.eachDose/100).toFixed(2):"",
+        })(<InputNumber placeholder="每次剂量" precision='2' style={{ width: '100%' }}/>)}
+      </FormItem>
+
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="每次剂量单位">
         {form.getFieldDecorator('cellUnit', {
-          rules: [{ required: true, message: '药品基础单位不可以为空', }],
+          rules: [{ required: true, message: '每次剂量单位不可以为空', }],
           initialValue:updateRow?updateRow.cellUnit:"",
         })(
           <Select placeholder="请选择" style={{ width: '100%' }}>
@@ -214,34 +205,6 @@ const UpdateForm = Form.create()(props => {
           </Select>
         )}
       </FormItem>
-
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="基础组成数量">
-        {form.getFieldDecorator('cellNum', {
-          rules: [{ required: true, message: '药品基础组成数量不可以为空', }],
-          initialValue:updateRow?updateRow.cellNum:"",
-        })(<InputNumber placeholder="药品1单位的基础单位数量(0.3g*12/盒中的12)" precision='0' style={{ width: '100%' }}/>)}
-      </FormItem>
-
-    <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="药品单位">
-        {form.getFieldDecorator('unit', {
-          rules: [{ required: true, message: '药品单位不可以为空', }],
-          initialValue:updateRow?updateRow.unit:"",
-        })(
-          <Select placeholder="请选择" style={{ width: '100%' }}>
-            {(enumInfos&&enumInfos['MEDICINE_UNIT_EN'])?
-            enumInfos['MEDICINE_UNIT_EN'].map(function(k) {
-              return <Option value={k.value}>{k.name}</Option>
-            }):"" }
-          </Select>
-        )}
-      </FormItem>
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="每次剂量">
-        {form.getFieldDecorator('eachDose', {
-          rules: [{ required: true, message: '每次剂量不可以为空', }],
-          initialValue:updateRow?(updateRow.eachDose/100).toFixed(2):"",
-        })(<InputNumber placeholder="每次剂量" precision='2' style={{ width: '100%' }}/>)}
-      </FormItem>
-
        {/* <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="每日次数">
         {form.getFieldDecorator('dailyTimes', {
           rules: [{ required: true, message: '每日次数不可以为空', }],
@@ -331,13 +294,17 @@ class WesternMedicine extends PureComponent {
     //   title: '英文名称',
     //   dataIndex: 'englishName',
     // },
+    // {
+    //   title: '单元组成',
+    //   dataIndex: 'cellWeight',
+    //   render(val,row) {
+    //     return (row.cellWeight/100).toFixed(2)+''+(row.cellUnitInfo?row.cellUnitInfo.name:'')
+    //     +'*'+row.cellNum+'/'+row.unitInfo.name;
+    //   },
+    // },
     {
-      title: '单元组成',
-      dataIndex: 'cellWeight',
-      render(val,row) {
-        return (row.cellWeight/100).toFixed(2)+''+(row.cellUnitInfo?row.cellUnitInfo.name:'')
-        +'*'+row.cellNum+'/'+row.unitInfo.name;
-      },
+      title: '药品规格',
+      dataIndex: 'spec'
     },
     {
       title: '每次剂量',
