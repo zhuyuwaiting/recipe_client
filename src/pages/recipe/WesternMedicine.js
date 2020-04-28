@@ -126,15 +126,8 @@ const CreateForm = Form.create()(props => {
 
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="医嘱">
         {form.getFieldDecorator('medicalAdvice', {
-          rules: [{ required: false, message: '医嘱不可以为空', }],
-        })(
-          <Select placeholder="请选择" style={{ width: '100%' }}>
-            {(enumInfos&&enumInfos['MEDICAL_ADVICE'])?
-            enumInfos['MEDICAL_ADVICE'].map(function(k) {
-              return <Option value={k.value}>{k.name}</Option>
-            }):"" }
-          </Select>
-        )}
+          rules: [{ required: true, message: '医嘱不可以为空', }],
+        })(<Input placeholder="医嘱" />)}
       </FormItem>
 
     </Modal>
@@ -242,16 +235,9 @@ const UpdateForm = Form.create()(props => {
 
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="医嘱">
         {form.getFieldDecorator('medicalAdvice', {
-          rules: [{ required: false, message: '医嘱不可以为空', }],
+          rules: [{ required: true, message: '医嘱不可以为空', }],
           initialValue:updateRow?updateRow.medicalAdvice:"",
-        })(
-          <Select placeholder="请选择" style={{ width: '100%' }}>
-            {(enumInfos&&enumInfos['MEDICAL_ADVICE'])?
-            enumInfos['MEDICAL_ADVICE'].map(function(k) {
-              return <Option value={k.value}>{k.name}</Option>
-            }):"" }
-          </Select>
-        )}
+        })(<Input placeholder="医嘱" />)}
       </FormItem>
 
     </Modal>
@@ -329,10 +315,7 @@ class WesternMedicine extends PureComponent {
     },
     {
       title: '医嘱',
-      dataIndex: 'medicalAdviceInfo',
-      render(val,row) {
-        return val?val.name:"";
-      },
+      dataIndex: 'medicalAdvice'
     },
     { title: '创建时间', dataIndex: 'createTime', key: 'createTime' ,
         render:(value,index)=>{

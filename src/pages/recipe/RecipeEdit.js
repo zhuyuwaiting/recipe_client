@@ -710,10 +710,7 @@ class RecipeEdit extends PureComponent {
       },
       {
         title: '医嘱',
-        dataIndex: 'medicalAdviceInfo',
-        render(val,row) {
-          return val?val.name:"";
-        },
+        dataIndex: 'medicalAdvice'
       },
       { title: '创建时间', dataIndex: 'createTime', key: 'createTime' ,
           render:(value,index)=>{
@@ -778,10 +775,7 @@ class RecipeEdit extends PureComponent {
         },
         {
           title: '医嘱',
-          dataIndex: 'medicalAdviceInfo',
-          render(val,row) {
-            return val?val.name:"";
-          },
+          dataIndex: 'medicalAdvice'
         },
         { title: '创建时间', dataIndex: 'createTime', key: 'createTime' ,
             render:(value,index)=>{

@@ -130,7 +130,7 @@ function info(record) {
               <Col span={3}><Icon type="star" theme="filled" />&nbsp; {medicine.name }</Col>
               <Col span={3}>{medicine.takingWayInfo.name}</Col>
               <Col span={3}>{medicine.medicineNum+' '+medicine.unitInfo.name}</Col>
-              <Col span={3}>{medicine.medicalAdviceInfo?medicine.medicalAdviceInfo.name:""}</Col>
+              <Col span={3}>{medicine.medicalAdvice?medicine.medicalAdvice:""}</Col>
           </Row>
               );
             })
@@ -141,11 +141,11 @@ function info(record) {
                 return (
             <Row style={{marginTop:40}}>
                 <Col span={4}>{medicine.name }</Col>
-                <Col span={6}>{'('+medicine.spec+')  X '+ medicine.medicineNum}</Col>
+                <Col span={6}>{'('+ (medicine.spec?medicine.spec:"未知规格")+')  X '+ medicine.medicineNum}</Col>
                 <Col span={5}>{"每次剂量： "+(medicine.eachDose/100).toFixed(2)+medicine.cellUnitInfo.name}</Col>
-                <Col span={2}>{medicine.takingWayInfo.name}</Col>
-                <Col span={2}>{medicine.frequencyInfo.name}</Col>
-                <Col span={5}>{medicine.medicalAdviceInfo.name}</Col>
+                <Col span={2}>{medicine.takingWayInfo?medicine.takingWayInfo.name:""}</Col>
+                <Col span={2}>{medicine.frequencyInfo?medicine.frequencyInfo.name:""}</Col>
+                <Col span={5}>{medicine.medicalAdvice?medicine.medicalAdvice:""}</Col>
             </Row>
                 );
               })}

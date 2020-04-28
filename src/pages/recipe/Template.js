@@ -78,10 +78,7 @@ function info(record) {
     },
     {
       title: '医嘱',
-      dataIndex: 'medicalAdviceInfo',
-      render(val,row) {
-        return val?val.name:"";
-      },
+      dataIndex: 'medicalAdvice'
     },
     {
       title: '数量',
@@ -139,10 +136,7 @@ function info(record) {
       },
       {
         title: '医嘱',
-        dataIndex: 'medicalAdviceInfo',
-        render(val,row) {
-          return val?val.name:"";
-        },
+        dataIndex: 'medicalAdvice'
       },
       {
         title: '数量',
