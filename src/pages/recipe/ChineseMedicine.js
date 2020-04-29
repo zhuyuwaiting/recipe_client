@@ -97,7 +97,7 @@ const CreateForm = Form.create()(props => {
 
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="医嘱">
         {form.getFieldDecorator('medicalAdvice', {
-          rules: [{ required: true, message: '医嘱不可以为空', }],
+          rules: [{ required: false, message: '医嘱不可以为空', }],
         })(<Input placeholder="医嘱" />)}
       </FormItem>
 
