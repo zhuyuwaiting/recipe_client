@@ -98,6 +98,20 @@ const CreateForm = Form.create()(props => {
         })(<InputNumber placeholder="每日次数" precision='0' style={{ width: '100%' }}/>)}
       </FormItem> */}
 
+<FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="用药方式">
+        {form.getFieldDecorator('takingWay', {
+          rules: [{ required: true, message: '用药方式不可以为空', }],
+        })(
+          <Select placeholder="请选择" style={{ width: '100%' }}>
+            {(enumInfos&&enumInfos['MEDICINE_TAKING_WAY_EN'])?
+            enumInfos['MEDICINE_TAKING_WAY_EN'].map(function(k) {
+              return <Option value={k.value}>{k.name}</Option>
+            }):"" }
+          </Select>
+        )}
+      </FormItem>
+
+
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="用药频次">
         {form.getFieldDecorator('frequency', {
           rules: [{ required: true, message: '用药频次不可以为空', }],
@@ -111,19 +125,7 @@ const CreateForm = Form.create()(props => {
         )}
       </FormItem>
 
-     <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="用药方式">
-        {form.getFieldDecorator('takingWay', {
-          rules: [{ required: true, message: '用药方式不可以为空', }],
-        })(
-          <Select placeholder="请选择" style={{ width: '100%' }}>
-            {(enumInfos&&enumInfos['MEDICINE_TAKING_WAY_EN'])?
-            enumInfos['MEDICINE_TAKING_WAY_EN'].map(function(k) {
-              return <Option value={k.value}>{k.name}</Option>
-            }):"" }
-          </Select>
-        )}
-      </FormItem>
-
+   
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="医嘱">
         {form.getFieldDecorator('medicalAdvice', {
           rules: [{ required: false, message: '医嘱不可以为空', }],
@@ -205,6 +207,21 @@ const UpdateForm = Form.create()(props => {
         })(<InputNumber placeholder="每日次数" precision='0' style={{ width: '100%' }}/>)}
       </FormItem> */}
 
+<FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="用药方式">
+        {form.getFieldDecorator('takingWay', {
+          rules: [{ required: true, message: '用药方式不可以为空', }],
+          initialValue:updateRow?updateRow.takingWay:"",
+        })(
+          <Select placeholder="请选择" style={{ width: '100%' }}>
+            {(enumInfos&&enumInfos['MEDICINE_TAKING_WAY_EN'])?
+            enumInfos['MEDICINE_TAKING_WAY_EN'].map(function(k) {
+              return <Option value={k.value}>{k.name}</Option>
+            }):"" }
+          </Select>
+        )}
+      </FormItem>
+
+
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="用药频次">
         {form.getFieldDecorator('frequency', {
           rules: [{ required: true, message: '用药频次不可以为空', }],
@@ -219,19 +236,7 @@ const UpdateForm = Form.create()(props => {
         )}
       </FormItem>
 
-     <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="用药方式">
-        {form.getFieldDecorator('takingWay', {
-          rules: [{ required: true, message: '用药方式不可以为空', }],
-          initialValue:updateRow?updateRow.takingWay:"",
-        })(
-          <Select placeholder="请选择" style={{ width: '100%' }}>
-            {(enumInfos&&enumInfos['MEDICINE_TAKING_WAY_EN'])?
-            enumInfos['MEDICINE_TAKING_WAY_EN'].map(function(k) {
-              return <Option value={k.value}>{k.name}</Option>
-            }):"" }
-          </Select>
-        )}
-      </FormItem>
+   
 
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="医嘱">
         {form.getFieldDecorator('medicalAdvice', {
@@ -300,19 +305,20 @@ class WesternMedicine extends PureComponent {
       },
     },
     {
-      title: '用药频次',
-      dataIndex: 'frequencyInfo',
-      render(val,row) {
-        return val?val.name:"";
-      },
-    },
-    {
       title: '用药方式',
       dataIndex: 'takingWayInfo',
       render(val,row) {
         return val?val.name:"";
       },
     },
+    {
+      title: '用药频次',
+      dataIndex: 'frequencyInfo',
+      render(val,row) {
+        return val?val.name:"";
+      },
+    },
+   
     {
       title: '医嘱',
       dataIndex: 'medicalAdvice'
