@@ -90,7 +90,7 @@ function info(record) {
               <tr>
                 <th>姓名:{record.patientName}</th>
                 <th>性别:{record.patientSex==0?'男':'女'}</th>
-                <th>年龄:{record.patientAge}</th>
+    <th>年龄:{record.patientAge}{ (record.ageTypeName==undefined||record.ageTypeName=="")?"岁":record.ageTypeName}</th>
                 <th>处方类别:{record.recipeType=='CHINESE'?'中药处方':'西药处方'}</th>
               </tr>
               <tr>
@@ -206,6 +206,12 @@ class RecipeManage extends PureComponent {
     {
       title: '年龄',
       dataIndex: 'patientAge',
+      render(val,row){
+        if(row.ageTypeName ==undefined || row.ageTypeName==""){
+          return val+'岁'
+        }
+        return val + row.ageTypeName;
+      }
     },
     {
       title: '处方类型',

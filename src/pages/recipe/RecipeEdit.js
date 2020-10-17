@@ -967,13 +967,39 @@ class RecipeEdit extends PureComponent {
             </Col>
 
             <Col md={8}  sm={24}>
+            <Input.Group compact>
               <FormItem labelCol={{ span: 8 }} wrapperCol={{ span: 15 }} label="年龄">
-              {form.getFieldDecorator('patientAge', {
-                rules: [{ required: true, message: '年龄不可以为空', }],
-                initialValue:updateRecipe?updateRecipe.patientAge:""
-              })(<InputNumber placeholder="请输入患者年龄" />)}
-            </FormItem>
+                {form.getFieldDecorator('patientAge', {
+                  rules: [{ required: true, message: '年龄不可以为空', }],
+                  initialValue:updateRecipe?updateRecipe.patientAge:""
+                })(<InputNumber placeholder="请输入患者年龄" />)}
+              </FormItem>
+              <FormItem>
+              {form.getFieldDecorator('ageType', {
+                rules: [{ required: true, message: '年龄单位不可以为空', }],
+                initialValue:updateRecipe&&updateRecipe.ageType !=undefined?updateRecipe.ageType+"":"YEAR"
+              })(
+                      <Select placeholder="请选择" style={{ width: '100%' }} >
+                      {[{
+                        "value":"YEAR",
+                        "name":"岁"
+                      },{
+                        "value":"MONTH",
+                        "name":"月"
+                      },{
+                        "value":"DAY",
+                        "name":"天"
+                      }
+                    ].map(function(k) {
+                        return <Option value={k.value}>{k.name}</Option>
+                      })}
+                    </Select>
+              )}
+              </FormItem>
+            </Input.Group>
+            
             </Col>
+
           </Row>
 
        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
