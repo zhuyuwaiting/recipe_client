@@ -35,59 +35,9 @@ const { TextArea } = Input;
 const { Option } = Select;
 const RadioGroup = Radio.Group;
 
-
-
-function info(record) {
-  console.log("---",record);
-  let medicines = record.recipeTemplateDetailVOS.map(recipeTemplateDetailVO =>{
-    let medicineVO = recipeTemplateDetailVO.medicineVO;
-    medicineVO.medicineNum = recipeTemplateDetailVO.medicineNum;
-    return medicineVO;
-  });
-
-  let columns = [
-    // {
-    //   title: '药品编号',
-    //   dataIndex: 'medicineNo',
-    // },
-    {
-      title: '药品名称',
-      dataIndex: 'name',
-    },
-    // {
-    //   title: '英文名称',
-    //   dataIndex: 'englishName',
-    // },
-    {
-      title: '规格',
-      dataIndex: 'spec'
-    },
-    {
-      title: '每次剂量',
-      dataIndex: 'eachDose',
-      render(val,row) {
-        return val?(val/100).toFixed(2)+""+(row.cellUnitInfo?row.cellUnitInfo.name:""):"";
-      },
-    },
-    {
-      title: '用药方式',
-      dataIndex: 'takingWayInfo',
-      render(val,row) {
-        return val?val.name:row.takingWay;
-      },
-    },
-    {
-      title: '医嘱',
-      dataIndex: 'medicalAdvice'
-    },
-    {
-      title: '数量',
-      dataIndex: 'medicineNum',
-    }
-  ];
-
-  if(recipeType =='WESTERN'){
-    columns = [
+function getColumns(record){
+  if(record.recipeType =='WESTERN'){
+    return  [
       // {
       //   title: '药品编号',
       //   dataIndex: 'medicineNo',
@@ -106,12 +56,8 @@ function info(record) {
       //   dataIndex: 'englishName',
       // },
       {
-        title: '单元组成',
-        dataIndex: 'cellWeight',
-        render(val,row) {
-          return (row.cellWeight/100).toFixed(2)+''+(row.cellUnitInfo?row.cellUnitInfo.name:'')
-          +'*'+row.cellNum+'/'+row.unitInfo.name;
-        },
+        title: '规格',
+        dataIndex: 'spec'
       },
       {
         title: '每次剂量',
@@ -121,10 +67,10 @@ function info(record) {
         },
       },
       {
-        title: '每日次数',
-        dataIndex: 'dailyTimes',
+        title: '用药频次',
+        dataIndex: 'frequencyInfo',
         render(val,row) {
-          return (row.dailyTimes) + '次';
+          return val?val.name:'';
         },
       },
       {
@@ -144,6 +90,57 @@ function info(record) {
       }
     ];
   }
+  return   [
+    // {
+    //   title: '药品编号',
+    //   dataIndex: 'medicineNo',
+    // },
+    {
+      title: '药品名称',
+      dataIndex: 'name',
+    },
+    // {
+    //   title: '英文名称',
+    //   dataIndex: 'englishName',
+    // },
+  
+    // {
+    //   title: '每次剂量',
+    //   dataIndex: 'eachDose',
+    //   render(val,row) {
+    //     return val?(val/100).toFixed(2)+""+(row.cellUnitInfo?row.cellUnitInfo.name:""):"";
+    //   },
+    // },
+    {
+      title: '用药方式',
+      dataIndex: 'takingWayInfo',
+      render(val,row) {
+        return val?val.name:row.takingWay;
+      },
+    },
+    {
+      title: '医嘱',
+      dataIndex: 'medicalAdvice'
+    },
+    {
+      title: '数量',
+      dataIndex: 'medicineNum',
+      render(val,row) {
+        return val + "" + (row.unitInfo?row.unitInfo.name:row.unit)
+      },
+    }
+  ];
+}
+
+
+function info(record) {
+  console.log("---",record);
+  let medicines = record.recipeTemplateDetailVOS.map(recipeTemplateDetailVO =>{
+    let medicineVO = recipeTemplateDetailVO.medicineVO;
+    medicineVO.medicineNum = recipeTemplateDetailVO.medicineNum;
+    return medicineVO;
+  });
+
   Modal.info({
     title: '处方模板详情',
     width:800,
@@ -165,7 +162,7 @@ function info(record) {
             <Col span={6} offset={6}>科室：</Col>
             <Col span={12}>{record.classfication}</Col>
         </Row>
-        <Table style={{marginTop:20}} columns={columns} dataSource={medicines} size="middle" />
+        <Table style={{marginTop:20}} columns={getColumns(record)} dataSource={medicines} size="middle" />
       </Card>
     ),
     onOk() {},

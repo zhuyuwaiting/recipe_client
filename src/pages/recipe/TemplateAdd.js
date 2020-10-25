@@ -367,11 +367,14 @@ class TemplateAdd extends PureComponent {
       {
         title: '药品数量',
         dataIndex: 'eachDose',
+        render(val,row) {
+          return val + "" + (row.unitInfo?row.unitInfo.name:row.unit)
+        },
       },
-      {
-        title: '规格',
-        dataIndex: 'spec'
-      },
+      // {
+      //   title: '规格',
+      //   dataIndex: 'spec'
+      // },
       {
         title: '用药方式',
         dataIndex: 'takingWayInfo',

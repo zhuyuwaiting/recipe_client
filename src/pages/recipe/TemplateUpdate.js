@@ -385,13 +385,7 @@ class TemplateAdd extends PureComponent {
       //   title: '英文名称',
       //   dataIndex: 'englishName',
       // },
-      {
-        title: '药品单位',
-        dataIndex: 'unitInfo',
-        render(val,row) {
-          return val?val.name:row.unit;
-        },
-      },
+     
       {
         title: '用药方式',
         dataIndex: 'takingWayInfo',
@@ -403,12 +397,19 @@ class TemplateAdd extends PureComponent {
         title: '医嘱',
         dataIndex: 'medicalAdvice'
       },
+      {
+        title: '药品单位',
+        dataIndex: 'unitInfo',
+        render(val,row) {
+          return val?val.name:row.unit;
+        },
+      },
       { title: '创建时间', dataIndex: 'createTime', key: 'createTime' ,
           render:(value,index)=>{
             var time = moment(new Date(value)).format("YYYY-MM-DD HH:mm:ss"); ;
             return time;
           }
-        },
+      },
     ];
   
     if(recipeType =='WESTERN'){
