@@ -218,7 +218,6 @@ class TemplateAdd extends PureComponent {
   }
 
   handleSelectRows = rows => {
-
     let newSelectedRows = this.state.selectedMedicines;
     let newRows = rows.filter(row =>{
       for(let i = 0;i<newSelectedRows.length;i++){
@@ -640,7 +639,7 @@ class TemplateAdd extends PureComponent {
 
            {
              (selectedMedicines&&selectedMedicines.length>0)?(
-              <Table columns={columns} dataSource={selectedMedicines}  />
+              <Table columns={columns} dataSource={selectedMedicines} pagination={false} />
              ):""
            }   
 

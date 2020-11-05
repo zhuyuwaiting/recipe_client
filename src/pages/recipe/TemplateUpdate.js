@@ -222,12 +222,18 @@ class TemplateAdd extends PureComponent {
     });
   };
 
-  onMedicineNumChange = (val,index)=>{
+  onMedicineNumChange = (val,row,index)=>{
     let newSelectedRows = this.state.selectedMedicines;
-    newSelectedRows[index].medicineNum = val;
+    newSelectedRows.forEach(selectRow =>{
+       if(selectRow.medicineNo ==  row.medicineNo){
+        selectRow.medicineNum = val
+       }
+    })  
+    // newSelectedRows[index].medicineNum = val;
     this.setState({
       selectedMedicines: newSelectedRows,
     });
+    console.log(this.state.selectedMedicines)
   }
 
   onMedicineDel = (row)=>{
@@ -325,6 +331,7 @@ class TemplateAdd extends PureComponent {
   }
 
   handleOK = () => {
+    debugger
     const { dispatch,form } = this.props;
     let selectedMedicines = this.state.selectedMedicines;
     if(!selectedMedicines || selectedMedicines.length<=0){
@@ -589,7 +596,8 @@ class TemplateAdd extends PureComponent {
         title: '数量',
         dataIndex: 'medicineNum',
         render(val,row,index) {
-          return <InputNumber min={1} max={1000} defaultValue={val} onChange={(val)=>onMedicineNumChange(val,index)} />
+          var k = <InputNumber id={row.medicionNo} min={1} max={1000} defaultValue={row.medicineNum} onChange={(val)=>onMedicineNumChange(val,row,index)} />
+          return k
         },
       }
     )
@@ -658,13 +666,12 @@ class TemplateAdd extends PureComponent {
           </FormItem>
 
           {(selectedMedicines&&selectedMedicines.length>0)?(<Divider style={{ margin: '40px 0 24px' }} />):""} 
-
            {
              (selectedMedicines&&selectedMedicines.length>0)?(
-              <Table columns={columns} dataSource={selectedMedicines}  />
+              <Table columns={columns} dataSource={selectedMedicines}  pagination={false} />
              ):""
            }   
-
+         
           <Divider style={{ margin: '40px 0 24px' }} />
             <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
             <Col md={4} offset={8} sm={24}>

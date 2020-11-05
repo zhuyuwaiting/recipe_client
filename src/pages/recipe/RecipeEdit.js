@@ -163,10 +163,10 @@ const TemplateForm = Form.create()(props => {
 
 
   let columns=[
-    {
-      title: '处方编号',
-      dataIndex: 'recipeTemplateNo',
-    },
+    // {
+    //   title: '处方编号',
+    //   dataIndex: 'recipeTemplateNo',
+    // },
     {
       title: '处方类型',
       dataIndex: 'recipeType',
@@ -208,17 +208,17 @@ const TemplateForm = Form.create()(props => {
     const columns = [
       // { title: '药品编号', dataIndex: 'medicineNo', key: 'medicineNo' },
       { title: '药品名称', dataIndex: 'medicineVO.name', key: 'name' },
+      { title: '数量', dataIndex: 'medicineNum', key: 'medicineNum' },
       { title: '单位', dataIndex: 'medicineVO.type', key: 'type' ,
         render:(value,row)=>{
           if(value=="CHINESE_MEDICINE"){
             return row.medicineVO.unitInfo.name;
           }else{
-            return (row.medicineVO.cellWeight/100).toFixed(2)+''+(row.medicineVO.cellUnitInfo?row.medicineVO.cellUnitInfo.name:'')
-        +'*'+row.medicineVO.cellNum+'/'+row.medicineVO.unitInfo.name;
+            return (row.medicineVO.spec)
           }
         }
       },
-      { title: '数量', dataIndex: 'medicineNum', key: 'medicineNum' },
+      
     ];
 
     return (
@@ -442,7 +442,6 @@ class RecipeEdit extends PureComponent {
   }
 
   handleSelectRows = rows => {
-
     let newSelectedRows = this.state.selectedMedicines;
     let newRows = rows.filter(row =>{
       for(let i = 0;i<newSelectedRows.length;i++){
@@ -1049,7 +1048,7 @@ class RecipeEdit extends PureComponent {
 
            {
              (selectedMedicines&&selectedMedicines.length>0)?(
-              <Table columns={columns} dataSource={selectedMedicines}  />
+              <Table columns={columns} dataSource={selectedMedicines}  pagination={false}/>
              ):""
            }   
           {
