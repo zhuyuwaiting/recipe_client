@@ -180,6 +180,11 @@ const TemplateForm = Form.create()(props => {
     {
       title: '疾病',
       dataIndex: 'disease',
+        render(val,row){
+          return (<Tooltip placement="rightTop" title={val}>
+          {val.substring(0,10) + '...'}
+        </Tooltip>);
+        }
     },
     {
       title: '科别',
@@ -584,6 +589,7 @@ class RecipeEdit extends PureComponent {
       const values = {
         ...fieldsValue,
         type:recipeType=='CHINESE'?'CHINESE_MEDICINE':'WESTERN_MEDICINE',
+        needDetails:true,
       };
 
       this.setState({
@@ -602,6 +608,7 @@ class RecipeEdit extends PureComponent {
     const { dispatch } = this.props;
     
     console.log('template:',template,this.state.selectedMedicines);
+    debugger
     let newSelectedRows = template.recipeTemplateDetailVOS.map((recipeTemplateDetail)=>{
       let newSelectedRow = recipeTemplateDetail.medicineVO;
       newSelectedRow.medicineNum = recipeTemplateDetail.medicineNum;
