@@ -307,6 +307,9 @@ class RecipeEdit extends PureComponent {
              let selectedMedicines = response.recipeInfoVO.recipeDetailVOS.map(recipeDetailVO=>{
                let medicineVO = recipeDetailVO.medicineVO
                medicineVO['medicineNum'] = recipeDetailVO.medicineNum;
+               if (recipeDetailVO.medicineAdvice){
+                medicineVO['medicalAdvice'] = recipeDetailVO.medicineAdvice;
+               }
                return medicineVO;
              })
             this.setState({
@@ -431,6 +434,13 @@ class RecipeEdit extends PureComponent {
   onMedicineNumChange = (val,index)=>{
     let newSelectedRows = this.state.selectedMedicines;
     newSelectedRows[index].medicineNum = val;
+    this.setState({
+      selectedMedicines: newSelectedRows,
+    });
+  }
+  onMedicineAdviceChange = (val,index,row)=>{
+    let newSelectedRows = this.state.selectedMedicines;
+    newSelectedRows[index].medicalAdvice = val.target.value;
     this.setState({
       selectedMedicines: newSelectedRows,
     });
@@ -648,6 +658,7 @@ class RecipeEdit extends PureComponent {
       return {
         medicineNo:selectedRow.medicineNo,
         medicineNum:selectedRow.medicineNum,
+        medicineAdvice:selectedRow.medicalAdvice,
       }
     })
     form.validateFields((err, fieldsValue) => {
@@ -714,10 +725,10 @@ class RecipeEdit extends PureComponent {
           return val?val.name:row.takingWay;
         },
       },
-      {
-        title: '医嘱',
-        dataIndex: 'medicalAdvice'
-      },
+      // {
+      //   title: '医嘱',
+      //   dataIndex: 'medicalAdvice',
+      // },
       { title: '创建时间', dataIndex: 'createTime', key: 'createTime' ,
           render:(value,index)=>{
             var time = moment(new Date(value)).format("YYYY-MM-DD HH:mm:ss"); ;
@@ -890,8 +901,18 @@ class RecipeEdit extends PureComponent {
     } = this.state;
     let columns = this.getColumns(recipeType);
     let onMedicineNumChange = this.onMedicineNumChange;
+    let onMedicineAdviceChange = this.onMedicineAdviceChange;
     let onMedicineDel = this.onMedicineDel;
     columns.pop();
+    columns.push(
+      {
+        title: '医嘱',
+        dataIndex: 'medicalAdvice',
+        render(val,row,index) {
+          return <Input defaultValue={row.medicalAdvice} onChange={(vale)=>onMedicineAdviceChange(vale,index,row)} />
+        },
+      }
+    )
     columns.push(
       {
         title: '数量',
