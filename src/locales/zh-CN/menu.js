@@ -11,8 +11,8 @@ export default {
   'menu.medicine.chinese': '中药管理',
   'menu.medicine.western': '西药管理',
   'menu.recipe': '处方管理',
-  'menu.recipe.template': '模板管理',
-  'menu.recipe.recipeManage': '处方管理',
+  'menu.recipe.template': '协定处方管理',
+  'menu.recipe.recipeManage': '处方',
   'menu.form.stepform': '分步表单',
   'menu.form.stepform.info': '分步表单（填写转账信息）',
   'menu.form.stepform.confirm': '分步表单（确认转账信息）',
@@ -43,5 +43,5 @@ export default {
   'menu.account.trigger': '触发报错',
   'menu.account.logout': '退出登录',
   'menu.enumInfo': '枚举管理',
-  'menu.enumInfo.manage': '枚举管理',
+  'menu.enumInfo.manage': '枚举',
 };

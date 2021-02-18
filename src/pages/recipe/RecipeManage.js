@@ -64,6 +64,7 @@ function info(record) {
   let medicines = record.recipeDetailVOS.map(recipeDetailVO =>{
     let medicineVO = recipeDetailVO.medicineVO;
     medicineVO.medicineNum = recipeDetailVO.medicineNum;
+    medicineVO.medicalAdvice = recipeDetailVO.medicineAdvice;
     return medicineVO;
   });
   //转为两个两个的
@@ -102,40 +103,45 @@ function info(record) {
 
           {record.recipeType=='CHINESE'?(<Card bordered={false}>
             {
-            // chineseMedicine.map(medicines=>{
-            //     return (
-            // <Row style={{marginTop:40}}>
-            //     <Col span={3}><Icon type="star" theme="filled" />&nbsp; {medicines[0].name }</Col>
-            //     <Col span={3}>{medicines[0].takingWayInfo.name}</Col>
-            //     <Col span={3}>{medicines[0].medicineNum+' '+medicines[0].unitInfo.name}</Col>
-            //     {/* <Col span={3}>{medicines[0].medicalAdviceInfo.name}</Col> */}
-
-            //     <Col span={3}> </Col>
-            //     {
-            //       medicines[1]?(<Col span={3}><Icon type="star" theme="filled" />&nbsp;{medicines[1]?medicines[1].name:"" }</Col>):(
-            //         <Col span={3}></Col>
-            //       )
-            //     }
-                
-            //     <Col span={3}>{medicines[1]?medicines[1].takingWayInfo.name:""}</Col>
-            //     <Col span={3}>{medicines[1]?(medicines[1].medicineNum+" "+medicines[1].unitInfo.name):''}</Col>
-            //     {/* <Col span={3}>{medicines[1]?medicines[1].medicalAdviceInfo.name:""}</Col> */}
-            // </Row>
-            //     );
-            //   })
-
-            medicines.map(medicine=>{
-              return (
-          <Row style={{marginTop:40}}>
-              <Col span={3}><Icon type="star" theme="filled" />&nbsp; {medicine.name }</Col>
-              <Col span={3}>{medicine.takingWayInfo.name}</Col>
-              <Col span={3}>{medicine.medicineNum+' '+medicine.unitInfo.name}</Col>
-              <Col span={3}>{medicine.medicalAdvice?medicine.medicalAdvice:""}</Col>
-          </Row>
-              );
-            })
-
+            chineseMedicine.map(medicines=>{
+              console.log(medicines)
+              if (medicines.length <=1){
+                return (
+                  <Row style={{marginTop:40}}>
+                  <Col span={3}><Icon type="star" theme="filled" />&nbsp; {medicines[0].name }</Col>
+                  <Col span={3}>{medicines[0].takingWayInfo.name}</Col>
+                  <Col span={3}>{medicines[0].medicineNum+' '+medicines[0].unitInfo.name}</Col>
+                  <Col span={3}>{medicines[0].medicalAdvice?medicines[0].medicalAdvice:""}</Col>
+                </Row>
+                );
               }
+                return (
+                  <Row style={{marginTop:40}}>
+                  <Col span={3}><Icon type="star" theme="filled" />&nbsp; {medicines[0].name }</Col>
+                  <Col span={3}>{medicines[0].takingWayInfo.name}</Col>
+                  <Col span={3}>{medicines[0].medicineNum+' '+medicines[0].unitInfo.name}</Col>
+                  <Col span={3}>{medicines[0].medicalAdvice?medicines[0].medicalAdvice:""}</Col>
+
+                  <Col span={3}><Icon type="star" theme="filled" />&nbsp; {medicines[1].name }</Col>
+                  <Col span={3}>{medicines[1].takingWayInfo.name}</Col>
+                  <Col span={3}>{medicines[1].medicineNum+' '+medicines[1].unitInfo.name}</Col>
+                  <Col span={3}>{medicines[1].medicalAdvice?medicines[1].medicalAdvice:""}</Col>
+              </Row>
+                );
+              })
+
+          //   medicines.map(medicine=>{
+          //     return (
+          // <Row style={{marginTop:40}}>
+          //     <Col span={3}><Icon type="star" theme="filled" />&nbsp; {medicine.name }</Col>
+          //     <Col span={3}>{medicine.takingWayInfo.name}</Col>
+          //     <Col span={3}>{medicine.medicineNum+' '+medicine.unitInfo.name}</Col>
+          //     <Col span={3}>{medicine.medicalAdvice?medicine.medicalAdvice:""}</Col>
+          // </Row>
+          //     );
+          //   })
+
+           }
           </Card>):(<Card bordered={false}>
             {medicines.map(medicine=>{
                 return (
