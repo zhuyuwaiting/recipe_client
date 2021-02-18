@@ -64,7 +64,9 @@ function info(record) {
   let medicines = record.recipeDetailVOS.map(recipeDetailVO =>{
     let medicineVO = recipeDetailVO.medicineVO;
     medicineVO.medicineNum = recipeDetailVO.medicineNum;
-    medicineVO.medicalAdvice = recipeDetailVO.medicineAdvice;
+    if (recipeDetailVO.medicineAdvice){
+      medicineVO.medicalAdvice = recipeDetailVO.medicineAdvice;
+    }
     return medicineVO;
   });
   //转为两个两个的
