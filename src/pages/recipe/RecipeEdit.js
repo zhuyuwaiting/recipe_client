@@ -622,6 +622,9 @@ class RecipeEdit extends PureComponent {
     let newSelectedRows = template.recipeTemplateDetailVOS.map((recipeTemplateDetail)=>{
       let newSelectedRow = recipeTemplateDetail.medicineVO;
       newSelectedRow.medicineNum = recipeTemplateDetail.medicineNum;
+      if(recipeTemplateDetail.medicineAdvice){
+        newSelectedRow.medicalAdvice = recipeTemplateDetail.medicineAdvice;
+      }
       return newSelectedRow;
     })
     this.setState({

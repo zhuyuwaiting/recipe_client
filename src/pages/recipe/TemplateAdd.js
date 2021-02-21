@@ -204,7 +204,13 @@ class TemplateAdd extends PureComponent {
       selectedMedicines: newSelectedRows,
     });
   }
-  
+  onMedicineAdviceChange = (val,index,row)=>{
+    let newSelectedRows = this.state.selectedMedicines;
+    newSelectedRows[index].medicalAdvice = val.target.value;
+    this.setState({
+      selectedMedicines: newSelectedRows,
+    });
+  }
 
   onMedicineDel = (row)=>{
     let newSelectedRows = this.state.selectedMedicines;
@@ -313,6 +319,7 @@ class TemplateAdd extends PureComponent {
       return {
         medicineNo:selectedRow.medicineNo,
         medicineNum:selectedRow.medicineNum,
+        medicineAdvice: selectedRow.medicalAdvice
       }
     })
     form.validateFields((err, fieldsValue) => {
@@ -381,10 +388,10 @@ class TemplateAdd extends PureComponent {
           return val?val.name:row.takingWay;
         },
       },
-      {
-        title: '医嘱',
-        dataIndex: 'medicalAdvice'
-      },
+      // {
+      //   title: '医嘱',
+      //   dataIndex: 'medicalAdvice'
+      // },
       { title: '创建时间', dataIndex: 'createTime', key: 'createTime' ,
           render:(value,index)=>{
             var time = moment(new Date(value)).format("YYYY-MM-DD HH:mm:ss"); ;
@@ -444,10 +451,10 @@ class TemplateAdd extends PureComponent {
             return val?val.name:row.unit;
           },
         },
-        {
-          title: '医嘱',
-          dataIndex: 'medicalAdvice'
-        },
+        // {
+        //   title: '医嘱',
+        //   dataIndex: 'medicalAdvice'
+        // },
         { title: '创建时间', dataIndex: 'createTime', key: 'createTime' ,
             render:(value,index)=>{
               var time = moment(new Date(value)).format("YYYY-MM-DD HH:mm:ss"); ;
@@ -570,8 +577,18 @@ class TemplateAdd extends PureComponent {
       ,recipeType } = this.state;
     let columns = this.getColumns(recipeType);
     let onMedicineNumChange = this.onMedicineNumChange;
+    let onMedicineAdviceChange = this.onMedicineAdviceChange;
     let onMedicineDel = this.onMedicineDel;
     columns.pop();
+    columns.push(
+      {
+        title: '医嘱',
+        dataIndex: 'medicalAdvice',
+        render(val,row,index) {
+          return <Input defaultValue={row.medicalAdvice} onChange={(vale)=>onMedicineAdviceChange(vale,index,row)} />
+        },
+      }
+    )
     columns.push(
       {
         title: '数量',

@@ -138,6 +138,9 @@ function info(record) {
   let medicines = record.recipeTemplateDetailVOS.map(recipeTemplateDetailVO =>{
     let medicineVO = recipeTemplateDetailVO.medicineVO;
     medicineVO.medicineNum = recipeTemplateDetailVO.medicineNum;
+    if (recipeTemplateDetailVO.medicineAdvice){
+    medicineVO.medicalAdvice = recipeTemplateDetailVO.medicineAdvice;
+    }
     return medicineVO;
   });
 

@@ -145,6 +145,9 @@ class TemplateAdd extends PureComponent {
              let selectedMedicines = response.recipeTemplateVO.recipeTemplateDetailVOS.map(recipeTemplateDetailVO=>{
                let medicineVO = recipeTemplateDetailVO.medicineVO
                medicineVO['medicineNum'] = recipeTemplateDetailVO.medicineNum;
+               if (recipeTemplateDetailVO.medicineAdvice){
+                medicineVO['medicalAdvice'] = recipeTemplateDetailVO.medicineAdvice;
+               }
                return medicineVO;
              })
             this.setState({
@@ -234,6 +237,18 @@ class TemplateAdd extends PureComponent {
       selectedMedicines: newSelectedRows,
     });
     console.log(this.state.selectedMedicines)
+  }
+
+  onMedicineAdviceChange = (val,index,row)=>{
+    let newSelectedRows = this.state.selectedMedicines;
+    newSelectedRows.forEach(selectRow =>{
+      if(selectRow.medicineNo ==  row.medicineNo){
+       selectRow.medicalAdvice = val.target.value;
+      }
+   })  
+    this.setState({
+      selectedMedicines: newSelectedRows,
+    });
   }
 
   onMedicineDel = (row)=>{
@@ -342,6 +357,7 @@ class TemplateAdd extends PureComponent {
       return {
         medicineNo:selectedRow.medicineNo,
         medicineNum:selectedRow.medicineNum,
+        medicineAdvice: selectedRow.medicalAdvice
       }
     })
     form.validateFields((err, fieldsValue) => {
@@ -400,10 +416,10 @@ class TemplateAdd extends PureComponent {
           return val?val.name:row.takingWay;
         },
       },
-      {
-        title: '医嘱',
-        dataIndex: 'medicalAdvice'
-      },
+      // {
+      //   title: '医嘱',
+      //   dataIndex: 'medicalAdvice'
+      // },
       {
         title: '药品单位',
         dataIndex: 'unitInfo',
@@ -463,10 +479,10 @@ class TemplateAdd extends PureComponent {
             return val?val.name:row.unit;
           },
         },
-        {
-          title: '医嘱',
-          dataIndex: 'medicalAdvice'
-        },
+        // {
+        //   title: '医嘱',
+        //   dataIndex: 'medicalAdvice'
+        // },
         { title: '创建时间', dataIndex: 'createTime', key: 'createTime' ,
             render:(value,index)=>{
               var time = moment(new Date(value)).format("YYYY-MM-DD HH:mm:ss"); ;
@@ -589,8 +605,18 @@ class TemplateAdd extends PureComponent {
       ,recipeType } = this.state;
     let columns = this.getColumns(recipeType);
     let onMedicineNumChange = this.onMedicineNumChange;
+    let onMedicineAdviceChange = this.onMedicineAdviceChange;
     let onMedicineDel = this.onMedicineDel;
     columns.pop();
+    columns.push(
+      {
+        title: '医嘱',
+        dataIndex: 'medicalAdvice',
+        render(val,row,index) {
+          return <Input defaultValue={row.medicalAdvice} onChange={(vale)=>onMedicineAdviceChange(vale,index,row)} />
+        },
+      }
+    )
     columns.push(
       {
         title: '数量',
