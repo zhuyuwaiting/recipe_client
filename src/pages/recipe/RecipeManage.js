@@ -143,6 +143,45 @@ function info(record) {
           //   })
 
            }
+           <Row style={{marginTop:40}}>
+            {record.recipeType=='CHINESE'?(<Col span={12}>付数： <strong style={{fontSize:20}}>{record.num}</strong>&nbsp;付</Col>):(
+              <Col span={12}></Col>
+            )}
+            {/* <Col span={8} offset={4}>总金额：&nbsp;&nbsp;&nbsp; <strong style={{fontSize:20}}>{record.num}</strong></Col> */}
+            </Row>
+            {
+          <Row style={{marginTop:100}}>
+                <Col span={12}>
+                <table style={{width:350}} border="1">
+                    <tr>
+                    <th ><input style={{border:"none",borderBottom:1,borderBottomStyle:"solid"}} size={20} disabled/> 剂</th>
+                    </tr>
+                    <tr>
+                      <th ><span >药费</span><span style={{marginLeft:60}}>元</span> <span style={{marginLeft:60}}>角</span><span style={{marginLeft:60}}>分</span></th>
+                    </tr>
+                </table>
+                </Col>
+                <Col span={12} style={{paddingTop:25 ,paddingLeft:170}}>
+                      <span>医师</span> <input style={{border:"none",borderBottom:1,borderBottomStyle:"solid"}} disabled/>
+                </Col>
+          </Row>
+           }
+          {
+             <Row style={{marginTop:20}}>
+             <Col span={6}>
+             <span>审核</span> <input style={{border:"none",borderBottom:1,borderBottomStyle:"solid"}} size={12} disabled/>
+             </Col>
+             <Col span={6} >
+                   <span>调配</span> <input style={{border:"none",borderBottom:1,borderBottomStyle:"solid"}} size={12} disabled/>
+             </Col>
+             <Col span={6} >
+                   <span>核对</span> <input style={{border:"none",borderBottom:1,borderBottomStyle:"solid"}} size={12} disabled/>
+             </Col>
+             <Col span={6}>
+                   <span>发药药师</span> <input style={{border:"none",borderBottom:1,borderBottomStyle:"solid"}} size={12} disabled/>
+             </Col>
+       </Row>
+          }
           </Card>):(<Card bordered={false}>
             {medicines.map(medicine=>{
                 return (
@@ -154,17 +193,47 @@ function info(record) {
                 <Col span={2}>{medicine.frequencyInfo?medicine.frequencyInfo.name:""}</Col>
                 <Col span={5}>{medicine.medicalAdvice?medicine.medicalAdvice:""}</Col>
             </Row>
-                );
-              })}
-           
+
             
+                );
+              } 
+              )}
+           {
+          <Row style={{marginTop:100}}>
+                <Col span={12}>
+                <table style={{width:350}} border="1">
+                    <tr>
+                      <th>瓶费&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                      <th>注射费&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                    </tr>
+                    <tr>
+                      <th colSpan="2"><span >药费</span><span style={{marginLeft:60}}>元</span> <span style={{marginLeft:60}}>角</span><span style={{marginLeft:60}}>分</span></th>
+                    </tr>
+                </table>
+                </Col>
+                <Col span={12} style={{paddingTop:25 ,paddingLeft:170}}>
+                      <span>医师</span> <input style={{border:"none",borderBottom:1,borderBottomStyle:"solid"}} disabled/>
+                </Col>
+          </Row>
+           }
+          {
+             <Row style={{marginTop:20}}>
+             <Col span={6}>
+             <span>审核</span> <input style={{border:"none",borderBottom:1,borderBottomStyle:"solid"}} size={12} disabled/>
+             </Col>
+             <Col span={6} >
+                   <span>调配</span> <input style={{border:"none",borderBottom:1,borderBottomStyle:"solid"}} size={12} disabled/>
+             </Col>
+             <Col span={6} >
+                   <span>核对</span> <input style={{border:"none",borderBottom:1,borderBottomStyle:"solid"}} size={12} disabled/>
+             </Col>
+             <Col span={6}>
+                   <span>发药药师</span> <input style={{border:"none",borderBottom:1,borderBottomStyle:"solid"}} size={12} disabled/>
+             </Col>
+       </Row>
+          }
           </Card>)}
-          <Row style={{marginTop:40}}>
-            {record.recipeType=='CHINESE'?(<Col span={12}>付数： <strong style={{fontSize:20}}>{record.num}</strong>&nbsp;付</Col>):(
-              <Col span={12}></Col>
-            )}
-            {/* <Col span={8} offset={4}>总金额：&nbsp;&nbsp;&nbsp; <strong style={{fontSize:20}}>{record.num}</strong></Col> */}
-            </Row>
+          
       </Card>
     ),
     
