@@ -87,6 +87,9 @@ function getColumns(record){
       {
         title: '数量',
         dataIndex: 'medicineNum',
+        render(val,row) {
+          return val + "" + (row.unitInfo?row.unitInfo.name:"")
+        },
       }
     ];
   }

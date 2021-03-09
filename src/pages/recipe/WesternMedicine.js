@@ -73,6 +73,19 @@ const CreateForm = Form.create()(props => {
         })(<Input placeholder="请输入药品规格  例子:50mg x 10粒/盒" />)}
       </FormItem>
 
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="药品单位">
+        {form.getFieldDecorator('unit', {
+          rules: [{ required: true, message: '药品单位不可以为空', }],
+        })(
+          <Select placeholder="请选择" style={{ width: '100%' }}>
+            {(enumInfos&&enumInfos['MEDICINE_UNIT_EN'])?
+            enumInfos['MEDICINE_UNIT_EN'].map(function(k) {
+              return <Option value={k.value}>{k.name}</Option>
+            }):"" }
+          </Select>
+        )}
+      </FormItem>
+
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="每次剂量">
         {form.getFieldDecorator('eachDose', {
           rules: [{ required: true, message: '每次剂量不可以为空', }],
@@ -179,7 +192,20 @@ const UpdateForm = Form.create()(props => {
         })(<Input placeholder="请输入药品规格 例子: 50mg x 10粒/盒" />)}
       </FormItem>
 
-    
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="药品单位">
+        {form.getFieldDecorator('unit', {
+          rules: [{ required: true, message: '药品单位不可以为空', }],
+          initialValue:updateRow?updateRow.unit:"",
+        })(
+          <Select placeholder="请选择" style={{ width: '100%' }}>
+            {(enumInfos&&enumInfos['MEDICINE_UNIT_EN'])?
+            enumInfos['MEDICINE_UNIT_EN'].map(function(k) {
+              return <Option value={k.value}>{k.name}</Option>
+            }):"" }
+          </Select>
+        )}
+      </FormItem>
+
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="每次剂量">
         {form.getFieldDecorator('eachDose', {
           rules: [{ required: true, message: '每次剂量不可以为空', }],
@@ -296,6 +322,13 @@ class WesternMedicine extends PureComponent {
     {
       title: '药品规格',
       dataIndex: 'spec'
+    },
+    {
+      title: '药品单位',
+      dataIndex: 'unitInfo',
+      render(val,row) {
+        return val?val.name:row.unit;
+      },
     },
     {
       title: '每次剂量',

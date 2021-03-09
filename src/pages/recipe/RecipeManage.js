@@ -78,8 +78,8 @@ function info(record) {
       chineseMedicine.push([medicines[i*2],medicines[i*2+1]])
      }
   }
-  console.log(chineseMedicine);
-
+  console.log('chineseMedicine:',chineseMedicine);
+  console.log('medicine:',medicines);
   Modal.confirm({
     title: '处方详情',
     width:1000,
@@ -106,12 +106,11 @@ function info(record) {
           {record.recipeType=='CHINESE'?(<Card bordered={false}>
             {
             chineseMedicine.map(medicines=>{
-              console.log(medicines)
               if (medicines.length <=1){
                 return (
                   <Row style={{marginTop:40}}>
                   <Col span={3}><Icon type="star" theme="filled" />&nbsp; {medicines[0].name }</Col>
-                  <Col span={3}>{medicines[0].takingWayInfo.name}</Col>
+                  {/* <Col span={3}>{medicines[0].takingWayInfo.name}</Col> */}
                   <Col span={3}>{medicines[0].medicineNum+' '+medicines[0].unitInfo.name}</Col>
                   <Col span={3}>{medicines[0].medicalAdvice?medicines[0].medicalAdvice:""}</Col>
                 </Row>
@@ -122,12 +121,12 @@ function info(record) {
                   <Col span={3}><Icon type="star" theme="filled" />&nbsp; {medicines[0].name }</Col>
                   <Col span={3}>{medicines[0].takingWayInfo.name}</Col>
                   <Col span={3}>{medicines[0].medicineNum+' '+medicines[0].unitInfo.name}</Col>
-                  <Col span={3}>{medicines[0].medicalAdvice?medicines[0].medicalAdvice:""}</Col>
+                  {/* <Col span={3}>{medicines[0].medicalAdvice?medicines[0].medicalAdvice:""}</Col> */}
 
                   <Col span={3}><Icon type="star" theme="filled" />&nbsp; {medicines[1].name }</Col>
-                  <Col span={3}>{medicines[1].takingWayInfo.name}</Col>
-                  <Col span={3}>{medicines[1].medicineNum+' '+medicines[1].unitInfo.name}</Col>
-                  <Col span={3}>{medicines[1].medicalAdvice?medicines[1].medicalAdvice:""}</Col>
+                  {/* <Col span={3}>{medicines[1].takingWayInfo.name}</Col> */}
+                  {/* <Col span={3}>{medicines[1].medicineNum+' '+medicines[1].unitInfo.name}</Col> */}
+                  {/* <Col span={3}>{medicines[1].medicalAdvice?medicines[1].medicalAdvice:""}</Col> */}
               </Row>
                 );
               })
@@ -149,8 +148,8 @@ function info(record) {
                 return (
             <Row style={{marginTop:40}}>
                 <Col span={4}>{medicine.name }</Col>
-                <Col span={6}>{'('+ (medicine.spec?medicine.spec:"未知规格")+')  X '+ medicine.medicineNum}</Col>
-                <Col span={5}>{"每次剂量： "+(medicine.eachDose/100).toFixed(2)+medicine.cellUnitInfo.name}</Col>
+                <Col span={6}>{'('+ (medicine.spec?medicine.spec:"未知规格")+')  X '+ medicine.medicineNum + (medicine.unitInfo?medicine.unitInfo.name:"")}</Col>
+                {/* <Col span={5}>{"每次剂量： "+(medicine.eachDose/100).toFixed(2)+medicine.cellUnitInfo.name}</Col> */}
                 <Col span={2}>{medicine.takingWayInfo?medicine.takingWayInfo.name:""}</Col>
                 <Col span={2}>{medicine.frequencyInfo?medicine.frequencyInfo.name:""}</Col>
                 <Col span={5}>{medicine.medicalAdvice?medicine.medicalAdvice:""}</Col>

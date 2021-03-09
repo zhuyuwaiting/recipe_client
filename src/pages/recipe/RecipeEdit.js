@@ -927,6 +927,15 @@ class RecipeEdit extends PureComponent {
     )
     columns.push(
       {
+        // title: '数量',
+        dataIndex: 'unitInfo',
+        render(val,row,index) {
+          return val?val.name:row.unit;
+        },
+      }
+    )
+    columns.push(
+      {
         title: '',
         dataIndex: 'operator',
         render(val,row,index) {
