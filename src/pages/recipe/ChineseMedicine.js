@@ -27,6 +27,8 @@ import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
 import styles from './ChineseMedicine.less';
+import { checkPermissions } from '@/components/Authorized/CheckPermissions';
+import { getAuthority } from '@/utils/authority';
 
 const FormItem = Form.Item;
 const { Step } = Steps;
@@ -200,68 +202,76 @@ class ChineseMedicine extends PureComponent {
     updateRow:{},
   };
 
-  columns = [
-    // {
-    //   title: '药品编号',
-    //   dataIndex: 'medicineNo',
-    // },
-    {
-      title: '药品名称',
-      dataIndex: 'name',
-    },
-    // {
-    //   title: '英文名称',
-    //   dataIndex: 'englishName',
-    // },
-    {
-      title: '药品数量',
-      dataIndex: 'eachDose',
-  
-    },
-    {
-      title: '药品单位',
-      dataIndex: 'unitInfo',
-      render(val,row) {
-        return val?val.name:row.unit;
+
+
+  getColume = ()=>{
+     let columns = [
+      // {
+      //   title: '药品编号',
+      //   dataIndex: 'medicineNo',
+      // },
+      {
+        title: '药品名称',
+        dataIndex: 'name',
       },
-    },
-    {
-      title: '用药方式',
-      dataIndex: 'takingWayInfo',
-      render(val,row) {
-        return val?val.name:row.takingWay;
+      // {
+      //   title: '英文名称',
+      //   dataIndex: 'englishName',
+      // },
+      {
+        title: '药品数量',
+        dataIndex: 'eachDose',
+    
       },
-    },
-    {
-      title: '医嘱',
-      dataIndex: 'medicalAdvice'
-    },
-    { title: '创建时间', dataIndex: 'createTime', key: 'createTime' ,
-        render:(value,index)=>{
-          var time = moment(new Date(value)).format("YYYY-MM-DD HH:mm:ss"); ;
-          return time;
-        }
+      {
+        title: '药品单位',
+        dataIndex: 'unitInfo',
+        render(val,row) {
+          return val?val.name:row.unit;
+        },
       },
-    {
-      title: '操作',
-      render: (text, record,index) => (
-        <Fragment>
-          <a onClick={() => this.handleUpdateModalVisible(true,record,index)}>修改</a>
-          <Divider type="vertical" />
-          <a onClick={
-            () =>
-            (Modal.confirm({
-              title: '删除药品',
-              content: '确定删除该药品吗？',
-              okText: '确认',
-              cancelText: '取消',
-              onOk:  () => this.handleDelete(record,index),
-            }))
-          }>删除</a>
-        </Fragment>
-      ),
-    },
-  ];
+      {
+        title: '用药方式',
+        dataIndex: 'takingWayInfo',
+        render(val,row) {
+          return val?val.name:row.takingWay;
+        },
+      },
+      {
+        title: '医嘱',
+        dataIndex: 'medicalAdvice'
+      },
+      { title: '创建时间', dataIndex: 'createTime', key: 'createTime' ,
+          render:(value,index)=>{
+            var time = moment(new Date(value)).format("YYYY-MM-DD HH:mm:ss"); ;
+            return time;
+          }
+        },
+      {
+        title: '操作',
+        render: (text, record,index) => (
+          <Fragment>
+            <a onClick={() => this.handleUpdateModalVisible(true,record,index)}>修改</a>
+            <Divider type="vertical" />
+            <a onClick={
+              () =>
+              (Modal.confirm({
+                title: '删除药品',
+                content: '确定删除该药品吗？',
+                okText: '确认',
+                cancelText: '取消',
+                onOk:  () => this.handleDelete(record,index),
+              }))
+            }>删除</a>
+          </Fragment>
+        ),
+      },
+    ];
+    if(checkPermissions(getAuthority(),'admin','ok','error')=='error'){
+      columns.pop()
+    }
+    return columns
+  }
 
   componentDidMount() {
     const { dispatch } = this.props;
@@ -529,9 +539,12 @@ class ChineseMedicine extends PureComponent {
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderForm()}</div>
             <div className={styles.tableListOperator}>
-              <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
-                新建
-              </Button>
+            {
+              checkPermissions(getAuthority(),'admin','ok','error')=='ok'&&( <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
+              新建
+            </Button>)
+            }
+             
               {selectedRows.length > 0 && (
                 <span>
                   <Button onClick={
@@ -551,7 +564,7 @@ class ChineseMedicine extends PureComponent {
               selectedRows={selectedRows}
               loading={loading}
               data={data}
-              columns={this.columns}
+              columns={this.getColume()}
               onSelectRow={this.handleSelectRows}
               onChange={this.handleStandardTableChange}
             />

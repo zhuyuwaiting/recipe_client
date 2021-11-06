@@ -28,6 +28,8 @@ import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
 import styles from './WesternMedicine.less';
+import { checkPermissions } from '@/components/Authorized/CheckPermissions';
+import { getAuthority } from '@/utils/authority';
 
 const FormItem = Form.Item;
 const { Step } = Steps;
@@ -293,95 +295,105 @@ class WesternMedicine extends PureComponent {
     updateRow:{},
   };
 
-  columns = [
-    // {
-    //   title: '药品编号',
-    //   dataIndex: 'medicineNo',
-    //   render(val,row){
-    //     return (<Tooltip placement="rightTop" title={val}>
-    //     {val.substring(0,5) + '...'}
-    //   </Tooltip>);
-    //   }
-    // },
-    {
-      title: '药品名称',
-      dataIndex: 'name',
-    },
-    // {
-    //   title: '英文名称',
-    //   dataIndex: 'englishName',
-    // },
-    // {
-    //   title: '单元组成',
-    //   dataIndex: 'cellWeight',
-    //   render(val,row) {
-    //     return (row.cellWeight/100).toFixed(2)+''+(row.cellUnitInfo?row.cellUnitInfo.name:'')
-    //     +'*'+row.cellNum+'/'+row.unitInfo.name;
-    //   },
-    // },
-    {
-      title: '药品规格',
-      dataIndex: 'spec'
-    },
-    {
-      title: '药品单位',
-      dataIndex: 'unitInfo',
-      render(val,row) {
-        return val?val.name:row.unit;
+
+
+  getColume = ()=>{
+    let columns = [
+      // {
+      //   title: '药品编号',
+      //   dataIndex: 'medicineNo',
+      //   render(val,row){
+      //     return (<Tooltip placement="rightTop" title={val}>
+      //     {val.substring(0,5) + '...'}
+      //   </Tooltip>);
+      //   }
+      // },
+      {
+        title: '药品名称',
+        dataIndex: 'name',
       },
-    },
-    {
-      title: '每次剂量',
-      dataIndex: 'eachDose',
-      render(val,row) {
-        return (row.eachDose/100).toFixed(2) + (row.cellUnitInfo?row.cellUnitInfo.name:'');
+      // {
+      //   title: '英文名称',
+      //   dataIndex: 'englishName',
+      // },
+      // {
+      //   title: '单元组成',
+      //   dataIndex: 'cellWeight',
+      //   render(val,row) {
+      //     return (row.cellWeight/100).toFixed(2)+''+(row.cellUnitInfo?row.cellUnitInfo.name:'')
+      //     +'*'+row.cellNum+'/'+row.unitInfo.name;
+      //   },
+      // },
+      {
+        title: '药品规格',
+        dataIndex: 'spec'
       },
-    },
-    {
-      title: '用药方式',
-      dataIndex: 'takingWayInfo',
-      render(val,row) {
-        return val?val.name:"";
+      {
+        title: '药品单位',
+        dataIndex: 'unitInfo',
+        render(val,row) {
+          return val?val.name:row.unit;
+        },
       },
-    },
-    {
-      title: '用药频次',
-      dataIndex: 'frequencyInfo',
-      render(val,row) {
-        return val?val.name:"";
+      {
+        title: '每次剂量',
+        dataIndex: 'eachDose',
+        render(val,row) {
+          return (row.eachDose/100).toFixed(2) + (row.cellUnitInfo?row.cellUnitInfo.name:'');
+        },
       },
-    },
-   
-    {
-      title: '医嘱',
-      dataIndex: 'medicalAdvice'
-    },
-    { title: '创建时间', dataIndex: 'createTime', key: 'createTime' ,
-        render:(value,index)=>{
-          var time = moment(new Date(value)).format("YYYY-MM-DD HH:mm:ss"); ;
-          return time;
-        }
+      {
+        title: '用药方式',
+        dataIndex: 'takingWayInfo',
+        render(val,row) {
+          return val?val.name:"";
+        },
       },
-    {
-      title: '操作',
-      render: (text, record,index) => (
-        <Fragment>
-          <a onClick={() => this.handleUpdateModalVisible(true,record,index)}>修改</a>
-          <Divider type="vertical" />
-          <a onClick={
-            () =>
-            (Modal.confirm({
-              title: '删除药品',
-              content: '确定删除该药品吗？',
-              okText: '确认',
-              cancelText: '取消',
-              onOk:  () => this.handleDelete(record,index),
-            }))
-          }>删除</a>
-        </Fragment>
-      ),
-    },
-  ];
+      {
+        title: '用药频次',
+        dataIndex: 'frequencyInfo',
+        render(val,row) {
+          return val?val.name:"";
+        },
+      },
+     
+      {
+        title: '医嘱',
+        dataIndex: 'medicalAdvice'
+      },
+      { title: '创建时间', dataIndex: 'createTime', key: 'createTime' ,
+          render:(value,index)=>{
+            var time = moment(new Date(value)).format("YYYY-MM-DD HH:mm:ss"); ;
+            return time;
+          }
+        },
+      {
+        title: '操作',
+        render: (text, record,index) => (
+          <Fragment>
+            <a onClick={() => this.handleUpdateModalVisible(true,record,index)}>修改</a>
+            <Divider type="vertical" />
+            <a onClick={
+              () =>
+              (Modal.confirm({
+                title: '删除药品',
+                content: '确定删除该药品吗？',
+                okText: '确认',
+                cancelText: '取消',
+                onOk:  () => this.handleDelete(record,index),
+              }))
+            }>删除</a>
+          </Fragment>
+        ),
+      },
+    ];
+   if(checkPermissions(getAuthority(),'admin','ok','error')=='error'){
+     columns.pop()
+   }
+   return columns
+ }
+
+
 
   componentDidMount() {
     const { dispatch } = this.props;
@@ -653,9 +665,11 @@ class WesternMedicine extends PureComponent {
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderForm()}</div>
             <div className={styles.tableListOperator}>
-              <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
-                新建
-              </Button>
+              {
+              checkPermissions(getAuthority(),'admin','ok','error')=='ok'&&( <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
+              新建
+            </Button>)
+            }
               {selectedRows.length > 0 && (
                 <span>
                   <Button onClick={
@@ -675,7 +689,7 @@ class WesternMedicine extends PureComponent {
               selectedRows={selectedRows}
               loading={loading}
               data={data}
-              columns={this.columns}
+              columns={this.getColume()}
               onSelectRow={this.handleSelectRows}
               onChange={this.handleStandardTableChange}
             />

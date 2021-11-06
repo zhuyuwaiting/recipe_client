@@ -28,6 +28,8 @@ import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
 import styles from './Template.less';
+import { checkPermissions } from '@/components/Authorized/CheckPermissions';
+import { getAuthority } from '@/utils/authority';
 
 const FormItem = Form.Item;
 const { Step } = Steps;
@@ -195,7 +197,9 @@ class Template extends PureComponent {
     updateRow:{},
   };
 
-  columns = [
+
+  getColume = ()=>{
+  let columns = [
     // {
     //   title: '处方编号',
     //   dataIndex: 'recipeTemplateNo',
@@ -226,27 +230,35 @@ class Template extends PureComponent {
       },
     {
       title: '操作',
-      render: (text, record,index) => (
-        <Fragment>
+      render: (text, record,index) => {
+        if(checkPermissions(getAuthority(),'admin','ok','error')=='error'){
+          return ( <Fragment>
+            <a onClick={() => this.handleViewModalVisible(true,record,index)}>查看</a>
+            <Divider type="vertical" />
+            <a onClick={() => this.handleUpdateTemplate(true,record,index)}>修改</a>
+            <Divider type="vertical" />
+            <a onClick={
+              () =>
+              (Modal.confirm({
+                title: '删除药品',
+                content: '确定删除该模板吗？',
+                okText: '确认',
+                cancelText: '取消',
+                onOk:  () => this.handleDelete(record,index),
+              }))
+            }>删除</a>
+          </Fragment>)
+        }
+        return (
+          <Fragment>
           <a onClick={() => this.handleViewModalVisible(true,record,index)}>查看</a>
-          <Divider type="vertical" />
-          <a onClick={() => this.handleUpdateTemplate(true,record,index)}>修改</a>
-          <Divider type="vertical" />
-          <a onClick={
-            () =>
-            (Modal.confirm({
-              title: '删除药品',
-              content: '确定删除该模板吗？',
-              okText: '确认',
-              cancelText: '取消',
-              onOk:  () => this.handleDelete(record,index),
-            }))
-          }>删除</a>
         </Fragment>
-      ),
+        )
+      },
     },
   ];
-
+  return columns
+}
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
@@ -484,9 +496,12 @@ class Template extends PureComponent {
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderForm()}</div>
             <div className={styles.tableListOperator}>
-              <Button icon="plus" type="primary" onClick={() => this.handleTemplateAdd()}>
-                新建
-              </Button>
+            
+              {
+              checkPermissions(getAuthority(),'admin','ok','error')=='ok'&&( <Button icon="plus" type="primary" onClick={() => this.handleTemplateAdd()}>
+              新建
+            </Button>)
+            }
               {selectedRows.length > 0 && (
                 <span>
                   <Button onClick={
@@ -506,7 +521,7 @@ class Template extends PureComponent {
               selectedRows={selectedRows}
               loading={loading}
               data={data}
-              columns={this.columns}
+              columns={this.getColume()}
               onSelectRow={this.handleSelectRows}
               onChange={this.handleStandardTableChange}
             />

@@ -22,6 +22,9 @@ import {
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import styles from './EnumInfo.less';
 import { resolve } from 'url';
+import { getAuthority } from '@/utils/authority';
+import { checkPermissions } from '@/components/Authorized/CheckPermissions';
+
 const FormItem = Form.Item;
 
 const CreateForm = Form.create()(props => {
@@ -175,26 +178,32 @@ class EnumInfo extends PureComponent {
           return time;
         }
       },
-        {
-          title: '操作',
-          dataIndex: 'operation',
-          key: 'operation',
-          render: (value,row,index) => (
-            <span className="table-operation">
-              <a  onClick={
-                () =>
-                (Modal.confirm({
-                  title: '删除枚举',
-                  content: '确定删除该枚举吗？',
-                  okText: '确认',
-                  cancelText: '取消',
-                  onOk:  () => this.deleteEnumInfo(row,findex,index),
-                }))
-               }>删除</a>
-            </span>
-          ),
-        },
+        
       ];
+      if (checkPermissions(getAuthority(),'admin','ok','error')=='ok'){
+        columns.push( 
+          {
+            title: '操作',
+            dataIndex: 'operation',
+            key: 'operation',
+            render: (value,row,index) => (
+              <span className="table-operation">
+                <a  onClick={
+                  () =>
+                  (Modal.confirm({
+                    title: '删除枚举',
+                    content: '确定删除该枚举吗？',
+                    okText: '确认',
+                    cancelText: '取消',
+                    onOk:  () => this.deleteEnumInfo(row,findex,index),
+                  }))
+                 }>删除</a>
+              </span>
+            ),
+          }
+        )
+      }
+
       return (
         <Table
           columns={columns}
@@ -212,7 +221,11 @@ class EnumInfo extends PureComponent {
           return time;
         }
       },
-      {
+     
+    ];
+
+    if (checkPermissions(getAuthority(),'admin','ok','error')=='ok'){
+      columns.push( {
         title: '操作',
         dataIndex: 'operation',
         key: 'operation',
@@ -221,8 +234,12 @@ class EnumInfo extends PureComponent {
             <a  onClick={  () => this.handleModalVisible(true,row)}>新增</a>
           </span>
         ),
-      },
-    ];
+      })
+    }
+
+    console.log('当前权限:',getAuthority())
+    console.log('检查权限: ',checkPermissions('user', 'NULL', 'ok', 'error'))
+
     console.log(enumInfo.pagination);
     return (
       

@@ -28,6 +28,8 @@ import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
 import styles from './RecipeManage.less';
+import { checkPermissions } from '@/components/Authorized/CheckPermissions';
+import { getAuthority } from '@/utils/authority';
 
 const FormItem = Form.Item;
 const { Step } = Steps;
@@ -110,7 +112,7 @@ function info(record) {
                 return (
                   <Row style={{marginTop:40}}>
                   <Col span={3}><Icon type="star" theme="filled" />&nbsp; {medicines[0].name }</Col>
-                  {/* <Col span={3}>{medicines[0].takingWayInfo.name}</Col> */}
+                  <Col span={3}>{medicines[0].takingWayInfo.name}</Col>
                   <Col span={3}>{medicines[0].medicineNum+' '+medicines[0].unitInfo.name}</Col>
                   <Col span={3}>{medicines[0].medicalAdvice?medicines[0].medicalAdvice:""}</Col>
                 </Row>
@@ -121,12 +123,12 @@ function info(record) {
                   <Col span={3}><Icon type="star" theme="filled" />&nbsp; {medicines[0].name }</Col>
                   <Col span={3}>{medicines[0].takingWayInfo.name}</Col>
                   <Col span={3}>{medicines[0].medicineNum+' '+medicines[0].unitInfo.name}</Col>
-                  {/* <Col span={3}>{medicines[0].medicalAdvice?medicines[0].medicalAdvice:""}</Col> */}
+                  <Col span={3}>{medicines[0].medicalAdvice?medicines[0].medicalAdvice:""}</Col>
 
                   <Col span={3}><Icon type="star" theme="filled" />&nbsp; {medicines[1].name }</Col>
-                  {/* <Col span={3}>{medicines[1].takingWayInfo.name}</Col> */}
-                  {/* <Col span={3}>{medicines[1].medicineNum+' '+medicines[1].unitInfo.name}</Col> */}
-                  {/* <Col span={3}>{medicines[1].medicalAdvice?medicines[1].medicalAdvice:""}</Col> */}
+                  <Col span={3}>{medicines[1].takingWayInfo.name}</Col>
+                  <Col span={3}>{medicines[1].medicineNum+' '+medicines[1].unitInfo.name}</Col>
+                  <Col span={3}>{medicines[1].medicalAdvice?medicines[1].medicalAdvice:""}</Col>
               </Row>
                 );
               })
@@ -260,82 +262,100 @@ class RecipeManage extends PureComponent {
     updateRow:{},
   };
 
-  columns = [
-    // {
-    //   title: '处方编号',
-    //   dataIndex: 'recipeNo',
-    // },
-    {
-      title: '姓名',
-      dataIndex: 'patientName',
-    },
-    {
-      title: '性别',
-      dataIndex: 'patientSex',
-      render(val,row){
-        if(val =='0'){
-          return '男'
-        }
-        return '女';
-      }
-    },
-    {
-      title: '年龄',
-      dataIndex: 'patientAge',
-      render(val,row){
-        if(row.ageTypeName ==undefined || row.ageTypeName==""){
-          return val+'岁'
-        }
-        return val + row.ageTypeName;
-      }
-    },
-    {
-      title: '处方类型',
-      dataIndex: 'recipeType',
-      render(val,row){
-        if(val =='CHINESE'){
-          return '中药处方'
-        }
-        return '西药处方';
-      }
-    },
-    {
-      title: '疾病',
-      dataIndex: 'disease',
-    },
-    {
-      title: '科别',
-      dataIndex: 'classfication',
-    },
-    { title: '创建时间', dataIndex: 'createTime', key: 'createTime' ,
-        render:(value,index)=>{
-          var time = moment(new Date(value)).format("YYYY-MM-DD HH:mm:ss"); ;
-          return time;
+
+ 
+  getColume = ()=>{
+    let  columns = [
+      // {
+      //   title: '处方编号',
+      //   dataIndex: 'recipeNo',
+      // },
+      {
+        title: '姓名',
+        dataIndex: 'patientName',
+      },
+      {
+        title: '性别',
+        dataIndex: 'patientSex',
+        render(val,row){
+          if(val =='0'){
+            return '男'
+          }
+          return '女';
         }
       },
-    {
-      title: '操作',
-      render: (text, record,index) => (
-        <Fragment>
-          <a onClick={() => this.handleView(true,record,index)}>查看</a>
-          <Divider type="vertical" />
-          <a onClick={() => this.handleUpdate(true,record,index)}>修改</a>
-          <Divider type="vertical" />
-          <a onClick={
-            () =>
-            (Modal.confirm({
-              title: '删除处方',
-              content: '确定删除该处方数据吗？',
-              okText: '确认',
-              cancelText: '取消',
-              onOk:  () => this.handleDelete(record,index),
-            }))
-          }>删除</a>
-        </Fragment>
-      ),
-    },
-  ];
+      {
+        title: '年龄',
+        dataIndex: 'patientAge',
+        render(val,row){
+          if(row.ageTypeName ==undefined || row.ageTypeName==""){
+            return val+'岁'
+          }
+          return val + row.ageTypeName;
+        }
+      },
+      {
+        title: '处方类型',
+        dataIndex: 'recipeType',
+        render(val,row){
+          if(val =='CHINESE'){
+            return '中药处方'
+          }
+          return '西药处方';
+        }
+      },
+      {
+        title: '疾病',
+        dataIndex: 'disease',
+      },
+      {
+        title: '科别',
+        dataIndex: 'classfication',
+      },
+      { title: '创建时间', dataIndex: 'createTime', key: 'createTime' ,
+          render:(value,index)=>{
+            var time = moment(new Date(value)).format("YYYY-MM-DD HH:mm:ss"); ;
+            return time;
+          }
+        },
+      {
+        title: '操作',
+        render: (text, record,index) => (
+          <Fragment>
+            <a onClick={() => this.handleView(true,record,index)}>查看</a>
+            <Divider type="vertical" />
+            <a onClick={() => this.handleUpdate(true,record,index)}>修改</a>
+            <Divider type="vertical" />
+            <a onClick={
+              () =>
+              (Modal.confirm({
+                title: '删除处方',
+                content: '确定删除该处方数据吗？',
+                okText: '确认',
+                cancelText: '取消',
+                onOk:  () => this.handleDelete(record,index),
+              }))
+            }>删除</a>
+          </Fragment>
+        ),
+      },
+    ];
+    // if(checkPermissions(getAuthority(),'admin','ok','error')=='error'){
+    //   columns.pop()
+    // }
+    return columns
+  }
+ 
 
+//   getColume = ()=>{
+   
+//    if(checkPermissions(getAuthority(),'admin','ok','error')=='error'){
+//      columns.pop()
+//    }
+//    return columns
+//  }
+
+ 
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
@@ -573,9 +593,11 @@ class RecipeManage extends PureComponent {
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderForm()}</div>
             <div className={styles.tableListOperator}>
-              <Button icon="plus" type="primary" onClick={() => this.handleAdd()}>
-                新建
-              </Button>
+             
+                <Button icon="plus" type="primary" onClick={() => this.handleAdd()}>
+              新建
+            </Button>
+            
               {selectedRows.length > 0 && (
                 <span>
                   <Button onClick={
@@ -595,7 +617,7 @@ class RecipeManage extends PureComponent {
               selectedRows={selectedRows}
               loading={loading}
               data={data}
-              columns={this.columns}
+              columns={this.getColume()}
               onSelectRow={this.handleSelectRows}
               onChange={this.handleStandardTableChange}
             />
