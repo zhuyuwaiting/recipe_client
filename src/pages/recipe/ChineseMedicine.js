@@ -545,7 +545,7 @@ class ChineseMedicine extends PureComponent {
             </Button>)
             }
              
-              {selectedRows.length > 0 && (
+              {selectedRows.length > 0&&checkPermissions(getAuthority(),'admin','ok','error')=='ok' && (
                 <span>
                   <Button onClick={
                     () =>

@@ -670,7 +670,7 @@ class WesternMedicine extends PureComponent {
               新建
             </Button>)
             }
-              {selectedRows.length > 0 && (
+              {selectedRows.length > 0&&checkPermissions(getAuthority(),'admin','ok','error')=='ok' && (
                 <span>
                   <Button onClick={
                     () =>

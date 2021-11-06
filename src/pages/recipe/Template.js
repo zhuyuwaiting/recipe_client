@@ -231,7 +231,7 @@ class Template extends PureComponent {
     {
       title: '操作',
       render: (text, record,index) => {
-        if(checkPermissions(getAuthority(),'admin','ok','error')=='error'){
+        if(checkPermissions(getAuthority(),'admin','ok','error')=='ok'){
           return ( <Fragment>
             <a onClick={() => this.handleViewModalVisible(true,record,index)}>查看</a>
             <Divider type="vertical" />
@@ -502,7 +502,7 @@ class Template extends PureComponent {
               新建
             </Button>)
             }
-              {selectedRows.length > 0 && (
+              {selectedRows.length > 0 &&checkPermissions(getAuthority(),'admin','ok','error')=='ok' && (
                 <span>
                   <Button onClick={
                     () =>
